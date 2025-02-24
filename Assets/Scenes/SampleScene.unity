@@ -1774,6 +1774,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   IsCaptureBallInstantiate: 0
   IsCaptureBallThrew: 0
+  _captureBallLauncher: {fileID: 93903568}
 --- !u!43 &1097639322
 Mesh:
   m_ObjectHideFlags: 0

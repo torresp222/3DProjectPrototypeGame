@@ -7,8 +7,6 @@ namespace BowzanGaming.FinalCharacterController {
         public static event Action OnThrowingPressed;
         public static event Action OnThrowingReleased;
 
- /*       public static event Action OnThrowingFirstPressed;*/
-
         // vars to control thow action
         public bool IsCaptureBallInstantiate = true;
         public bool IsCaptureBallThrew = false;
@@ -26,11 +24,6 @@ namespace BowzanGaming.FinalCharacterController {
         }
         // Update is called once per frame
         private void Update() {
-
-            /*if (_playerActionsInput.ThrowPressed  && !IsCaptureBallInstantiate)
-            {
-                OnThrowingFirstPressed?.Invoke();
-            }*/
 
             if (_playerActionsInput.OnHoldThrowPressed && !IsCaptureBallInstantiate) {
                 print("Dentro del invocar evento");

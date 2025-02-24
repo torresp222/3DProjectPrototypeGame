@@ -73,7 +73,6 @@ namespace BowzanGaming.FinalCharacterController {
             }
 
         }
-
         public void DrawTrajectory(Vector3 startPosition, Vector3 initialVelocity) {
             lineRenderer.enabled = true;
             int numSegments = 30;       // Número de puntos a calcular en la trayectoria
@@ -91,52 +90,15 @@ namespace BowzanGaming.FinalCharacterController {
             lineRenderer.positionCount = numSegments;
             lineRenderer.SetPositions(trajectoryPoints);
         }
-
-
-        /*// Prueba de como estaba antes
-        public void InstantiateAndLaunchProjectile() {
-
-            if (projectilePrefab == null || launchPoint == null) {
-                Debug.LogError("Falta configurar el prefab o el punto de lanzamiento.");
-                return;
-            }
-
-            // Instanciar el objeto lanzado
-            GameObject projectile = Instantiate(projectilePrefab, launchPoint.position, launchPoint.rotation);
-            Rigidbody rb = projectile.GetComponent<Rigidbody>();
-            if (rb != null) {
-                
-                // Calcular la fuerza total (dirección hacia adelante + fuerza hacia arriba)
-                Vector3 forceDirection = _playerTransform.transform.forward; // Dirección hacia adelante
-                Vector3 totalForce = forceDirection * launchForce + Vector3.up * upwardForce;
-
-                // Aplicar la fuerza al Rigidbody
-                rb.AddForce(totalForce, ForceMode.Impulse);
-            } else {
-                Debug.LogError("El prefab del proyectil no tiene un Rigidbody adjunto.");
-            }
-
-            _playerActionController.IsCaptureBallInstantiate = true;
-
-
-        }*/
-
-
-
         private void OnEnable() {
             PlayerActionsController.OnThrowingPressed += InstantiateProjectile;
             PlayerActionsController.OnThrowingReleased += LaunchProjectile;
 
-            // Prueba de como estaba antes
-            /*PlayerActionsController.OnThrowingFirstPressed += InstantiateAndLaunchProjectile;*/
         }
-
         private void OnDisable() {
             PlayerActionsController.OnThrowingPressed -= InstantiateProjectile;
             PlayerActionsController.OnThrowingReleased -= LaunchProjectile;
 
-            // Prueba de como estaba antes
-            /*PlayerActionsController.OnThrowingFirstPressed -= InstantiateAndLaunchProjectile;*/
         }
     }
 }
