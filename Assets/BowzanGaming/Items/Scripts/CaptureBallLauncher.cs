@@ -45,6 +45,7 @@ namespace BowzanGaming.FinalCharacterController {
             Rigidbody rb = projectile.GetComponent<Rigidbody>();
             rb.isKinematic = true;
             ProjectileRB = rb;
+            print("PROYECTIL INSTANCIADO");
 
             DrawTrajectoryBall = true;
             _playerActionController.IsCaptureBallInstantiate = true;

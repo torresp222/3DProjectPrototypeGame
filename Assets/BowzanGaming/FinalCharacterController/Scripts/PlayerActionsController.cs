@@ -8,8 +8,8 @@ namespace BowzanGaming.FinalCharacterController {
         public static event Action OnThrowingReleased;
 
         // vars to control thow action
-        public bool IsCaptureBallInstantiate = true;
-        public bool IsCaptureBallThrew = false;
+        public bool IsCaptureBallInstantiate;
+        public bool IsCaptureBallThrew;
 
         //references own scripts
         private PlayerActionsInput _playerActionsInput;
@@ -20,7 +20,8 @@ namespace BowzanGaming.FinalCharacterController {
 
         private void Awake() {
             _playerActionsInput = GetComponent<PlayerActionsInput>();
-            IsCaptureBallInstantiate = true;
+            IsCaptureBallInstantiate = false;
+            IsCaptureBallThrew = true;
         }
         // Update is called once per frame
         private void Update() {
