@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 
 public class PlayerTeam : MonoBehaviour {
@@ -17,5 +18,18 @@ public class PlayerTeam : MonoBehaviour {
         Debug.Log("Spirithar " + newSpirithar.spiritharName + " añadido al equipo.");
         // Aquí podrías actualizar la UI o guardar el estado.
         return true;
+    }
+
+    /// <summary>
+    /// Devuelve el prefab del Spirithar activo, por ejemplo, el primero de la lista.
+    /// </summary>
+    public GameObject GetActiveSpiritharPrefab() {
+        if (team.Count > 0) {
+            //team[0].gameObject
+            return team[0].gameObject;
+        } else {
+            Debug.LogError("No hay Spirithar en el equipo del jugador.");
+            return null;
+        }
     }
 }
