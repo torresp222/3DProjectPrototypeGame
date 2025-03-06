@@ -702,7 +702,6 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 459114138}
-  - component: {fileID: 459114139}
   m_Layer: 0
   m_Name: CombatCaptureUI
   m_TagString: Untagged
@@ -726,20 +725,6 @@ Transform:
   - {fileID: 1484727108}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &459114139
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 459114137}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 6f29b8956910e4047ad3261cea971733, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  PlayerSpiritharInfo: {fileID: 1566768471}
-  EnemySpiritharInfo: {fileID: 2070375135}
 --- !u!1 &465911817
 GameObject:
   m_ObjectHideFlags: 0
@@ -4507,6 +4492,8 @@ MonoBehaviour:
   PlayerTeam: {fileID: 1090548326}
   RefPlayerInputManager: {fileID: 93903566}
   CombatCaptureUI: {fileID: 459114137}
+  PlayerCombatCaptureHUD: {fileID: 1566768473}
+  EnemyCombatCaptureHUD: {fileID: 2070375137}
 --- !u!1 &1271959436
 GameObject:
   m_ObjectHideFlags: 0
@@ -5783,6 +5770,7 @@ GameObject:
   - component: {fileID: 1566768470}
   - component: {fileID: 1566768472}
   - component: {fileID: 1566768471}
+  - component: {fileID: 1566768473}
   m_Layer: 0
   m_Name: PlayerSpiritharInfo
   m_TagString: Untagged
@@ -5850,6 +5838,21 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1566768469}
   m_CullTransparentMesh: 1
+--- !u!114 &1566768473
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1566768469}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6f29b8956910e4047ad3261cea971733, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  SpNameText: {fileID: 666376274}
+  SpLvlText: {fileID: 194997990}
+  SpHPSlider: {fileID: 1198129317}
 --- !u!1 &1655070171 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 1351110286392965795, guid: cef6326ee91964b4b865b741618479c7,
@@ -6922,6 +6925,7 @@ GameObject:
   - component: {fileID: 2070375134}
   - component: {fileID: 2070375136}
   - component: {fileID: 2070375135}
+  - component: {fileID: 2070375137}
   m_Layer: 0
   m_Name: EnemyInfo
   m_TagString: Untagged
@@ -6989,6 +6993,21 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2070375133}
   m_CullTransparentMesh: 1
+--- !u!114 &2070375137
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2070375133}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6f29b8956910e4047ad3261cea971733, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  SpNameText: {fileID: 1435184113}
+  SpLvlText: {fileID: 929536442}
+  SpHPSlider: {fileID: 1350197633}
 --- !u!1 &2095881453 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 7705616587319985996, guid: cef6326ee91964b4b865b741618479c7,

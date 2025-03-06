@@ -21,12 +21,14 @@ public class CombatManager : MonoBehaviour {
     public BowzanGaming.FinalCharacterController.PlayerInputManager RefPlayerInputManager; // Player Input Manager que habilita el Input system "Player Controls"
     //public PlayerLocomotionInput Pli;
     public GameObject CombatCaptureUI; // GameObject donde se encuentra el Canvas del combate entre spirithars
+    public CombatCaptureHUD PlayerCombatCaptureHUD; // Reference to script that controls ui of combate capture.
+    public CombatCaptureHUD EnemyCombatCaptureHUD; // Reference to script that controls ui of combate capture.
 
     // Referencias internas que se asignarán al iniciar el combate.
     private Spirithar _enemySpirithar; // Spirithar salvaje capturado
     private Spirithar _playerSpirithar; // Spirithar activo del equipo (instanciado en combate)
     private GameObject _firstSpiritharTeam;// GameObject "" ""
-    private CombatCaptureHUD _combatCaptureHUD; // Reference to script that controls ui of combate capture.
+
 
     private void Awake() {
         // Patrón singleton para acceso global.
@@ -36,7 +38,6 @@ public class CombatManager : MonoBehaviour {
             Destroy(gameObject);
 
         if (CombatCaptureUI != null) {
-            _combatCaptureHUD = CombatCaptureUI.GetComponent<CombatCaptureHUD>();
             CombatCaptureUI.SetActive(false);
         }
             
@@ -98,7 +99,8 @@ public class CombatManager : MonoBehaviour {
         Player.transform.LookAt(enemyPosition);
 
         // Display Name of Spirithars
-        _combatCaptureHUD.SetUpCaptureCombat(_playerSpirithar, _enemySpirithar);
+        PlayerCombatCaptureHUD.SetUpCaptureCombatHUD(_playerSpirithar);
+        EnemyCombatCaptureHUD.SetUpCaptureCombatHUD(_enemySpirithar);
 
         // Activar la cámara de combate.
         if (CombatCamera != null)
