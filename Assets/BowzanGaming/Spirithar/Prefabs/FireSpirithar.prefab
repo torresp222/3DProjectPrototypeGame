@@ -175,6 +175,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   spiritharName: FireSpirithar
   maxHealth: 100
+  Lvl: 2
   currentHealth: 0
   elementType: 0
   moves:

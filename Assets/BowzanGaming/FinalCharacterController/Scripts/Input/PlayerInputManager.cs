@@ -24,10 +24,12 @@ namespace BowzanGaming.FinalCharacterController {
         private void OnEnable() {
             PlayerControls = new PlayerControls();
             PlayerControls.Enable();
+            print("------HABILITADO--------");
         }
 
         private void OnDisable() {
             PlayerControls.Disable();
+            print("------DESSSSSHABILITADO--------");
         }
 
     }

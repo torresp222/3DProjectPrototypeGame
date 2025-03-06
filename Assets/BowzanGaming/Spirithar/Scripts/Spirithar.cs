@@ -5,6 +5,7 @@ public enum ElementType { Fire, Water, Plant, Earth }
 public abstract class Spirithar : MonoBehaviour {
     public string spiritharName;
     public int maxHealth;
+    public int Lvl;
     [HideInInspector]
     public int currentHealth;
     public ElementType elementType;

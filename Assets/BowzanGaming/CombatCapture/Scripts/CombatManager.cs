@@ -18,11 +18,15 @@ public class CombatManager : MonoBehaviour {
     [Header("Referencias")]
     public GameObject Player;         // GameObject del jugador
     public PlayerTeam PlayerTeam;     // Script que gestiona el equipo del jugador
-    public BowzanGaming.FinalCharacterController.PlayerInputManager RefPlayerInputManager;
+    public BowzanGaming.FinalCharacterController.PlayerInputManager RefPlayerInputManager; // Player Input Manager que habilita el Input system "Player Controls"
+    //public PlayerLocomotionInput Pli;
+    public GameObject CombatCaptureUI; // GameObject donde se encuentra el Canvas del combate entre spirithars
 
     // Referencias internas que se asignarán al iniciar el combate.
     private Spirithar _enemySpirithar; // Spirithar salvaje capturado
     private Spirithar _playerSpirithar; // Spirithar activo del equipo (instanciado en combate)
+    private GameObject _firstSpiritharTeam;// GameObject "" ""
+    private CombatCaptureHUD _combatCaptureHUD; // Reference to script that controls ui of combate capture.
 
     private void Awake() {
         // Patrón singleton para acceso global.
@@ -30,6 +34,12 @@ public class CombatManager : MonoBehaviour {
             Instance = this;
         else
             Destroy(gameObject);
+
+        if (CombatCaptureUI != null) {
+            _combatCaptureHUD = CombatCaptureUI.GetComponent<CombatCaptureHUD>();
+            CombatCaptureUI.SetActive(false);
+        }
+            
     }
     private void OnEnable() {
         CaptureBall.OnSpiritharCaptured += InitiateCombat;
@@ -43,16 +53,6 @@ public class CombatManager : MonoBehaviour {
     private void InitiateCombat(Spirithar capturedSpirithar) {
         Debug.Log("Iniciando combate con: " + capturedSpirithar.spiritharName);
         StartCombat(capturedSpirithar);
-
-        // Aquí es donde implementas la transición:
-        // - Puedes activar/desactivar cámaras.
-        // - Reposicionar al jugador y al enemigo.
-        // - Cargar otra escena, o cambiar el modo de la escena actual.
-        // Por el momento, este ejemplo solo registra el inicio en la consola.
-
-        // Ejemplo de activación de una cámara de combate:
-        // Camera.main.gameObject.SetActive(false);
-        // CombatCamera.SetActive(true);
     }
 
     /// <summary>
@@ -70,13 +70,14 @@ public class CombatManager : MonoBehaviour {
             PlayerCamera.SetActive(false);
 
         // Instanciar el Spirithar activo del equipo a partir del prefab guardado en PlayerTeam.
-        GameObject activePrefab = PlayerTeam.GetActiveSpiritharPrefab();
-        if (activePrefab == null) {
+        _firstSpiritharTeam = PlayerTeam.GetActiveSpiritharPrefab();
+        if (_firstSpiritharTeam == null) {
             Debug.LogError("No se encontró un prefab de Spirithar en el equipo del jugador.");
             return;
         }
-        GameObject playerSpiritharGO = Instantiate(activePrefab, Vector3.zero, Quaternion.identity);
-        _playerSpirithar = playerSpiritharGO.GetComponent<Spirithar>();
+        //GameObject playerSpiritharGO
+        _firstSpiritharTeam = Instantiate(_firstSpiritharTeam, Vector3.zero, Quaternion.identity);
+        _playerSpirithar = _firstSpiritharTeam.GetComponent<Spirithar>();
         if (_playerSpirithar == null) {
             Debug.LogError("El prefab instanciado no tiene el componente Spirithar.");
             return;
@@ -96,9 +97,15 @@ public class CombatManager : MonoBehaviour {
         Player.transform.position = _playerSpirithar.transform.position + globalPlayerOffset;
         Player.transform.LookAt(enemyPosition);
 
+        // Display Name of Spirithars
+        _combatCaptureHUD.SetUpCaptureCombat(_playerSpirithar, _enemySpirithar);
+
         // Activar la cámara de combate.
         if (CombatCamera != null)
             CombatCamera.SetActive(true);
+        if(CombatCaptureUI != null)
+            CombatCaptureUI.SetActive(true);
+        
 
         Debug.Log("Combate iniciado: " + _playerSpirithar.spiritharName + " vs " + _enemySpirithar.spiritharName);
     }
@@ -118,9 +125,13 @@ public class CombatManager : MonoBehaviour {
             pc.enabled = false;
 
         // Desactivar PlayerInput para evitar capturar más acciones.
-        PlayerInput pi = Player.GetComponent<PlayerInput>();
-        if (pi != null)
-            pi.enabled = false;
+        PlayerLocomotionInput pli = Player.GetComponent<PlayerLocomotionInput>();
+        if (pli != null)
+            pli.enabled = false;
+
+        PlayerActionsInput pai = Player.GetComponent<PlayerActionsInput>();
+        if (pai != null)
+            pai.enabled = false;
     }
 
     /// <summary>
@@ -135,11 +146,23 @@ public class CombatManager : MonoBehaviour {
         if (pc != null)
             pc.enabled = true;
 
-        PlayerInput pi = Player.GetComponent<PlayerInput>();
-        if (pi != null)
-            pi.enabled = true;
+        PlayerLocomotionInput pli = Player.GetComponent<PlayerLocomotionInput>();
+        if (pli != null)
+            pli.enabled = true;
+
+        PlayerActionsInput pai = Player.GetComponent<PlayerActionsInput>();
+        if (pai != null)
+            pai.enabled = true;
+
+        // Desactivar la cámara de combate.
+        if (CombatCamera != null)
+            CombatCamera.SetActive(false);
+        if (CombatCaptureUI != null)
+            CombatCaptureUI.SetActive(false);
 
         if (PlayerCamera != null)
             PlayerCamera.SetActive(true);
+
+        Destroy(_firstSpiritharTeam);
     }
 }
