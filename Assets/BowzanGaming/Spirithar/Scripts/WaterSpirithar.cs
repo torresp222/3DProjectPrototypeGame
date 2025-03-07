@@ -6,19 +6,19 @@ public class WaterSpirithar : Spirithar {
         Initialize();
     }
 
-    public override void PerformMove(int moveIndex, Spirithar target) {
+    public override void PerformMove(SpiritharMove spiritharMove, int moveIndex, Spirithar target) {
         if (moves == null || moveIndex >= moves.Length) {
             Debug.LogWarning("Movimiento no asignado en " + spiritharName);
             return;
         }
 
-        SpiritharMove move = moves[moveIndex];
+        //SpiritharMove move = moves[moveIndex];
 
-        switch (move.moveType) {
+        switch (spiritharMove.moveType) {
             case MoveType.Attack:
-                int damage = move.power;
-                target.ReceiveDamage(damage);
-                Debug.Log(spiritharName + " ataca a " + target.spiritharName + " con " + move.moveName);
+                /*int damage = spiritharMove.power;
+                target.ReceiveDamage(damage);*/
+                Debug.Log(spiritharName + " ataca a " + target.spiritharName + " con " + spiritharMove.moveName);
                 break;
             case MoveType.Defense:
                 Defend();

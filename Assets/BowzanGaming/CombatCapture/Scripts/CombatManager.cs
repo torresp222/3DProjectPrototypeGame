@@ -1,6 +1,7 @@
 using BowzanGaming.FinalCharacterController;
 using UnityEngine;
 using UnityEngine.InputSystem;
+using UnityEngine.UI;
 public class CombatManager : MonoBehaviour {
 
     public static CombatManager Instance;
@@ -21,8 +22,12 @@ public class CombatManager : MonoBehaviour {
     public BowzanGaming.FinalCharacterController.PlayerInputManager RefPlayerInputManager; // Player Input Manager que habilita el Input system "Player Controls"
     //public PlayerLocomotionInput Pli;
     public GameObject CombatCaptureUI; // GameObject donde se encuentra el Canvas del combate entre spirithars
+    public GameObject AbilitiesMenu;
     public CombatCaptureHUD PlayerCombatCaptureHUD; // Reference to script that controls ui of combate capture.
     public CombatCaptureHUD EnemyCombatCaptureHUD; // Reference to script that controls ui of combate capture.
+    public AbilitiesCaptureHUD FirstButtonAbility;
+    public AbilitiesCaptureHUD SecondButtonAbility;
+    public AbilitiesCaptureHUD ThirdButtonAbility;
 
     // Referencias internas que se asignarán al iniciar el combate.
     private Spirithar _enemySpirithar; // Spirithar salvaje capturado
@@ -53,6 +58,8 @@ public class CombatManager : MonoBehaviour {
     // Este método se llamará cuando se capture un Spirithar.
     private void InitiateCombat(Spirithar capturedSpirithar) {
         Debug.Log("Iniciando combate con: " + capturedSpirithar.spiritharName);
+        if (AbilitiesMenu != null)
+            AbilitiesMenu.SetActive(false);
         StartCombat(capturedSpirithar);
     }
 
@@ -101,6 +108,10 @@ public class CombatManager : MonoBehaviour {
         // Display Name of Spirithars
         PlayerCombatCaptureHUD.SetUpCaptureCombatHUD(_playerSpirithar);
         EnemyCombatCaptureHUD.SetUpCaptureCombatHUD(_enemySpirithar);
+
+        FirstButtonAbility.SetUpTextAbilityButton(_playerSpirithar, _enemySpirithar, _playerSpirithar.moves[0]);
+        SecondButtonAbility.SetUpTextAbilityButton(_playerSpirithar, _enemySpirithar, _playerSpirithar.moves[1]);
+        ThirdButtonAbility.SetUpTextAbilityButton(_playerSpirithar, _enemySpirithar, _playerSpirithar.moves[2]);
 
         // Activar la cámara de combate.
         if (CombatCamera != null)

@@ -19,7 +19,7 @@ public abstract class Spirithar : MonoBehaviour {
 
     // Método abstracto para realizar un ataque.
     // moveIndex: 0 y 1 para ataques, 2 para defensa, 3 para potenciar ataque.
-    public abstract void PerformMove(int moveIndex, Spirithar target);
+    public abstract void PerformMove(SpiritharMove spiritharMove, int moveIndex, Spirithar target);
 
     public virtual void ReceiveDamage(int amount) {
         currentHealth -= amount;
