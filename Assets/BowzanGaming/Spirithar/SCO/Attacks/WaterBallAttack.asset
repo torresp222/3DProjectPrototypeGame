@@ -14,5 +14,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   moveName: WaterBall
   moveType: 0
+  moveElementType: 1
   power: 30
   cooldown: 0

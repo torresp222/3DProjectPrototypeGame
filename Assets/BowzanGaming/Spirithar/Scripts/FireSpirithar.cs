@@ -26,4 +26,10 @@ public class FireSpirithar : Spirithar {
                 break;
         }
     }
+
+    public override bool IsWeak(SpiritharMove spiritharMove) {
+        if(spiritharMove.moveElementType != ElementType.Water)
+            return false;
+        return true;
+    }
 }

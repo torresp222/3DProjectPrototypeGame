@@ -27,6 +27,7 @@ public class CombatManager : MonoBehaviour {
     public BowzanGaming.FinalCharacterController.PlayerInputManager RefPlayerInputManager; // Player Input Manager que habilita el Input system "Player Controls"
     //public PlayerLocomotionInput Pli;
     public GameObject CombatCaptureUI; // GameObject donde se encuentra el Canvas del combate entre spirithars
+    public GameObject CombatMenuGO;
     public GameObject AbilitiesMenu;
     public CombatCaptureHUD PlayerCombatCaptureHUD; // Reference to script that controls ui of combate capture.
     public CombatCaptureHUD EnemyCombatCaptureHUD; // Reference to script that controls ui of combate capture.
@@ -137,6 +138,10 @@ public class CombatManager : MonoBehaviour {
             CombatCamera.SetActive(true);
         if(CombatCaptureUI != null)
             CombatCaptureUI.SetActive(true);
+        if (!CombatMenuGO.activeSelf) {
+            Debug.Log("GO DE COMBATMENUGOOOOO NOOO ESTABA ACTIVOO Y AHORA SIII");
+            CombatMenuGO.SetActive(true);
+        }
 
         State = BattleCaptureState.PLAYERTURN;
 

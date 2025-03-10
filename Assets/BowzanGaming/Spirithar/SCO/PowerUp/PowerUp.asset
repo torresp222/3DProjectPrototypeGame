@@ -14,5 +14,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   moveName: Spirit Power Up
   moveType: 2
+  moveElementType: 4
   power: 10
   cooldown: 0

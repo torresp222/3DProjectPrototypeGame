@@ -11,6 +11,7 @@ public class WaterSpirithar : Spirithar {
             Debug.LogWarning("Movimiento no asignado en " + spiritharName);
             return;
         }
+
         PerformingMove = true;
         switch (spiritharMove.moveType) {
             case MoveType.Attack:
@@ -25,4 +26,10 @@ public class WaterSpirithar : Spirithar {
                 break;
         }
     }
+    public override bool IsWeak(SpiritharMove spiritharMove) {
+        if (spiritharMove.moveElementType != ElementType.Earth)
+            return false;
+        return true;
+    }
+
 }

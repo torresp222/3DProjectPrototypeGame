@@ -11,33 +11,6 @@ public class StartingSpiritharBall : MonoBehaviour {
     private GameObject _player;  // Referencia al jugador que está en rango
     private PlayerActionsInput _playerActionsInput;
 
-
-    // Se utiliza OnTriggerEnter para detectar la recogida.
-   /* private void OnTriggerEnter(Collider other) {
-        // Suponemos que el jugador tiene el tag "Player"
-        if (other.CompareTag("Player")) {
-            print("Trigger detectado");
-            // Buscamos el componente PlayerTeam en el jugador.
-            PlayerTeam playerTeam = other.GetComponent<PlayerTeam>();
-            if (playerTeam != null) {
-                // Instanciamos el Spirithar en la posición del jugador o en otra ubicación deseada.
-               // GameObject spiritharGO = Instantiate(spiritharPrefab, other.transform.position, Quaternion.identity);
-                Spirithar spiritharComponent = spiritharPrefab.GetComponent<Spirithar>();
-                if (spiritharComponent != null) {
-                    // Intentamos añadir el Spirithar al equipo.
-                    if (playerTeam.AddSpirithar(spiritharComponent)) {
-                        // Si se añade correctamente, se destruye la bola para que no se recoja de nuevo.
-                        Destroy(gameObject);
-                    } else {
-                        Debug.Log("Equipo lleno");
-                    }
-                } else {
-                    Debug.LogError("El prefab del Spirithar no tiene un componente Spirithar.");
-                }
-            }
-        }
-    }*/
-
     private void OnTriggerEnter(Collider other) {
         if (other.CompareTag("Player")) {
             _playerInRange = true;

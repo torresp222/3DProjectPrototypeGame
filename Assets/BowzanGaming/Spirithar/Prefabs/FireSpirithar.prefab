@@ -178,10 +178,19 @@ MonoBehaviour:
   Lvl: 2
   currentHealth: 0
   elementType: 0
+  PerformingMove: 0
   moves:
   - {fileID: 11400000, guid: b89ecb533943c594aadb5e33250100fd, type: 2}
   - {fileID: 11400000, guid: 2a69eaf3f1625bf42904f183496331f7, type: 2}
   - {fileID: 11400000, guid: b521674d4c004464f9424766550eb0ab, type: 2}
+  possibleBaseStats:
+  - {fileID: 11400000, guid: 3e40f243e0233ff4aa38f5c24cd8f44a, type: 2}
+  - {fileID: 11400000, guid: 73d267460e7b4a242b120a5f2a0faeb0, type: 2}
+  baseStats: {fileID: 0}
+  stats:
+    currentHealth: 0
+    currentAttack: 0
+    currentDefense: 0
 --- !u!1 &5172305868474930488
 GameObject:
   m_ObjectHideFlags: 0
