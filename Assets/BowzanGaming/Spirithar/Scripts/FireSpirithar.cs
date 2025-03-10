@@ -6,19 +6,17 @@ public class FireSpirithar : Spirithar {
         Initialize();
     }
 
-    public override void PerformMove(SpiritharMove spiritharMove, int moveIndex, Spirithar target) {
-        if (moves == null || moveIndex >= moves.Length) {
+    public override void PerformMove(SpiritharMove spiritharMove, Spirithar target) {
+        if (spiritharMove == null) {
             Debug.LogWarning("Movimiento no asignado en " + spiritharName);
             return;
         }
 
-        //SpiritharMove move = moves[moveIndex];
-
+        PerformingMove = true;
         switch (spiritharMove.moveType) {
             case MoveType.Attack:
-                //int damage = spiritharMove.power;
-                //target.ReceiveDamage(damage);
                 Debug.Log(spiritharName + " ataca a " + target.spiritharName + " con " + spiritharMove.moveName);
+                StartCoroutine(SpiritharAttack(target, spiritharMove));
                 break;
             case MoveType.Defense:
                 Defend();

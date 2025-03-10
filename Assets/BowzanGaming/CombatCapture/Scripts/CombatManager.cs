@@ -1,7 +1,12 @@
 using BowzanGaming.FinalCharacterController;
+using System.Collections;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.UI;
+
+
+public enum BattleCaptureState { START, PLAYERTURN, ENEMYTURN, WON, LOST }
+
 public class CombatManager : MonoBehaviour {
 
     public static CombatManager Instance;
@@ -29,10 +34,15 @@ public class CombatManager : MonoBehaviour {
     public AbilitiesCaptureHUD SecondButtonAbility;
     public AbilitiesCaptureHUD ThirdButtonAbility;
 
+    [Header("State of combate capture")]
+    public BattleCaptureState State;
+
     // Referencias internas que se asignarán al iniciar el combate.
     private Spirithar _enemySpirithar; // Spirithar salvaje capturado
     private Spirithar _playerSpirithar; // Spirithar activo del equipo (instanciado en combate)
     private GameObject _firstSpiritharTeam;// GameObject "" ""
+
+    
 
 
     private void Awake() {
@@ -49,15 +59,22 @@ public class CombatManager : MonoBehaviour {
     }
     private void OnEnable() {
         CaptureBall.OnSpiritharCaptured += InitiateCombat;
+        Spirithar.OnTakeDamage += UpdateSpiritharHPSlider;
+        Spirithar.OnEnemySpiritharNotDead += ChangeState;
+        Spirithar.OnSpiritharDead += EnablePlayerControl;
     }
 
     private void OnDisable() {
         CaptureBall.OnSpiritharCaptured -= InitiateCombat;
+        Spirithar.OnTakeDamage -= UpdateSpiritharHPSlider;
+        Spirithar.OnEnemySpiritharNotDead -= ChangeState;
+        Spirithar.OnSpiritharDead -= EnablePlayerControl;
     }
 
     // Este método se llamará cuando se capture un Spirithar.
     private void InitiateCombat(Spirithar capturedSpirithar) {
         Debug.Log("Iniciando combate con: " + capturedSpirithar.spiritharName);
+        State = BattleCaptureState.START;
         if (AbilitiesMenu != null)
             AbilitiesMenu.SetActive(false);
         StartCombat(capturedSpirithar);
@@ -105,10 +122,12 @@ public class CombatManager : MonoBehaviour {
         Player.transform.position = _playerSpirithar.transform.position + globalPlayerOffset;
         Player.transform.LookAt(enemyPosition);
 
+        Debug.Log("Combate iniciado: " + _playerSpirithar.spiritharName + " vs " + _enemySpirithar.spiritharName);
+
         // Display Name of Spirithars
         PlayerCombatCaptureHUD.SetUpCaptureCombatHUD(_playerSpirithar);
         EnemyCombatCaptureHUD.SetUpCaptureCombatHUD(_enemySpirithar);
-
+        // Display moves of Player Spirithar
         FirstButtonAbility.SetUpTextAbilityButton(_playerSpirithar, _enemySpirithar, _playerSpirithar.moves[0]);
         SecondButtonAbility.SetUpTextAbilityButton(_playerSpirithar, _enemySpirithar, _playerSpirithar.moves[1]);
         ThirdButtonAbility.SetUpTextAbilityButton(_playerSpirithar, _enemySpirithar, _playerSpirithar.moves[2]);
@@ -118,9 +137,10 @@ public class CombatManager : MonoBehaviour {
             CombatCamera.SetActive(true);
         if(CombatCaptureUI != null)
             CombatCaptureUI.SetActive(true);
-        
 
-        Debug.Log("Combate iniciado: " + _playerSpirithar.spiritharName + " vs " + _enemySpirithar.spiritharName);
+        State = BattleCaptureState.PLAYERTURN;
+
+       
     }
 
     /// <summary>
@@ -178,4 +198,35 @@ public class CombatManager : MonoBehaviour {
 
         Destroy(_firstSpiritharTeam);
     }
+
+    public void UpdateSpiritharHPSlider() {
+        PlayerCombatCaptureHUD.SetHP(_playerSpirithar);
+        EnemyCombatCaptureHUD.SetHP(_enemySpirithar);
+
+    }
+
+    public void ChangeState() {
+        if (State == BattleCaptureState.PLAYERTURN) {
+            State = BattleCaptureState.ENEMYTURN;
+            _enemySpirithar.PerformingMove = false;
+            StartCoroutine(EnemyTurn());
+        }
+            
+        /*if (State == BattleCaptureState.ENEMYTURN) {
+            State = BattleCaptureState.PLAYERTURN;
+            Debug.Log("ENTROOO AL PLAYER TUUUURRRNNNN");
+        }*/
+    }
+
+    public IEnumerator EnemyTurn() {
+        Debug.Log("Turno del enemigo");
+        SpiritharMove move = _enemySpirithar.moves[Random.Range(0, _enemySpirithar.moves.Length)];
+        _enemySpirithar.PerformMove(move, _playerSpirithar);
+        yield return new WaitForSeconds(2f);
+        State = BattleCaptureState.PLAYERTURN;
+        _playerSpirithar.PerformingMove = false;
+
+    }
+
+
 }

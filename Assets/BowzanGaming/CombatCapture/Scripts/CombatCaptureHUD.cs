@@ -18,4 +18,8 @@ public class CombatCaptureHUD : MonoBehaviour
         SpHPSlider.maxValue = spirithar.maxHealth;
         SpHPSlider.value = spirithar.currentHealth;
     }
+
+    public void SetHP(Spirithar spirithar) {
+        SpHPSlider.value = spirithar.currentHealth;
+    }
 }
