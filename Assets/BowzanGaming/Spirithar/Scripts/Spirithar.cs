@@ -58,6 +58,7 @@ public abstract class Spirithar : MonoBehaviour {
 
         // Mitigación de la defensa del defensor
         float defenseReduction = target.stats.currentDefense * 0.3f;
+        Debug.Log("Defensa reductiooon " + defenseReduction);
 
         // Calcular daño total
         damage = damage + attackerBonus - defenseReduction;
@@ -83,15 +84,23 @@ public abstract class Spirithar : MonoBehaviour {
 
     }
 
-    public virtual void Defend() {
+    public virtual IEnumerator Defend(SpiritharMove spiritharMove) {
+        float defenseIncrease = 0.5f * spiritharMove.power;
+        this.stats.currentDefense += defenseIncrease;
         // Lógica de defensa (por ejemplo, aumentar temporalmente la defensa)
         Debug.Log(spiritharName + " se defiende.");
+        yield return new WaitForSeconds(1f);
+        print("Change State");
         OnEnemySpiritharNotDead?.Invoke();
     }
 
-    public virtual void BoostAttack() {
+    public virtual IEnumerator BoostAttack(SpiritharMove spiritharMove) {
+        float attackIncrease = 0.2f * spiritharMove.power;
+        this.stats.currentAttack += attackIncrease;
         // Lógica para potenciar el ataque (por ejemplo, aumentar el daño del siguiente ataque)
         Debug.Log(spiritharName + " potencia su ataque.");
+        yield return new WaitForSeconds(1f);
+        print("Change State");
         OnEnemySpiritharNotDead?.Invoke();
     }
 

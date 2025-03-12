@@ -347,6 +347,74 @@ namespace BowzanGaming.FinalCharacterController
                     ""isPartOfComposite"": false
                 }
             ]
+        },
+        {
+            ""name"": ""PlayerSoulCombatMap"",
+            ""id"": ""16d6099d-84b4-439a-af58-a6298145d4a4"",
+            ""actions"": [
+                {
+                    ""name"": ""Spell"",
+                    ""type"": ""Button"",
+                    ""id"": ""0dd43436-bff7-4539-a977-3d9deb709b24"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""BoostDefense"",
+                    ""type"": ""Button"",
+                    ""id"": ""da4a303a-cb41-44de-8d05-e8a3855fb16a"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""BoostAttack"",
+                    ""type"": ""Button"",
+                    ""id"": ""27c42b00-c525-4feb-b991-6ab0c97c0434"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                }
+            ],
+            ""bindings"": [
+                {
+                    ""name"": """",
+                    ""id"": ""18050a82-ba83-41b2-b4c2-ba8645af327a"",
+                    ""path"": ""<Mouse>/leftButton"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Spell"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""2b4ccd99-c086-456f-8cf6-84a95be38b8e"",
+                    ""path"": ""<Keyboard>/e"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""BoostDefense"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""9ab4dbb3-8940-4c77-a871-59465e0ec968"",
+                    ""path"": ""<Keyboard>/r"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""BoostAttack"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                }
+            ]
         }
     ],
     ""controlSchemes"": []
@@ -367,6 +435,11 @@ namespace BowzanGaming.FinalCharacterController
             m_PlayerActionMap_Gather = m_PlayerActionMap.FindAction("Gather", throwIfNotFound: true);
             m_PlayerActionMap_Throw = m_PlayerActionMap.FindAction("Throw", throwIfNotFound: true);
             m_PlayerActionMap_HoldThrow = m_PlayerActionMap.FindAction("HoldThrow", throwIfNotFound: true);
+            // PlayerSoulCombatMap
+            m_PlayerSoulCombatMap = asset.FindActionMap("PlayerSoulCombatMap", throwIfNotFound: true);
+            m_PlayerSoulCombatMap_Spell = m_PlayerSoulCombatMap.FindAction("Spell", throwIfNotFound: true);
+            m_PlayerSoulCombatMap_BoostDefense = m_PlayerSoulCombatMap.FindAction("BoostDefense", throwIfNotFound: true);
+            m_PlayerSoulCombatMap_BoostAttack = m_PlayerSoulCombatMap.FindAction("BoostAttack", throwIfNotFound: true);
         }
 
         public void Dispose()
@@ -618,6 +691,68 @@ namespace BowzanGaming.FinalCharacterController
             }
         }
         public PlayerActionMapActions @PlayerActionMap => new PlayerActionMapActions(this);
+
+        // PlayerSoulCombatMap
+        private readonly InputActionMap m_PlayerSoulCombatMap;
+        private List<IPlayerSoulCombatMapActions> m_PlayerSoulCombatMapActionsCallbackInterfaces = new List<IPlayerSoulCombatMapActions>();
+        private readonly InputAction m_PlayerSoulCombatMap_Spell;
+        private readonly InputAction m_PlayerSoulCombatMap_BoostDefense;
+        private readonly InputAction m_PlayerSoulCombatMap_BoostAttack;
+        public struct PlayerSoulCombatMapActions
+        {
+            private @PlayerControls m_Wrapper;
+            public PlayerSoulCombatMapActions(@PlayerControls wrapper) { m_Wrapper = wrapper; }
+            public InputAction @Spell => m_Wrapper.m_PlayerSoulCombatMap_Spell;
+            public InputAction @BoostDefense => m_Wrapper.m_PlayerSoulCombatMap_BoostDefense;
+            public InputAction @BoostAttack => m_Wrapper.m_PlayerSoulCombatMap_BoostAttack;
+            public InputActionMap Get() { return m_Wrapper.m_PlayerSoulCombatMap; }
+            public void Enable() { Get().Enable(); }
+            public void Disable() { Get().Disable(); }
+            public bool enabled => Get().enabled;
+            public static implicit operator InputActionMap(PlayerSoulCombatMapActions set) { return set.Get(); }
+            public void AddCallbacks(IPlayerSoulCombatMapActions instance)
+            {
+                if (instance == null || m_Wrapper.m_PlayerSoulCombatMapActionsCallbackInterfaces.Contains(instance)) return;
+                m_Wrapper.m_PlayerSoulCombatMapActionsCallbackInterfaces.Add(instance);
+                @Spell.started += instance.OnSpell;
+                @Spell.performed += instance.OnSpell;
+                @Spell.canceled += instance.OnSpell;
+                @BoostDefense.started += instance.OnBoostDefense;
+                @BoostDefense.performed += instance.OnBoostDefense;
+                @BoostDefense.canceled += instance.OnBoostDefense;
+                @BoostAttack.started += instance.OnBoostAttack;
+                @BoostAttack.performed += instance.OnBoostAttack;
+                @BoostAttack.canceled += instance.OnBoostAttack;
+            }
+
+            private void UnregisterCallbacks(IPlayerSoulCombatMapActions instance)
+            {
+                @Spell.started -= instance.OnSpell;
+                @Spell.performed -= instance.OnSpell;
+                @Spell.canceled -= instance.OnSpell;
+                @BoostDefense.started -= instance.OnBoostDefense;
+                @BoostDefense.performed -= instance.OnBoostDefense;
+                @BoostDefense.canceled -= instance.OnBoostDefense;
+                @BoostAttack.started -= instance.OnBoostAttack;
+                @BoostAttack.performed -= instance.OnBoostAttack;
+                @BoostAttack.canceled -= instance.OnBoostAttack;
+            }
+
+            public void RemoveCallbacks(IPlayerSoulCombatMapActions instance)
+            {
+                if (m_Wrapper.m_PlayerSoulCombatMapActionsCallbackInterfaces.Remove(instance))
+                    UnregisterCallbacks(instance);
+            }
+
+            public void SetCallbacks(IPlayerSoulCombatMapActions instance)
+            {
+                foreach (var item in m_Wrapper.m_PlayerSoulCombatMapActionsCallbackInterfaces)
+                    UnregisterCallbacks(item);
+                m_Wrapper.m_PlayerSoulCombatMapActionsCallbackInterfaces.Clear();
+                AddCallbacks(instance);
+            }
+        }
+        public PlayerSoulCombatMapActions @PlayerSoulCombatMap => new PlayerSoulCombatMapActions(this);
         public interface IPlayerLocomotionMapActions
         {
             void OnMovement(InputAction.CallbackContext context);
@@ -636,6 +771,12 @@ namespace BowzanGaming.FinalCharacterController
             void OnGather(InputAction.CallbackContext context);
             void OnThrow(InputAction.CallbackContext context);
             void OnHoldThrow(InputAction.CallbackContext context);
+        }
+        public interface IPlayerSoulCombatMapActions
+        {
+            void OnSpell(InputAction.CallbackContext context);
+            void OnBoostDefense(InputAction.CallbackContext context);
+            void OnBoostAttack(InputAction.CallbackContext context);
         }
     }
 }

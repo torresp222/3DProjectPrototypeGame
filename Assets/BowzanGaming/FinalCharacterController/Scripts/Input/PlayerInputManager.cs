@@ -11,6 +11,10 @@ namespace BowzanGaming.FinalCharacterController {
 
         public PlayerControls PlayerControls {  get; private set; }
 
+        [Header("PlayerSoulCombat input")]
+        public PlayerSoulCombatInput PlayerSoulCombatInput;
+        public PlayerActionsInput PlayerActionsInput;
+
         private void Awake() {
             if (Instance != null && Instance != this) {
                 Destroy(gameObject);
@@ -18,6 +22,7 @@ namespace BowzanGaming.FinalCharacterController {
             }
 
             Instance = this;
+            PlayerSoulCombatInput.enabled = false;
             DontDestroyOnLoad(gameObject);
         }
 

@@ -19,10 +19,10 @@ public class FireSpirithar : Spirithar {
                 StartCoroutine(SpiritharAttack(target, spiritharMove));
                 break;
             case MoveType.Defense:
-                Defend();
+                StartCoroutine(Defend(spiritharMove));
                 break;
             case MoveType.Boost:
-                BoostAttack();
+                StartCoroutine(BoostAttack(spiritharMove));
                 break;
         }
     }

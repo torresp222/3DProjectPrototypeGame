@@ -211,11 +211,13 @@ public class CombatManager : MonoBehaviour {
     }
 
     public void ChangeState() {
+
         if (State == BattleCaptureState.PLAYERTURN) {
             State = BattleCaptureState.ENEMYTURN;
             _enemySpirithar.PerformingMove = false;
             StartCoroutine(EnemyTurn());
-        }
+        } else 
+            return;
             
         /*if (State == BattleCaptureState.ENEMYTURN) {
             State = BattleCaptureState.PLAYERTURN;

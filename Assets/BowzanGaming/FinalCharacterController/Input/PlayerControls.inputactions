@@ -323,6 +323,74 @@
                     "isPartOfComposite": false
                 }
             ]
+        },
+        {
+            "name": "PlayerSoulCombatMap",
+            "id": "16d6099d-84b4-439a-af58-a6298145d4a4",
+            "actions": [
+                {
+                    "name": "Spell",
+                    "type": "Button",
+                    "id": "0dd43436-bff7-4539-a977-3d9deb709b24",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                },
+                {
+                    "name": "BoostDefense",
+                    "type": "Button",
+                    "id": "da4a303a-cb41-44de-8d05-e8a3855fb16a",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                },
+                {
+                    "name": "BoostAttack",
+                    "type": "Button",
+                    "id": "27c42b00-c525-4feb-b991-6ab0c97c0434",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                }
+            ],
+            "bindings": [
+                {
+                    "name": "",
+                    "id": "18050a82-ba83-41b2-b4c2-ba8645af327a",
+                    "path": "<Mouse>/leftButton",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Spell",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "2b4ccd99-c086-456f-8cf6-84a95be38b8e",
+                    "path": "<Keyboard>/e",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "BoostDefense",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "9ab4dbb3-8940-4c77-a871-59465e0ec968",
+                    "path": "<Keyboard>/r",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "BoostAttack",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                }
+            ]
         }
     ],
     "controlSchemes": []

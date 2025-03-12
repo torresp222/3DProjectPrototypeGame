@@ -16,6 +16,7 @@ namespace BowzanGaming.FinalCharacterController {
         private PlayerState _playerState;
         private PlayerController _playerController;
         private PlayerActionsInput _playerActionsInput;
+        private PlayerSoulCombatInput _playerSoulCombatInput;
 
         //Locomotion
         private static int inputXHash = Animator.StringToHash("InputX");
@@ -35,6 +36,10 @@ namespace BowzanGaming.FinalCharacterController {
         private static int isThrewHash = Animator.StringToHash("isThrew");
         private int[] actionHashes;
 
+        //Actions CombatSoul
+        private static int isBoostingDefenseHash = Animator.StringToHash("isBoostingDefense");
+        private static int isBoostingAttackHash = Animator.StringToHash("isBoostingAttack");
+
         //Camera/Rotation
         private static int isRotatingToTargetHash = Animator.StringToHash("isRotatingToTarget");
         private static int rotationMismatchHash = Animator.StringToHash("rotationMismatch");
@@ -51,6 +56,7 @@ namespace BowzanGaming.FinalCharacterController {
             _playerState = GetComponent<PlayerState>();
             _playerController = GetComponent<PlayerController>();
             _playerActionsInput = GetComponent<PlayerActionsInput>();
+            _playerSoulCombatInput = GetComponent<PlayerSoulCombatInput>(); 
 
             actionHashes = new int[] { isGatheringHash };
         }
@@ -80,10 +86,13 @@ namespace BowzanGaming.FinalCharacterController {
             _animator.SetBool(isFallingHash, isFalling);
             _animator.SetBool(isJumpingHash, isJumping);
             _animator.SetBool(isRotatingToTargetHash, _playerController.IsRotatingTotarget);
-            _animator.SetBool(isAttackingHash, _playerActionsInput.AttackPressed);
+            _animator.SetBool(isAttackingHash, _playerActionsInput.AttackPressed || _playerSoulCombatInput.SpellPressed);
             _animator.SetBool(isGatheringHash, _playerActionsInput.GatherPressed);
             _animator.SetBool(isThrowingHash, _playerActionsInput.ThrowPressed);
             _animator.SetBool(isPlayingActionHash, isPlayingAction);
+
+            _animator.SetBool(isBoostingDefenseHash, _playerSoulCombatInput.BoostDefensePressed);
+            _animator.SetBool(isBoostingAttackHash, _playerSoulCombatInput.BoostAttackPressed);
 
             _animator.SetBool(isHoldingThrowHash, _playerActionsInput.OnHoldThrowPressed);
             _animator.SetBool(isThrewHash, _playerActionsInput.Throw);

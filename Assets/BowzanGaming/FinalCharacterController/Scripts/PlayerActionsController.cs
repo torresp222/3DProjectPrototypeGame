@@ -31,7 +31,7 @@ namespace BowzanGaming.FinalCharacterController {
                 OnThrowingPressed?.Invoke();
 
             } else if (_playerActionsInput.OnHoldThrowPressed && _captureBallLauncher.DrawTrajectoryBall && IsCaptureBallInstantiate) {
-                print("Dentro de el nuevo else if");
+                //print("Dentro de el nuevo else if");
                 _captureBallLauncher.CalculateForceAndStartTrajectory();
                 _captureBallLauncher.DrawTrajectory(_captureBallLauncher.launchPoint.position, _captureBallLauncher.TotalForce);
 
