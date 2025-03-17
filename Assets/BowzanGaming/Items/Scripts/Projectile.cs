@@ -9,6 +9,7 @@ public class Projectile : MonoBehaviour {
         _move = move;
         _playerAttack = playerAttack;
         //GetComponent<Rigidbody>().velocity = transform.forward * _move.projectileSpeed;
+        print(_move.projectileSpeed);
         GetComponent<Rigidbody>().AddForce(transform.forward * _move.projectileSpeed, ForceMode.Impulse);
         Destroy(gameObject, 5f);
     }

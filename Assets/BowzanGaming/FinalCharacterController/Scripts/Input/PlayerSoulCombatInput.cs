@@ -44,7 +44,7 @@ namespace BowzanGaming.FinalCharacterController {
             if(BoostAttackPressed) return;
             if (BoostDefensePressed) return;
             SpellPressed = true;
-            _combatHandler.PerformSpell();
+            /*_combatHandler.PerformSpell();*/
             Debug.Log("Spell pressed");
         }
 

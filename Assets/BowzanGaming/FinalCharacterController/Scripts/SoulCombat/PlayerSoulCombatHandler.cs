@@ -1,4 +1,5 @@
 using BowzanGaming.FinalCharacterController;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -6,16 +7,27 @@ using UnityEngine.ProBuilder;
 
 public class PlayerSoulCombatHandler : MonoBehaviour
 {
+    public static event Action OnSpellInstance;
+
     [SerializeField] private Transform projectileSpawnPoint;
     [SerializeField] private Camera _playerCamera;
 
     private PlayerSoulCombatAndStats _playerStats;
     private AbsorptionManager _absorptionManager;
+    private bool _projectileInitialize;
 
     private void Awake() {
         _playerStats = GetComponent<PlayerSoulCombatAndStats>();
         _absorptionManager = GetComponent<AbsorptionManager>();
     }
+    private void OnEnable() {
+        OnSpellInstance += PerformSpell;
+    }
+
+    private void OnDisable() {
+        OnSpellInstance -= PerformSpell;
+    }
+    public void SetProjectileInitializeTrue() { OnSpellInstance?.Invoke(); }
 
     public void PerformSpell() {
         var move = _absorptionManager.GetCurrentMove(0);
@@ -43,7 +55,10 @@ public class PlayerSoulCombatHandler : MonoBehaviour
     private void LaunchProjectile(SpiritharMove move) {
         GameObject projectile = Instantiate(move.projectilePrefab, projectileSpawnPoint.position, Quaternion.identity);
         Projectile projComponent = projectile.GetComponent<Projectile>();
+        print("Inicializar PORYECTILLLL");
         projComponent.Initialize(move, _playerStats.currentAttack, _playerCamera.transform);
+       
+            
     }
 
     private void PlayVFX(GameObject vfx) {
