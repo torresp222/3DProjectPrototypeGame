@@ -19,6 +19,8 @@ public class CaptureBall : MonoBehaviour {
         if (collidedObject.CompareTag("SoulSpirithar")) {
             Debug.Log("¡Colisión con SoulSpirithar!");
             OnSpiritharSoulCaptured?.Invoke();
+            // Opcionalmente, destruye la bola para no seguir detectando colisiones.
+            Destroy(gameObject);
         }
 
         if (spirithar != null && !collidedObject.CompareTag("SoulSpirithar")) {

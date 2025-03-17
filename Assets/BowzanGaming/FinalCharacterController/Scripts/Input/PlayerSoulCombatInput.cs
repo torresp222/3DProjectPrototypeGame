@@ -6,10 +6,19 @@ using UnityEngine.InputSystem;
 
 namespace BowzanGaming.FinalCharacterController {
     public class PlayerSoulCombatInput : MonoBehaviour, PlayerControls.IPlayerSoulCombatMapActions {
+
+        // PlayerSoulCombatInput.cs modifications
+        // Add reference to combat handler
+        private PlayerSoulCombatHandler _combatHandler;
+
         // Variables para saber qué acción se ha pulsado
         public bool SpellPressed { get; private set; }
         public bool BoostDefensePressed { get; private set; }
         public bool BoostAttackPressed { get; private set; }
+
+        private void Awake() {
+            _combatHandler = GetComponent<PlayerSoulCombatHandler>();
+        }
 
         private void OnEnable() {
             if (PlayerInputManager.Instance?.PlayerControls == null) {
@@ -26,22 +35,34 @@ namespace BowzanGaming.FinalCharacterController {
             PlayerInputManager.Instance.PlayerControls.PlayerSoulCombatMap.RemoveCallbacks(this);
         }
 
+        public void SetSpellPressedFalse() { SpellPressed = false; }
+        public void SetBoostAttackDefensePressedFalse() { BoostAttackPressed = false; BoostDefensePressed = false; }
+
         // Callbacks para cada acción
         public void OnSpell(InputAction.CallbackContext context) {
             if (!context.performed) return;
+            if(BoostAttackPressed) return;
+            if (BoostDefensePressed) return;
             SpellPressed = true;
+            _combatHandler.PerformSpell();
             Debug.Log("Spell pressed");
         }
 
         public void OnBoostDefense(InputAction.CallbackContext context) {
             if (!context.performed) return;
+            if (SpellPressed) return;
+            if (BoostAttackPressed) return;
             BoostDefensePressed = true;
+            _combatHandler.PerformDefenseBoost();
             Debug.Log("Boost Defense pressed");
         }
 
         public void OnBoostAttack(InputAction.CallbackContext context) {
             if (!context.performed) return;
+            if (SpellPressed) return;
+            if (BoostDefensePressed) return;
             BoostAttackPressed = true;
+            _combatHandler.PerformAttackBoost();
             Debug.Log("Boost Attack pressed");
         }
     }

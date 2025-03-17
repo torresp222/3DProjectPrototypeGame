@@ -12,6 +12,7 @@ namespace BowzanGaming.FinalCharacterController {
         private PlayerLocomotionInput _playerLocomotionInput;
         private PlayerState _playerState;
         private PlayerActionsController _playerActionsController;
+        private PlayerSoulCombatInput _playerSoulCombatInput;
         public bool AttackPressed { get; private set; }
         public bool GatherPressed { get; private set; }
         public bool ThrowPressed { get; private set; }
@@ -23,6 +24,7 @@ namespace BowzanGaming.FinalCharacterController {
             _playerLocomotionInput = GetComponent<PlayerLocomotionInput>();
             _playerState = GetComponent<PlayerState>();
             _playerActionsController = GetComponent<PlayerActionsController>();
+            _playerSoulCombatInput = GetComponent<PlayerSoulCombatInput>();
             Throw = false;
         }
         private void OnEnable() {
@@ -71,7 +73,8 @@ namespace BowzanGaming.FinalCharacterController {
             if(!context.performed)
                 return;
 
-            if (ThrowPressed) return;
+            if (OnHoldThrowPressed) return;
+            if (Throw) return;
 
             AttackPressed = true;
         }

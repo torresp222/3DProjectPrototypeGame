@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 using UnityEngine.Rendering;
 
@@ -43,6 +44,8 @@ namespace BowzanGaming.FinalCharacterController {
         [SerializeField] private LayerMask _groundLayers;
 
         private PlayerLocomotionInput _playerLocomotionInput;
+        private PlayerActionsInput _playerActionInput;
+        private PlayerSoulCombatInput _playerSoulCombatInput;
         private PlayerState _playerState;
 
         private Vector2 _cameraRotation = Vector2.zero;
@@ -55,13 +58,18 @@ namespace BowzanGaming.FinalCharacterController {
         private float _antiBump;
         private float _stepOffset;
 
+        private bool[] _actionsPlayerForRotatingToCameraView;
+
         private PlayerMovementState _lastMovementState = PlayerMovementState.Falling;
         #endregion
 
         #region Startup
         private void Awake() {
             _playerLocomotionInput = GetComponent<PlayerLocomotionInput>();
+            _playerActionInput = GetComponent<PlayerActionsInput>();
+            _playerSoulCombatInput = GetComponent<PlayerSoulCombatInput>();
             _playerState = GetComponent<PlayerState>();
+            
 
             _antiBump = sprintSpeed;
             _stepOffset = _characterController.stepOffset;
@@ -74,7 +82,8 @@ namespace BowzanGaming.FinalCharacterController {
             UpdateMovementState();
             HandleVerticalMovement();
             HandleLateralMovement();
-            
+            _actionsPlayerForRotatingToCameraView = new bool[] { _playerActionInput.AttackPressed, _playerActionInput.OnHoldThrowPressed, _playerSoulCombatInput.SpellPressed };
+
         }
 
         private void UpdateMovementState() {
@@ -195,10 +204,11 @@ namespace BowzanGaming.FinalCharacterController {
             _playerTargetRoation.x += transform.eulerAngles.x + lookSenseH * _playerLocomotionInput.LookInput.x;
             
             float rotationTolerance = 90f;
+            bool isPlayingActionRotatePlayer = _actionsPlayerForRotatingToCameraView.Any(action => action);
             bool isIdling = _playerState.CurrentPlayerMovementState == PlayerMovementState.Idling;
             IsRotatingTotarget = _rotatingToTargetTimer > 0;
             // ROTATE if we're not idling
-            if (!isIdling) {
+            if (!isIdling || isPlayingActionRotatePlayer) {
                 RotatePlayerToTarget();
             }
             // If roation mismatch not within tolerance, or rotate to target is active, ROTATE
@@ -225,10 +235,12 @@ namespace BowzanGaming.FinalCharacterController {
                 _isRotatingClockWise = RotationMismatch > rotationTolerance;
             }
             _rotatingToTargetTimer -= Time.deltaTime;
+            Debug.Log("Rotating to Target Timer " + _rotatingToTargetTimer);
 
             // Rotate Player
             if (_isRotatingClockWise && RotationMismatch > 0f ||
                 !_isRotatingClockWise && RotationMismatch < 0f) {
+                Debug.Log("Entrooooo en roootaaar PLAYER ");
                 RotatePlayerToTarget();
             }
 

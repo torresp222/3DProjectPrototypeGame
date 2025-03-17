@@ -37,6 +37,7 @@ namespace BowzanGaming.FinalCharacterController {
         private int[] actionHashes;
 
         //Actions CombatSoul
+        private static int isSpellingHash = Animator.StringToHash("isSpelling");
         private static int isBoostingDefenseHash = Animator.StringToHash("isBoostingDefense");
         private static int isBoostingAttackHash = Animator.StringToHash("isBoostingAttack");
 
@@ -86,11 +87,12 @@ namespace BowzanGaming.FinalCharacterController {
             _animator.SetBool(isFallingHash, isFalling);
             _animator.SetBool(isJumpingHash, isJumping);
             _animator.SetBool(isRotatingToTargetHash, _playerController.IsRotatingTotarget);
-            _animator.SetBool(isAttackingHash, _playerActionsInput.AttackPressed || _playerSoulCombatInput.SpellPressed);
+            _animator.SetBool(isAttackingHash, _playerActionsInput.AttackPressed /*|| _playerSoulCombatInput.SpellPressed*/);
             _animator.SetBool(isGatheringHash, _playerActionsInput.GatherPressed);
             _animator.SetBool(isThrowingHash, _playerActionsInput.ThrowPressed);
             _animator.SetBool(isPlayingActionHash, isPlayingAction);
 
+            _animator.SetBool(isSpellingHash, _playerSoulCombatInput.SpellPressed);
             _animator.SetBool(isBoostingDefenseHash, _playerSoulCombatInput.BoostDefensePressed);
             _animator.SetBool(isBoostingAttackHash, _playerSoulCombatInput.BoostAttackPressed);
 

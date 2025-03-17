@@ -1,35 +1,47 @@
+// PlayerTeam.cs
 using System.Collections.Generic;
-using Unity.VisualScripting;
 using UnityEngine;
 
 public class PlayerTeam : MonoBehaviour {
-    [Header("Configuración del Equipo")]
+    [Header("Team Configuration")]
     public int maxTeamSize = 3;
     public List<Spirithar> team = new List<Spirithar>();
+    private int _activeSpiritharIndex = 0;
 
-    // Método para añadir un Spirithar al equipo.
+    // Main Methods
     public bool AddSpirithar(Spirithar newSpirithar) {
         if (team.Count >= maxTeamSize) {
-            Debug.Log("El equipo ya está lleno.");
+            Debug.Log("Team is full");
             return false;
         }
 
         team.Add(newSpirithar);
-        Debug.Log("Spirithar " + newSpirithar.spiritharName + " añadido al equipo.");
-        // Aquí podrías actualizar la UI o guardar el estado.
+        Debug.Log($"Added {newSpirithar.spiritharName} to team");
         return true;
     }
 
-    /// <summary>
-    /// Devuelve el prefab del Spirithar activo, por ejemplo, el primero de la lista.
-    /// </summary>
-    public GameObject GetActiveSpiritharPrefab() {
-        if (team.Count > 0) {
-            //team[0].gameObject
-            return team[0].gameObject;
-        } else {
-            Debug.LogError("No hay Spirithar en el equipo del jugador.");
-            return null;
+    public void SwitchActiveSpirithar(int newIndex) {
+        if (newIndex >= 0 && newIndex < team.Count) {
+            _activeSpiritharIndex = newIndex;
+            Debug.Log($"Switched to {GetActiveSpirithar().spiritharName}");
         }
     }
+
+    // Getters
+    public Spirithar GetActiveSpirithar() {
+        if (team.Count == 0) {
+            Debug.LogError("No Spirithars in team");
+            return null;
+        }
+        return team[_activeSpiritharIndex];
+    }
+
+    public GameObject GetActiveSpiritharPrefab() {
+        Spirithar active = GetActiveSpirithar();
+        return active != null ? active.gameObject : null;
+    }
+
+    public int GetActiveSpiritharIndex() => _activeSpiritharIndex;
+    public bool IsTeamFull() => team.Count >= maxTeamSize;
+    public int TeamCount() => team.Count;
 }
