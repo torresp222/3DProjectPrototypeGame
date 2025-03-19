@@ -13,10 +13,11 @@ public class Projectile : MonoBehaviour {
         GetComponent<Rigidbody>().AddForce(transform.forward * _move.projectileSpeed, ForceMode.Impulse);
         Destroy(gameObject, 5f);
     }
+    
 
-    private void OnTriggerEnter(Collider other) {
-        if (other.CompareTag("Enemy")) {
-            Spirithar enemy = other.GetComponent<Spirithar>();
+    private void OnCollisionEnter(Collision other) {
+        if (other.gameObject.CompareTag("SoulSpirithar")) {
+            Spirithar enemy = other.gameObject.GetComponent<Spirithar>();
             float damage = _move.power + (_playerAttack * 0.7f);
             if (enemy.IsWeak(_move))
                 damage *= 1.2f;

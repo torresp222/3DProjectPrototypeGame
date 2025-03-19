@@ -1175,6 +1175,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: WaterSpirithar
       objectReference: {fileID: 0}
+    - target: {fileID: 2114751570078877259, guid: bc2f3426580425247b490be030869d08,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 2723642050037303412, guid: bc2f3426580425247b490be030869d08,
         type: 3}
       propertyPath: baseStats
@@ -3405,7 +3410,7 @@ GameObject:
   - component: {fileID: 1088330957}
   - component: {fileID: 1088330956}
   - component: {fileID: 1088330955}
-  m_Layer: 0
+  m_Layer: 3
   m_Name: Sprite
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -3641,7 +3646,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   maxTeamSize: 3
-  team: []
+  team:
+  - {fileID: 6766983408010358488, guid: c5c216d7cb5dd6643aa9c6471722f4ac, type: 3}
 --- !u!136 &1090548327
 CapsuleCollider:
   m_ObjectHideFlags: 0
@@ -6844,6 +6850,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: FireSpirithar
       objectReference: {fileID: 0}
+    - target: {fileID: 3981275660510981942, guid: c5c216d7cb5dd6643aa9c6471722f4ac,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 6133543085651824141, guid: c5c216d7cb5dd6643aa9c6471722f4ac,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -6916,6 +6927,69 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: c5c216d7cb5dd6643aa9c6471722f4ac, type: 3}
+--- !u!1 &1793031777
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1793031779}
+  - component: {fileID: 1793031778}
+  m_Layer: 0
+  m_Name: NavMesh Surface
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &1793031778
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1793031777}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7a5ac11cc976e418e8d13136b07e1f52, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_AgentTypeID: -1372625422
+  m_CollectObjects: 0
+  m_Size: {x: 10, y: 10, z: 10}
+  m_Center: {x: 0, y: 2, z: 0}
+  m_LayerMask:
+    serializedVersion: 2
+    m_Bits: 8
+  m_UseGeometry: 0
+  m_DefaultArea: 0
+  m_GenerateLinks: 0
+  m_IgnoreNavMeshAgent: 1
+  m_IgnoreNavMeshObstacle: 1
+  m_OverrideTileSize: 0
+  m_TileSize: 256
+  m_OverrideVoxelSize: 0
+  m_VoxelSize: 0.33333334
+  m_MinRegionArea: 2
+  m_NavMeshData: {fileID: 23800000, guid: f4946319383d69043b238d48df656d54, type: 2}
+  m_BuildHeightMesh: 0
+--- !u!4 &1793031779
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1793031777}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: -68, y: 1.4299998, z: 52.4}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!20 &1822928933 stripped
 Camera:
   m_CorrespondingSourceObject: {fileID: 5770004028395296148, guid: cef6326ee91964b4b865b741618479c7,
@@ -8105,36 +8179,6 @@ Transform:
   - {fileID: 3979790111386203142}
   m_Father: {fileID: 3185914106228119728}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &2648464580671305829
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5649851571247053195}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: d681db6285332fe46be9889b1f5de9ff, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  spiritharName: FireSpirithar
-  maxHealth: 100
-  Lvl: 2
-  currentHealth: 0
-  elementType: 0
-  PerformingMove: 0
-  moves:
-  - {fileID: 11400000, guid: b89ecb533943c594aadb5e33250100fd, type: 2}
-  - {fileID: 11400000, guid: 2a69eaf3f1625bf42904f183496331f7, type: 2}
-  - {fileID: 11400000, guid: b521674d4c004464f9424766550eb0ab, type: 2}
-  possibleBaseStats:
-  - {fileID: 11400000, guid: 3e40f243e0233ff4aa38f5c24cd8f44a, type: 2}
-  - {fileID: 11400000, guid: 73d267460e7b4a242b120a5f2a0faeb0, type: 2}
-  baseStats: {fileID: 0}
-  stats:
-    currentHealth: 0
-    currentAttack: 0
-    currentDefense: 0
 --- !u!33 &2838889587201139422
 MeshFilter:
   m_ObjectHideFlags: 0
@@ -8288,7 +8332,10 @@ GameObject:
   m_Component:
   - component: {fileID: 3185914106228119728}
   - component: {fileID: 5666030685738389321}
-  - component: {fileID: 2648464580671305829}
+  - component: {fileID: 5666030685738389322}
+  - component: {fileID: 5666030685738389323}
+  - component: {fileID: 5666030685738389324}
+  - component: {fileID: 5666030685738389325}
   m_Layer: 0
   m_Name: GoldenSpirithar
   m_TagString: SoulSpirithar
@@ -8317,6 +8364,115 @@ BoxCollider:
   serializedVersion: 3
   m_Size: {x: 1, y: 1, z: 1.32}
   m_Center: {x: 0, y: 0, z: 0}
+--- !u!114 &5666030685738389322
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5649851571247053195}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7b71059e219b2be429b6e7f489898abd, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _combatMode: 0
+  spiritharName: 
+  maxHealth: 200
+  Lvl: 10
+  currentHealth: 0
+  elementType: 0
+  PerformingMove: 0
+  moves:
+  - {fileID: 11400000, guid: b89ecb533943c594aadb5e33250100fd, type: 2}
+  - {fileID: 11400000, guid: 2a69eaf3f1625bf42904f183496331f7, type: 2}
+  - {fileID: 11400000, guid: b521674d4c004464f9424766550eb0ab, type: 2}
+  possibleBaseStats: []
+  baseStats: {fileID: 0}
+  stats:
+    currentHealth: 0
+    currentAttack: 0
+    currentDefense: 0
+  _projectilePrefab: {fileID: 6197219608012567104, guid: 9f1cc76f4b610d547bed463ae0ec4e12,
+    type: 3}
+  _currentState: 0
+--- !u!54 &5666030685738389323
+Rigidbody:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5649851571247053195}
+  serializedVersion: 4
+  m_Mass: 1
+  m_Drag: 0
+  m_AngularDrag: 0.05
+  m_CenterOfMass: {x: 0, y: 0, z: 0}
+  m_InertiaTensor: {x: 1, y: 1, z: 1}
+  m_InertiaRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ImplicitCom: 1
+  m_ImplicitTensor: 1
+  m_UseGravity: 1
+  m_IsKinematic: 1
+  m_Interpolate: 0
+  m_Constraints: 80
+  m_CollisionDetection: 0
+--- !u!195 &5666030685738389324
+NavMeshAgent:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5649851571247053195}
+  m_Enabled: 1
+  m_AgentTypeID: -1372625422
+  m_Radius: 0.71
+  m_Speed: 3.5
+  m_Acceleration: 8
+  avoidancePriority: 50
+  m_AngularSpeed: 120
+  m_StoppingDistance: 0
+  m_AutoTraverseOffMeshLink: 1
+  m_AutoBraking: 1
+  m_AutoRepath: 1
+  m_Height: 0.86
+  m_BaseOffset: 0.5
+  m_WalkableMask: 4294967295
+  m_ObstacleAvoidanceType: 4
+--- !u!114 &5666030685738389325
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5649851571247053195}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2ce72405f0651544fa44322386397836, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _lockVerticalRotation: 1
+  _rotationSpeed: 100
+  Player: {fileID: 0}
+  WhatIsGround:
+    serializedVersion: 2
+    m_Bits: 8
+  WhatIsPlayer:
+    serializedVersion: 2
+    m_Bits: 64
+  WalkPoint: {x: 0, y: 0, z: 0}
+  WalkPointRange: 5
+  TimeBetweenAttacks: 3
+  SightRange: 20
+  AttackRange: 12
+  PlayerInSightRange: 0
+  PlayerInAttackRange: 0
 --- !u!136 &5981328444955999972
 CapsuleCollider:
   m_ObjectHideFlags: 0
@@ -8352,6 +8508,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: ThirdPersonController
+      objectReference: {fileID: 0}
+    - target: {fileID: 502844026781802899, guid: cef6326ee91964b4b865b741618479c7,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 502844026781802899, guid: cef6326ee91964b4b865b741618479c7,
         type: 3}
@@ -8508,6 +8669,11 @@ PrefabInstance:
       propertyPath: CameraCollisionFilter.m_Bits
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 7222397400826668538, guid: cef6326ee91964b4b865b741618479c7,
+        type: 3}
+      propertyPath: _groundLayers.m_Bits
+      value: 9
+      objectReference: {fileID: 0}
     m_RemovedComponents:
     - {fileID: 8378509702603161018, guid: cef6326ee91964b4b865b741618479c7, type: 3}
     m_RemovedGameObjects: []
@@ -8641,3 +8807,4 @@ SceneRoots:
   - {fileID: 1974687035}
   - {fileID: 3185914106228119728}
   - {fileID: 1150021699}
+  - {fileID: 1793031779}

@@ -235,12 +235,10 @@ namespace BowzanGaming.FinalCharacterController {
                 _isRotatingClockWise = RotationMismatch > rotationTolerance;
             }
             _rotatingToTargetTimer -= Time.deltaTime;
-            Debug.Log("Rotating to Target Timer " + _rotatingToTargetTimer);
 
             // Rotate Player
             if (_isRotatingClockWise && RotationMismatch > 0f ||
                 !_isRotatingClockWise && RotationMismatch < 0f) {
-                Debug.Log("Entrooooo en roootaaar PLAYER ");
                 RotatePlayerToTarget();
             }
 

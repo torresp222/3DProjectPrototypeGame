@@ -3,12 +3,24 @@ using System.Collections;
 using UnityEngine;
 
 public enum ElementType { Fire, Water, Plant, Earth, None }
+public enum CombatMode { TurnBased, Soul }
 
 public abstract class Spirithar : MonoBehaviour {
+    [Header("Combat Settings")]
+    [SerializeField] private CombatMode _combatMode = CombatMode.TurnBased;
+
+    /// <summary>
+    /// Current combat mode determining behavior logic
+    /// </summary>
+    public CombatMode CurrentCombatMode {
+        get => _combatMode;
+        set => _combatMode = value;
+    }
+
     public string spiritharName;
     public float maxHealth;
     public int Lvl;
-    [HideInInspector]
+    /*[HideInInspector]*/
     public float currentHealth;
     public ElementType elementType;
     public bool PerformingMove;
@@ -75,7 +87,7 @@ public abstract class Spirithar : MonoBehaviour {
         yield return new WaitForSeconds(2f);
 
         if (isDead) {
-            target.Die();
+            //target.Die();
             print("Algo");
         } else {
             print("Change State");
@@ -104,17 +116,35 @@ public abstract class Spirithar : MonoBehaviour {
         OnEnemySpiritharNotDead?.Invoke();
     }
 
+    /// <summary>
+    /// Handles destruction based on combat mode
+    /// </summary>
     protected virtual void Die() {
+        Debug.Log(spiritharName + " defeated.");
+
+        if (CurrentCombatMode == CombatMode.TurnBased) {
+            Destroy(gameObject);
+            OnSpiritharDead?.Invoke();
+        } else {
+            // Soul combat specific cleanup
+            SoulCombatManager.Instance?.EndBossCombat();
+            Destroy(gameObject);
+        }
+    }
+
+    /*protected virtual void Die() {
         Debug.Log(spiritharName + " ha sido derrotado.");
         Destroy(this.gameObject);
         OnSpiritharDead?.Invoke();
         // Aquí podrías destruir el objeto o activar alguna animación
-    }
+    }*/
 
     public bool TakeDamage(float damage) {
         currentHealth -= damage;
         OnTakeDamage?.Invoke();
-        if (currentHealth <= 0) { return true; } else { return false; }
+        if (currentHealth <= 0) { 
+            this.Die();
+            return true; } else { return false; }
     }
 
 }

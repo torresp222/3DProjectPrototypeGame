@@ -13,11 +13,11 @@ public class PlayerSoulCombatAndStats : MonoBehaviour
 
     // Current modified stats
     public float currentAttack;
-    [HideInInspector] public float currentDefense;
+    public float currentDefense;
 
     // Boost durations
-    private float attackBoostDuration = 5f;
-    private float defenseBoostDuration = 5f;
+    private float _attackBoostDuration = 5f;
+    private float _defenseBoostDuration = 5f;
 
     private void Awake() {
         currentHealth = maxHealth;
@@ -35,13 +35,13 @@ public class PlayerSoulCombatAndStats : MonoBehaviour
     public void ApplyAttackBoost(float multiplier) {
         currentAttack = baseAttack * multiplier;
         CancelInvoke(nameof(ResetAttack));
-        Invoke(nameof(ResetAttack), attackBoostDuration);
+        Invoke(nameof(ResetAttack), _attackBoostDuration);
     }
 
     public void ApplyDefenseBoost(float multiplier) {
         currentDefense = baseDefense * multiplier;
         CancelInvoke(nameof(ResetDefense));
-        Invoke(nameof(ResetDefense), defenseBoostDuration);
+        Invoke(nameof(ResetDefense), _defenseBoostDuration);
     }
 
     private void ResetAttack() => currentAttack = baseAttack;
