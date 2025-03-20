@@ -7,6 +7,8 @@ public class SoulSpirithar : Spirithar {
 
     [Header("Combat Shoot Settings")]
     [SerializeField] private GameObject _projectilePrefab;
+    [SerializeField] private int _shootForwardForce;
+    [SerializeField] private int _shootUpForce;
 
     [SerializeField] private EnemyState _currentState = EnemyState.Idle;
     public EnemyState CurrentStateMode {
@@ -37,11 +39,12 @@ public class SoulSpirithar : Spirithar {
     }
 
     public void ShootProjectile(Transform objective) {
-        Vector3 shootingPosition = transform.position /*+ Vector3.up*/;
-        GameObject projectile = Instantiate(_projectilePrefab, shootingPosition, Quaternion.identity);
-        projectile.GetComponent<Rigidbody>().AddForce(transform.forward * 32f, ForceMode.Impulse);
-        projectile.GetComponent<Rigidbody>().AddForce(transform.up * 8f, ForceMode.Impulse);
-        Destroy(projectile, 3f);
+        //Vector3 shootingPosition = transform.position /*+ Vector3.up*/;
+        GameObject projectile = Instantiate(_projectilePrefab, AttackLaunch.position, Quaternion.identity);
+        projectile.GetComponent<SoulProjectile>().Initialize(this.moves[0]);
+        projectile.GetComponent<Rigidbody>().AddForce(transform.forward * _shootForwardForce, ForceMode.Impulse);
+        projectile.GetComponent<Rigidbody>().AddForce(transform.up * _shootUpForce, ForceMode.Impulse);
+        Destroy(projectile, 1f);
     }
 
     public override void PerformMove(SpiritharMove spiritharMove, Spirithar target) {

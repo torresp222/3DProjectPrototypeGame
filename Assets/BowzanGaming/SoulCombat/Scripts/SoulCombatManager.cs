@@ -11,7 +11,7 @@ public class SoulCombatManager : MonoBehaviour
 
     [Header("References")]
     public GameObject Player;           // Player GO
-    [SerializeField] private MonoBehaviour _combatManager; // Reference to regular CombatManager
+    [SerializeField] private CombatManager _combatManager; // Reference to regular CombatManager
 
     private AbsorptionManager _absorptionManager;
     private PlayerTeam _playerTeam;
@@ -60,6 +60,10 @@ public class SoulCombatManager : MonoBehaviour
     }
 
     private void InitializeCombatSystem() {
+
+        // transition betweem virtual cameras
+        CinemachineManager.Instance.TransitionBetweenPlayerCameras();
+
         // Enable combat-specific components
         var combatInput = Player.GetComponent<PlayerSoulCombatInput>();
         if (combatInput != null) combatInput.enabled = true;

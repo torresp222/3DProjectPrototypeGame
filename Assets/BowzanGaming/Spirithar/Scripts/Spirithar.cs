@@ -8,6 +8,7 @@ public enum CombatMode { TurnBased, Soul }
 public abstract class Spirithar : MonoBehaviour {
     [Header("Combat Settings")]
     [SerializeField] private CombatMode _combatMode = CombatMode.TurnBased;
+    [SerializeField] protected Transform AttackLaunch;
 
     /// <summary>
     /// Current combat mode determining behavior logic

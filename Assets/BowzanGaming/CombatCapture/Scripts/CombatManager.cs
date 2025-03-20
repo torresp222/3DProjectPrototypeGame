@@ -92,8 +92,7 @@ public class CombatManager : MonoBehaviour {
 
         // Deshabilitar controles y la cámara del jugador.
         DisablePlayerControl();
-        if (PlayerCamera != null)
-            PlayerCamera.SetActive(false);
+        
 
         // Instanciar el Spirithar activo del equipo a partir del prefab guardado en PlayerTeam.
         _firstSpiritharTeam = PlayerTeam.GetActiveSpiritharPrefab();
@@ -138,6 +137,8 @@ public class CombatManager : MonoBehaviour {
             CombatCamera.SetActive(true);
         if(CombatCaptureUI != null)
             CombatCaptureUI.SetActive(true);
+        if (PlayerCamera != null)
+            PlayerCamera.SetActive(false);
         if (!CombatMenuGO.activeSelf) {
             Debug.Log("GO DE COMBATMENUGOOOOO NOOO ESTABA ACTIVOO Y AHORA SIII");
             CombatMenuGO.SetActive(true);
