@@ -1,5 +1,6 @@
 using BowzanGaming.FinalCharacterController;
 using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.UI;
@@ -29,19 +30,31 @@ public class CombatManager : MonoBehaviour {
     public GameObject CombatCaptureUI; // GameObject donde se encuentra el Canvas del combate entre spirithars
     public GameObject CombatMenuGO;
     public GameObject AbilitiesMenu;
+    public GameObject SpiritharMenu;
+    [Header("Start Combat Menu")]
     public CombatCaptureHUD PlayerCombatCaptureHUD; // Reference to script that controls ui of combate capture.
     public CombatCaptureHUD EnemyCombatCaptureHUD; // Reference to script that controls ui of combate capture.
+    [Header("Abilities Menu Buttons")]
     public AbilitiesCaptureHUD FirstButtonAbility;
     public AbilitiesCaptureHUD SecondButtonAbility;
     public AbilitiesCaptureHUD ThirdButtonAbility;
+    [Header("Spirithar Menu Buttons")]
+    public SpiritharCaptureHUD FirstSpiritharButton;
+    public SpiritharCaptureHUD SecondSpiritharButton;
+    public SpiritharCaptureHUD ThirdSpiritharButton;
+
+    private List<SpiritharCaptureHUD> _spiritharCaptureHUDs;
 
     [Header("State of combate capture")]
     public BattleCaptureState State;
 
     // Referencias internas que se asignarán al iniciar el combate.
     private Spirithar _enemySpirithar; // Spirithar salvaje capturado
+    private Vector3 _enemyPosition;
     private Spirithar _playerSpirithar; // Spirithar activo del equipo (instanciado en combate)
     private GameObject _firstSpiritharTeam;// GameObject "" ""
+    [SerializeField]private GameObject _currentSpiritharCombat;
+    [SerializeField] private Vector3 _playerSpiritharPos;
 
     
 
@@ -56,13 +69,17 @@ public class CombatManager : MonoBehaviour {
         if (CombatCaptureUI != null) {
             CombatCaptureUI.SetActive(false);
         }
-            
+
+        _spiritharCaptureHUDs = new List<SpiritharCaptureHUD> { FirstSpiritharButton, SecondSpiritharButton, ThirdSpiritharButton };
+        Debug.Log(PlayerTeam.team.Count);
+
     }
     private void OnEnable() {
         CaptureBall.OnSpiritharCaptured += InitiateCombat;
         Spirithar.OnTakeDamage += UpdateSpiritharHPSlider;
         Spirithar.OnEnemySpiritharNotDead += ChangeState;
         Spirithar.OnSpiritharDead += EnablePlayerControl;
+        SpiritharCaptureHUD.OnSpiritharClickToChange += PlaceSpiritharTeamInCombat;
     }
 
     private void OnDisable() {
@@ -70,6 +87,7 @@ public class CombatManager : MonoBehaviour {
         Spirithar.OnTakeDamage -= UpdateSpiritharHPSlider;
         Spirithar.OnEnemySpiritharNotDead -= ChangeState;
         Spirithar.OnSpiritharDead -= EnablePlayerControl;
+        SpiritharCaptureHUD.OnSpiritharClickToChange -= PlaceSpiritharTeamInCombat;
     }
 
     // Este método se llamará cuando se capture un Spirithar.
@@ -78,6 +96,8 @@ public class CombatManager : MonoBehaviour {
         State = BattleCaptureState.START;
         if (AbilitiesMenu != null)
             AbilitiesMenu.SetActive(false);
+        if (SpiritharMenu != null)
+            SpiritharMenu.SetActive(false);
         StartCombat(capturedSpirithar);
     }
 
@@ -88,11 +108,7 @@ public class CombatManager : MonoBehaviour {
     public void StartCombat(Spirithar capturedEnemySpirithar) {
         // Asignar el Spirithar salvaje y conservar su posición actual.
         _enemySpirithar = capturedEnemySpirithar;
-        Vector3 enemyPosition = _enemySpirithar.transform.position;
-
-        // Deshabilitar controles y la cámara del jugador.
-        DisablePlayerControl();
-        
+        _enemyPosition = _enemySpirithar.transform.position;
 
         // Instanciar el Spirithar activo del equipo a partir del prefab guardado en PlayerTeam.
         _firstSpiritharTeam = PlayerTeam.GetActiveSpiritharPrefab();
@@ -100,37 +116,15 @@ public class CombatManager : MonoBehaviour {
             Debug.LogError("No se encontró un prefab de Spirithar en el equipo del jugador.");
             return;
         }
-        //GameObject playerSpiritharGO
-        _firstSpiritharTeam = Instantiate(_firstSpiritharTeam, Vector3.zero, Quaternion.identity);
-        _playerSpirithar = _firstSpiritharTeam.GetComponent<Spirithar>();
-        if (_playerSpirithar == null) {
-            Debug.LogError("El prefab instanciado no tiene el componente Spirithar.");
-            return;
-        }
 
-        // Posicionar al _enemySpirithar: se mantiene en su posición actual.
-        // Posicionar al playerSpirithar: se coloca a una distancia CombatDistance del enemigo, en dirección opuesta al frente del enemigo.
-        Vector3 direction = -_enemySpirithar.transform.forward;
-        Vector3 playerSpiritharPos = enemyPosition + direction * CombatDistance;
-        _playerSpirithar.transform.position = playerSpiritharPos;
-        // Hacer que el Spirithar del jugador mire al enemigo y viceversa
-        _enemySpirithar.transform.LookAt(playerSpiritharPos);
-        _playerSpirithar.transform.LookAt(enemyPosition);
+        // Place the spirithar of team in combat
+        PlaceSpiritharTeamInCombat(_firstSpiritharTeam);
+        
+        // Set the menu of spirithars in team
+        SetSpiritharMenu();
 
-        // Posicionar al jugador detrás de su Spirithar utilizando el offset (convertido de local a global).
-        Vector3 globalPlayerOffset = _playerSpirithar.transform.TransformDirection(PlayerOffset);
-        Player.transform.position = _playerSpirithar.transform.position + globalPlayerOffset;
-        Player.transform.LookAt(enemyPosition);
-
-        Debug.Log("Combate iniciado: " + _playerSpirithar.spiritharName + " vs " + _enemySpirithar.spiritharName);
-
-        // Display Name of Spirithars
-        PlayerCombatCaptureHUD.SetUpCaptureCombatHUD(_playerSpirithar);
-        EnemyCombatCaptureHUD.SetUpCaptureCombatHUD(_enemySpirithar);
-        // Display moves of Player Spirithar
-        FirstButtonAbility.SetUpTextAbilityButton(_playerSpirithar, _enemySpirithar, _playerSpirithar.moves[0]);
-        SecondButtonAbility.SetUpTextAbilityButton(_playerSpirithar, _enemySpirithar, _playerSpirithar.moves[1]);
-        ThirdButtonAbility.SetUpTextAbilityButton(_playerSpirithar, _enemySpirithar, _playerSpirithar.moves[2]);
+        // Deshabilitar controles y la cámara del jugador.
+        DisablePlayerControl();
 
         // Activar la cámara de combate.
         if (CombatCamera != null)
@@ -147,6 +141,14 @@ public class CombatManager : MonoBehaviour {
         State = BattleCaptureState.PLAYERTURN;
 
        
+    }
+
+    public void SetSpiritharMenu() {
+        // Recorrer todos los elementos del HUD
+        for (int i = 0; i < _spiritharCaptureHUDs.Count; i++) {
+            Spirithar teamMember = PlayerTeam.team[i];
+            _spiritharCaptureHUDs[i].SetUpTextSpiritharNameButton(teamMember);
+        }
     }
 
     /// <summary>
@@ -202,7 +204,7 @@ public class CombatManager : MonoBehaviour {
         if (PlayerCamera != null)
             PlayerCamera.SetActive(true);
 
-        Destroy(_firstSpiritharTeam);
+        Destroy(_currentSpiritharCombat);
     }
 
     public void UpdateSpiritharHPSlider() {
@@ -234,6 +236,63 @@ public class CombatManager : MonoBehaviour {
         State = BattleCaptureState.PLAYERTURN;
         _playerSpirithar.PerformingMove = false;
 
+    }
+
+    // Logic for changing and placing spirithar in turn based combat
+    private void PlaceSpiritharTeamInCombat(GameObject spiritharGO) {
+
+        if (_currentSpiritharCombat == spiritharGO)
+            return;
+
+        if(_currentSpiritharCombat != null) {
+            Destroy(_currentSpiritharCombat);
+            Debug.Log("Destruyo el spirithar current!!!!");
+        }
+        Vector3 direction = -_enemySpirithar.transform.forward;
+        Vector3 playerSpiritharPos = _enemyPosition + direction * CombatDistance;
+        if (_playerSpiritharPos == Vector3.zero)
+            _playerSpiritharPos = playerSpiritharPos;
+        //GameObject playerSpiritharGO
+        _currentSpiritharCombat = Instantiate(spiritharGO, _playerSpiritharPos, Quaternion.identity);
+        Spirithar playerSpirithar = _currentSpiritharCombat.GetComponent<Spirithar>();
+
+        if (playerSpirithar == null) {
+            Debug.LogError("El prefab instanciado no tiene el componente Spirithar.");
+            return;
+        }
+        
+        // Posicionar al _enemySpirithar: se mantiene en su posición actual.
+        // Posicionar al playerSpirithar: se coloca a una distancia CombatDistance del enemigo, en dirección opuesta al frente del enemigo.
+        
+        playerSpirithar.transform.position = _playerSpiritharPos;
+        // Hacer que el Spirithar del jugador mire al enemigo y viceversa
+        _enemySpirithar.transform.LookAt(_playerSpiritharPos);
+        playerSpirithar.transform.LookAt(_enemyPosition);
+
+        // Posicionar al jugador detrás de su Spirithar utilizando el offset (convertido de local a global).
+        Vector3 globalPlayerOffset = playerSpirithar.transform.TransformDirection(PlayerOffset);
+        Player.transform.position = playerSpirithar.transform.position + globalPlayerOffset;
+        Player.transform.LookAt(_enemyPosition);
+
+        Debug.Log("Combate iniciado: " + playerSpirithar.spiritharName + " vs " + _enemySpirithar.spiritharName);
+
+        // Display Name of Spirithars
+        DisplayNameSpirithars(playerSpirithar);
+
+        // Display moves of Player Spirithar
+        DisplayMovesSpirithars(playerSpirithar);
+
+    }
+
+    private void DisplayNameSpirithars(Spirithar playerSpirithar) {
+        PlayerCombatCaptureHUD.SetUpCaptureCombatHUD(playerSpirithar);
+        EnemyCombatCaptureHUD.SetUpCaptureCombatHUD(_enemySpirithar);
+    }
+
+    private void DisplayMovesSpirithars(Spirithar playerSpirithar) {
+        FirstButtonAbility.SetUpTextAbilityButton(playerSpirithar, _enemySpirithar, playerSpirithar.moves[0]);
+        SecondButtonAbility.SetUpTextAbilityButton(playerSpirithar, _enemySpirithar, playerSpirithar.moves[1]);
+        ThirdButtonAbility.SetUpTextAbilityButton(playerSpirithar, _enemySpirithar, playerSpirithar.moves[2]);
     }
 
 

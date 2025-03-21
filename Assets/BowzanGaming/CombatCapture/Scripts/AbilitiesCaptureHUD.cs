@@ -17,8 +17,6 @@ public class AbilitiesCaptureHUD : MonoBehaviour
     private SpiritharMove _spiritharMove;
     private TextMeshProUGUI _textAbility;
 
-    public bool PerformingMove2;
-
     private void Awake() {
         _textAbility = Button.GetComponentInChildren<TextMeshProUGUI>();
         _textAbility.text = "Pruebaaa";
