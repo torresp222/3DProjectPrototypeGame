@@ -34,6 +34,7 @@ public abstract class Spirithar : MonoBehaviour {
     public SpiritharBaseStats baseStats;
     // Estadísticas en tiempo de juego.
     public SpiritharStats stats;
+    public bool BaseStatsDone = false;
 
     // Actions Events
     public static event Action OnTakeDamage;
@@ -41,21 +42,51 @@ public abstract class Spirithar : MonoBehaviour {
     public static event Action OnSpiritharDead;
 
     public virtual void Initialize() {
+       
+        PerformingMove = false;
+    }
+
+    public void SetFirstStats() {
         // Seleccionar aleatoriamente un SO de la lista (si hay alguno)
         if (possibleBaseStats != null && possibleBaseStats.Length > 0) {
             int randomIndex = UnityEngine.Random.Range(0, possibleBaseStats.Length);
             baseStats = possibleBaseStats[randomIndex];
+
         } else {
             Debug.LogWarning("No hay posibles baseStats asignados en " + spiritharName);
         }
 
         // Inicializamos las estadísticas a partir del SO seleccionado.
-        if (baseStats != null) {
+        if (baseStats != null && !BaseStatsDone) {
             stats = new SpiritharStats(baseStats);
             maxHealth = baseStats.baseHealth;
             currentHealth = maxHealth;
+            BaseStatsDone = true;
+
+            Debug.Log("Entramos aquí en el inicializar del spirithar " + this.spiritharName);
         }
-        PerformingMove = false;
+    }
+    public SpiritharBaseStats SetGetFirstStats() {
+        // Seleccionar aleatoriamente un SO de la lista (si hay alguno)
+        if (possibleBaseStats != null && possibleBaseStats.Length > 0) {
+            int randomIndex = UnityEngine.Random.Range(0, possibleBaseStats.Length);
+            baseStats = possibleBaseStats[randomIndex];
+            
+        } else {
+            Debug.LogWarning("No hay posibles baseStats asignados en " + spiritharName);
+        }
+
+        // Inicializamos las estadísticas a partir del SO seleccionado.
+        if (baseStats != null && !BaseStatsDone) {
+            stats = new SpiritharStats(baseStats);
+            maxHealth = baseStats.baseHealth;
+            currentHealth = maxHealth;
+            BaseStatsDone = true;
+            
+            Debug.Log("Entramos aquí en el inicializar del spirithar " + this.spiritharName);
+        }
+
+        return baseStats;
     }
 
     // Método abstracto para realizar un ataque.

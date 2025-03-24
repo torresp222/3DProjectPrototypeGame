@@ -2,13 +2,12 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using TMPro;
-using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
 public class SpiritharCaptureHUD : MonoBehaviour {
 
-    public static event Action<GameObject> OnSpiritharClickToChange;
+    public static event Action<GameObject, int> OnSpiritharClickToChange;
 
     [Header("Spirithar Button References")]
     public Button Button;
@@ -18,6 +17,7 @@ public class SpiritharCaptureHUD : MonoBehaviour {
 
     [SerializeField] private Spirithar _playerSpirithar;
     [SerializeField] private GameObject _playerSpiritharGO;
+    [SerializeField] private int _spiritharIndex;
     private TextMeshProUGUI _textSpiritharName;
 
     private void Awake() {
@@ -26,9 +26,10 @@ public class SpiritharCaptureHUD : MonoBehaviour {
         //SetUpTextAbilityButton("Hooolaaa");
     }
 
-    public void SetUpTextSpiritharNameButton(Spirithar spirithar) {
+    public void SetUpTextSpiritharNameButton(Spirithar spirithar, int indexOfTeam) {
         if (spirithar != null) {
             _playerSpirithar = spirithar;
+            _spiritharIndex = indexOfTeam;
             _textSpiritharName.text = _playerSpirithar.spiritharName;
         } else
             _textSpiritharName.text = "No Spirithar";
@@ -36,7 +37,7 @@ public class SpiritharCaptureHUD : MonoBehaviour {
     }
 
     public void OnChangeSpirithar(){
-        OnSpiritharClickToChange?.Invoke(_playerSpirithar.gameObject);
+        OnSpiritharClickToChange?.Invoke(_playerSpirithar.gameObject, _spiritharIndex);
 
 
     }

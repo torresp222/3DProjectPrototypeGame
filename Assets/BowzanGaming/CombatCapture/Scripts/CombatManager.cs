@@ -1,9 +1,12 @@
 using BowzanGaming.FinalCharacterController;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.UI;
+using static PlayerTeamTracker;
+using Random = UnityEngine.Random;
 
 
 public enum BattleCaptureState { START, PLAYERTURN, ENEMYTURN, WON, LOST }
@@ -25,6 +28,7 @@ public class CombatManager : MonoBehaviour {
     [Header("Referencias")]
     public GameObject Player;         // GameObject del jugador
     public PlayerTeam PlayerTeam;     // Script que gestiona el equipo del jugador
+    public PlayerTeamTracker PlayerTeamTracker;
     public BowzanGaming.FinalCharacterController.PlayerInputManager RefPlayerInputManager; // Player Input Manager que habilita el Input system "Player Controls"
     //public PlayerLocomotionInput Pli;
     public GameObject CombatCaptureUI; // GameObject donde se encuentra el Canvas del combate entre spirithars
@@ -52,6 +56,8 @@ public class CombatManager : MonoBehaviour {
     private Spirithar _enemySpirithar; // Spirithar salvaje capturado
     private Vector3 _enemyPosition;
     private Spirithar _playerSpirithar; // Spirithar activo del equipo (instanciado en combate)
+    private int _currentSpiritharIndex;
+    private string[] _keysTeamTracker = { "spiritharOne", "spiritharTwo", "spiritharThree" };
     private GameObject _firstSpiritharTeam;// GameObject "" ""
     [SerializeField]private GameObject _currentSpiritharCombat;
     [SerializeField] private Vector3 _playerSpiritharPos;
@@ -108,6 +114,7 @@ public class CombatManager : MonoBehaviour {
     public void StartCombat(Spirithar capturedEnemySpirithar) {
         // Asignar el Spirithar salvaje y conservar su posición actual.
         _enemySpirithar = capturedEnemySpirithar;
+        _enemySpirithar.SetFirstStats();
         _enemyPosition = _enemySpirithar.transform.position;
 
         // Instanciar el Spirithar activo del equipo a partir del prefab guardado en PlayerTeam.
@@ -118,7 +125,7 @@ public class CombatManager : MonoBehaviour {
         }
 
         // Place the spirithar of team in combat
-        PlaceSpiritharTeamInCombat(_firstSpiritharTeam);
+        PlaceSpiritharTeamInCombat(_firstSpiritharTeam, 0);
         
         // Set the menu of spirithars in team
         SetSpiritharMenu();
@@ -147,7 +154,7 @@ public class CombatManager : MonoBehaviour {
         // Recorrer todos los elementos del HUD
         for (int i = 0; i < _spiritharCaptureHUDs.Count; i++) {
             Spirithar teamMember = PlayerTeam.team[i];
-            _spiritharCaptureHUDs[i].SetUpTextSpiritharNameButton(teamMember);
+            _spiritharCaptureHUDs[i].SetUpTextSpiritharNameButton(teamMember, i);
         }
     }
 
@@ -208,8 +215,10 @@ public class CombatManager : MonoBehaviour {
     }
 
     public void UpdateSpiritharHPSlider() {
-        PlayerCombatCaptureHUD.SetHP(_playerSpirithar);
-        EnemyCombatCaptureHUD.SetHP(_enemySpirithar);
+        PlayerTeamTracker.UpdateSpiritharHealthTeamTracked(_playerSpirithar.currentHealth, _currentSpiritharIndex);
+        PlayerCombatCaptureHUD.SetHP(PlayerTeamTracker.SpiritharStatsTracker[_keysTeamTracker[_currentSpiritharIndex]].TrackCurrentHealth);
+        Debug.Log(_enemySpirithar.currentHealth);
+        EnemyCombatCaptureHUD.SetHP(_enemySpirithar.currentHealth);
 
     }
 
@@ -239,7 +248,9 @@ public class CombatManager : MonoBehaviour {
     }
 
     // Logic for changing and placing spirithar in turn based combat
-    private void PlaceSpiritharTeamInCombat(GameObject spiritharGO) {
+    private void PlaceSpiritharTeamInCombat(GameObject spiritharGO, int index) {
+
+        string[] keysTeamTracker = { "spiritharOne", "spiritharTwo", "spiritharThree" };
 
         if (_currentSpiritharCombat == spiritharGO)
             return;
@@ -248,6 +259,12 @@ public class CombatManager : MonoBehaviour {
             Destroy(_currentSpiritharCombat);
             Debug.Log("Destruyo el spirithar current!!!!");
         }
+
+        if (!PlayerTeam.SpiritharTeamHasBeenInstantiate[index])
+            PlayerTeam.SetSpiritharInstantiate(index);
+    
+            
+
         Vector3 direction = -_enemySpirithar.transform.forward;
         Vector3 playerSpiritharPos = _enemyPosition + direction * CombatDistance;
         if (_playerSpiritharPos == Vector3.zero)
@@ -255,6 +272,15 @@ public class CombatManager : MonoBehaviour {
         //GameObject playerSpiritharGO
         _currentSpiritharCombat = Instantiate(spiritharGO, _playerSpiritharPos, Quaternion.identity);
         Spirithar playerSpirithar = _currentSpiritharCombat.GetComponent<Spirithar>();
+        
+        SpiritharData data = PlayerTeamTracker.SpiritharStatsTracker[keysTeamTracker[index]];
+        Debug.Log($"el indez es {index} y la key de trackeo es {data}");
+        playerSpirithar.currentHealth = data.TrackCurrentHealth;
+        playerSpirithar.baseStats = data.TrackBaseStat;
+        playerSpirithar.stats = new SpiritharStats(playerSpirithar.baseStats);
+        _playerSpirithar = playerSpirithar;
+        _currentSpiritharIndex = index;
+
 
         if (playerSpirithar == null) {
             Debug.LogError("El prefab instanciado no tiene el componente Spirithar.");
@@ -278,6 +304,9 @@ public class CombatManager : MonoBehaviour {
 
         // Display Name of Spirithars
         DisplayNameSpirithars(playerSpirithar);
+
+        // Update health bar
+        UpdateSpiritharHPSlider();
 
         // Display moves of Player Spirithar
         DisplayMovesSpirithars(playerSpirithar);

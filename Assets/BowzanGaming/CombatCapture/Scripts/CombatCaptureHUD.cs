@@ -17,9 +17,10 @@ public class CombatCaptureHUD : MonoBehaviour
         SpLvlText.text = "Lvl " + spirithar.Lvl.ToString();
         SpHPSlider.maxValue = spirithar.maxHealth;
         SpHPSlider.value = spirithar.currentHealth;
+       // SetHP(spirithar);
     }
 
-    public void SetHP(Spirithar spirithar) {
-        SpHPSlider.value = spirithar.currentHealth;
+    public void SetHP(float currentHealth) {
+        SpHPSlider.value = currentHealth;
     }
 }
