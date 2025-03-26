@@ -6303,6 +6303,19 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: dfc84a3c01223b24aa28cfd43517c5a4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _serializedData:
+  - key: spiritharOne
+    trackCurrentHealth: 0
+    trackBaseStat: {fileID: 0}
+    isTracked: 0
+  - key: spiritharTwo
+    trackCurrentHealth: 0
+    trackBaseStat: {fileID: 0}
+    isTracked: 0
+  - key: spiritharThree
+    trackCurrentHealth: 0
+    trackBaseStat: {fileID: 0}
+    isTracked: 0
 --- !u!43 &1097639322
 Mesh:
   m_ObjectHideFlags: 0
@@ -12826,6 +12839,10 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 502844026781802899, guid: cef6326ee91964b4b865b741618479c7,
         type: 3}
       insertIndex: -1
+      addedObject: {fileID: 1090548347}
+    - targetCorrespondingSourceObject: {fileID: 502844026781802899, guid: cef6326ee91964b4b865b741618479c7,
+        type: 3}
+      insertIndex: -1
       addedObject: {fileID: 1090548329}
     - targetCorrespondingSourceObject: {fileID: 502844026781802899, guid: cef6326ee91964b4b865b741618479c7,
         type: 3}
@@ -12839,10 +12856,6 @@ PrefabInstance:
         type: 3}
       insertIndex: -1
       addedObject: {fileID: 1090548337}
-    - targetCorrespondingSourceObject: {fileID: 502844026781802899, guid: cef6326ee91964b4b865b741618479c7,
-        type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 1090548347}
     - targetCorrespondingSourceObject: {fileID: 1351110286392965795, guid: cef6326ee91964b4b865b741618479c7,
         type: 3}
       insertIndex: -1
