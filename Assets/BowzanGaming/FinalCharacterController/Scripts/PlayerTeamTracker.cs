@@ -4,6 +4,12 @@ using System.Globalization;
 using UnityEngine;
 
 public class PlayerTeamTracker : MonoBehaviour {
+    [SerializeField]
+    private List<SerializableSpiritharData> _serializedData = new List<SerializableSpiritharData> {
+        new SerializableSpiritharData { key = "spiritharOne" },
+        new SerializableSpiritharData { key = "spiritharTwo" },
+        new SerializableSpiritharData { key = "spiritharThree" }
+    };
 
     private PlayerTeam _playrTeam;
     [System.Serializable]
@@ -32,15 +38,51 @@ public class PlayerTeamTracker : MonoBehaviour {
         SpiritharStatsTracker["spiritharOne"] = data;
         SpiritharStatsTracker["spiritharTwo"] = data;
         SpiritharStatsTracker["spiritharThree"] = data;
+    }
 
-        /*foreach (var key in spiritharStats.Keys) {
-            //SpiritharData data = spiritharStats[key];
-            SpiritharData data = new();
-            data.TrackCurrentHealth = 0f;
-            data.TrackBaseStat = defaultStats;
-            data.IsTracked = false;
-            spiritharStats[key] = data;
-        }*/
+    public void RefreshSerializedData() {
+        _serializedData.Clear();
+
+        foreach (var kvp in SpiritharStatsTracker) {
+            _serializedData.Add(new SerializableSpiritharData {
+                key = kvp.Key,
+                trackCurrentHealth = kvp.Value.TrackCurrentHealth,
+                trackBaseStat = kvp.Value.TrackBaseStat,
+                isTracked = kvp.Value.IsTracked
+            });
+        }
+    }
+
+    public void RefreshWhenAddSerializedData(SpiritharData spiritharDataTracker, string slotKey) {
+        bool found = false;
+
+
+        for (int i = 0; i < _serializedData.Count; i++) {
+            if (_serializedData[i].key == slotKey) {
+                _serializedData[i] = new SerializableSpiritharData {
+                    key = slotKey,
+                    trackCurrentHealth = spiritharDataTracker.TrackCurrentHealth,
+                    trackBaseStat = spiritharDataTracker.TrackBaseStat,
+                    isTracked = spiritharDataTracker.IsTracked
+                };
+                Debug.Log("Added Spirithar Gathered in List of track team spirithar to see in Inspector");
+                found = true;
+                break;
+            }
+        }
+
+        if (!found) {
+            _serializedData.Add(new SerializableSpiritharData {
+                key = slotKey,
+                trackCurrentHealth = spiritharDataTracker.TrackCurrentHealth,
+                trackBaseStat = spiritharDataTracker.TrackBaseStat,
+                isTracked = spiritharDataTracker.IsTracked
+            });
+
+            Debug.Log($"No Slot of spirithar team track {slotKey} so added new ONE");
+        }
+
+
     }
 
     public bool AddNewSpiritharTeamTracked(SpiritharBaseStats newStats, float initialHealth) {
@@ -58,6 +100,7 @@ public class PlayerTeamTracker : MonoBehaviour {
 
                     SpiritharStatsTracker[slotKey] = newEntry;
                     Debug.Log($"Nuevo Spirithar trackeado en slot: {slotKey} y {SpiritharStatsTracker[slotKey].TrackCurrentHealth}");
+                    RefreshWhenAddSerializedData(SpiritharStatsTracker[slotKey], slotKey);
                     return true;
                 }
             }
@@ -80,10 +123,23 @@ public class PlayerTeamTracker : MonoBehaviour {
         data.TrackCurrentHealth = newHealth;
         SpiritharStatsTracker[trackedSlots[index]] = data;
         Debug.Log($"Spirithar trackeado en slot: {trackedSlots[index]} , vida actual {SpiritharStatsTracker[trackedSlots[index]].TrackCurrentHealth}");
+
+        // TRACK HERE THE NEW LIST FOR INSPECTOR VIEW
+        // HERE -----
+        RefreshSerializedData();
+
         return true;
 
 
        
     }
 
+}
+
+[System.Serializable]
+public class SerializableSpiritharData {
+    public string key;
+    public float trackCurrentHealth;
+    public SpiritharBaseStats trackBaseStat;
+    public bool isTracked;
 }

@@ -2,6 +2,7 @@ using BowzanGaming.FinalCharacterController;
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.UI;
@@ -67,8 +68,10 @@ public class CombatManager : MonoBehaviour {
 
     private void Awake() {
         // Patrón singleton para acceso global.
-        if (Instance == null)
+        if (Instance == null) {
             Instance = this;
+            DontDestroyOnLoad(gameObject);
+        }
         else
             Destroy(gameObject);
 
@@ -84,7 +87,8 @@ public class CombatManager : MonoBehaviour {
         CaptureBall.OnSpiritharCaptured += InitiateCombat;
         Spirithar.OnTakeDamage += UpdateSpiritharHPSlider;
         Spirithar.OnEnemySpiritharNotDead += ChangeState;
-        Spirithar.OnSpiritharDead += EnablePlayerControl;
+        Spirithar.OnSpiritharDead += TeamHealthChecker;
+        /*Spirithar.OnSpiritharDead += () => { EnablePlayerControl(); TeamHealthChecker(); };*/
         SpiritharCaptureHUD.OnSpiritharClickToChange += PlaceSpiritharTeamInCombat;
     }
 
@@ -92,7 +96,8 @@ public class CombatManager : MonoBehaviour {
         CaptureBall.OnSpiritharCaptured -= InitiateCombat;
         Spirithar.OnTakeDamage -= UpdateSpiritharHPSlider;
         Spirithar.OnEnemySpiritharNotDead -= ChangeState;
-        Spirithar.OnSpiritharDead -= EnablePlayerControl;
+        Spirithar.OnSpiritharDead -= TeamHealthChecker;
+        /*Spirithar.OnSpiritharDead -= () => { EnablePlayerControl(); TeamHealthChecker(); };*/
         SpiritharCaptureHUD.OnSpiritharClickToChange -= PlaceSpiritharTeamInCombat;
     }
 
@@ -214,6 +219,44 @@ public class CombatManager : MonoBehaviour {
         Destroy(_currentSpiritharCombat);
     }
 
+    public void TeamHealthChecker() {
+        if (PlayerTeamTracker.SpiritharStatsTracker.Values.Any(d => d.TrackCurrentHealth <= 0f && d.IsTracked)) {
+            Debug.Log($"¡Algún Spirithar tiene salud 0! current INDEX {_currentSpiritharIndex}");
+            if (PlayerTeamTracker.SpiritharStatsTracker.Values.Any(d => d.TrackCurrentHealth > 0f)) {
+                Debug.Log("¡Algún Spirithar sigue vivo!");
+                if (SpiritharMenu != null) {
+                    CombatMenuGO.SetActive(false);
+                    AbilitiesMenu.SetActive(false);
+                    SpiritharMenu.SetActive(true);
+                }
+                SpiritharCaptureHUD spiritharButtonToDisable = DisableChangeSpiritharButton(_currentSpiritharIndex);
+                spiritharButtonToDisable.DisableButton();
+            } else {
+                Debug.Log("Todos los del team dead dead");
+                EnablePlayerControl();
+            }
+        } else {
+            Debug.Log("Todos tus Spirithars Vivitos y Coleando");
+            EnablePlayerControl();
+        }
+    }
+
+    public SpiritharCaptureHUD DisableChangeSpiritharButton(int index) {
+
+        switch (index) {
+            case 0:
+                return FirstSpiritharButton;
+            case 1:
+                return SecondSpiritharButton;
+            case 2:
+                return ThirdSpiritharButton;
+            default:
+                Debug.LogError($"Índice {index} no válido");
+                return null;
+        }
+
+    }
+
     public void UpdateSpiritharHPSlider() {
         PlayerTeamTracker.UpdateSpiritharHealthTeamTracked(_playerSpirithar.currentHealth, _currentSpiritharIndex);
         PlayerCombatCaptureHUD.SetHP(PlayerTeamTracker.SpiritharStatsTracker[_keysTeamTracker[_currentSpiritharIndex]].TrackCurrentHealth);
@@ -230,17 +273,17 @@ public class CombatManager : MonoBehaviour {
             StartCoroutine(EnemyTurn());
         } else 
             return;
-            
-        /*if (State == BattleCaptureState.ENEMYTURN) {
-            State = BattleCaptureState.PLAYERTURN;
-            Debug.Log("ENTROOO AL PLAYER TUUUURRRNNNN");
-        }*/
     }
 
     public IEnumerator EnemyTurn() {
         Debug.Log("Turno del enemigo");
-        SpiritharMove move = _enemySpirithar.moves[Random.Range(0, _enemySpirithar.moves.Length)];
-        _enemySpirithar.PerformMove(move, _playerSpirithar);
+        SpiritharMove move = RandomizeManager.Instance.GetRandomMoveFrom(_enemySpirithar);
+        //_enemySpirithar.moves[Random.Range(0, _enemySpirithar.moves.Length)];
+        if (move == null) {
+            Debug.LogError($"The Enemy Spirithar {_enemySpirithar} has no abilities");
+            yield break;
+        }
+        _enemySpirithar.PerformMove(move, _playerSpirithar, PlayerTeamTracker.SpiritharStatsTracker[_keysTeamTracker[_currentSpiritharIndex]].IsTracked);
         yield return new WaitForSeconds(2f);
         State = BattleCaptureState.PLAYERTURN;
         _playerSpirithar.PerformingMove = false;
@@ -249,8 +292,6 @@ public class CombatManager : MonoBehaviour {
 
     // Logic for changing and placing spirithar in turn based combat
     private void PlaceSpiritharTeamInCombat(GameObject spiritharGO, int index) {
-
-        string[] keysTeamTracker = { "spiritharOne", "spiritharTwo", "spiritharThree" };
 
         if (_currentSpiritharCombat == spiritharGO)
             return;
@@ -273,7 +314,7 @@ public class CombatManager : MonoBehaviour {
         _currentSpiritharCombat = Instantiate(spiritharGO, _playerSpiritharPos, Quaternion.identity);
         Spirithar playerSpirithar = _currentSpiritharCombat.GetComponent<Spirithar>();
         
-        SpiritharData data = PlayerTeamTracker.SpiritharStatsTracker[keysTeamTracker[index]];
+        SpiritharData data = PlayerTeamTracker.SpiritharStatsTracker[_keysTeamTracker[index]];
         Debug.Log($"el indez es {index} y la key de trackeo es {data}");
         playerSpirithar.currentHealth = data.TrackCurrentHealth;
         playerSpirithar.baseStats = data.TrackBaseStat;
@@ -324,5 +365,6 @@ public class CombatManager : MonoBehaviour {
         ThirdButtonAbility.SetUpTextAbilityButton(playerSpirithar, _enemySpirithar, playerSpirithar.moves[2]);
     }
 
+    
 
 }

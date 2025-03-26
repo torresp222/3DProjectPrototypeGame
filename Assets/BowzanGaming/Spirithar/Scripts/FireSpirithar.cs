@@ -6,7 +6,7 @@ public class FireSpirithar : Spirithar {
         Initialize();
     }
 
-    public override void PerformMove(SpiritharMove spiritharMove, Spirithar target) {
+    public override void PerformMove(SpiritharMove spiritharMove, Spirithar target, bool isSpiritharFromTeam = false) {
         if (spiritharMove == null) {
             Debug.LogWarning("Movimiento no asignado en " + spiritharName);
             return;
@@ -16,7 +16,7 @@ public class FireSpirithar : Spirithar {
         switch (spiritharMove.moveType) {
             case MoveType.Attack:
                 Debug.Log(spiritharName + " ataca a " + target.spiritharName + " con " + spiritharMove.moveName);
-                StartCoroutine(SpiritharAttack(target, spiritharMove));
+                StartCoroutine(SpiritharAttack(target, spiritharMove, isSpiritharFromTeam));
                 break;
             case MoveType.Defense:
                 StartCoroutine(Defend(spiritharMove));

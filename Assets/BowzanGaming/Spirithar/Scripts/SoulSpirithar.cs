@@ -47,7 +47,7 @@ public class SoulSpirithar : Spirithar {
         Destroy(projectile, 1f);
     }
 
-    public override void PerformMove(SpiritharMove spiritharMove, Spirithar target) {
+    public override void PerformMove(SpiritharMove spiritharMove, Spirithar target, bool isSpiritharFromTeam = false) {
         Debug.LogWarning("PerformMove not used in Soul Combat mode");
     }
 

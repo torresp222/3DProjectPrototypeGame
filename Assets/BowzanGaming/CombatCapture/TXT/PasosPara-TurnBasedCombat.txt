@@ -10,3 +10,9 @@ HECHO !!!
 SIGUIENTES PASOS
 Que el enemigo ataque más que se defienda o ataque.
 Controlar que el jugador pierda el combate contra la IA, o el enemigo.
+HECHO !!!
+
+SIGUIENTES PASOS
+NO dejar empezar un combate si todos los spriithar del equipo están con vida a 0.
+Poner un sitio que al clikcar te cure todos los spirithar.
+HABILITAR los buttons del spirithar menu al iniciar el combate.

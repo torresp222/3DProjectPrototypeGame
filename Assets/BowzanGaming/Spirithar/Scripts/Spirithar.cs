@@ -91,10 +91,10 @@ public abstract class Spirithar : MonoBehaviour {
 
     // Método abstracto para realizar un ataque.
     // moveIndex: 0 y 1 para ataques, 2 para defensa, 3 para potenciar ataque.
-    public abstract void PerformMove(SpiritharMove spiritharMove, Spirithar target);
+    public abstract void PerformMove(SpiritharMove spiritharMove, Spirithar target, bool isSpiritharFromTeam = false);
     public abstract bool IsWeak(SpiritharMove spiritharMove);
 
-    public IEnumerator SpiritharAttack(Spirithar target, SpiritharMove spiritharMove) {
+    public IEnumerator SpiritharAttack(Spirithar target, SpiritharMove spiritharMove, bool isSpiritharFromTeam) {
         bool isWeak = target.IsWeak(spiritharMove);
         float damage = spiritharMove.power;
         // Modificador de ataque del atacante
@@ -116,11 +116,15 @@ public abstract class Spirithar : MonoBehaviour {
         Debug.Log("El DAMAGE RECIBIDO ES " + damage);
         bool isDead = target.TakeDamage(damage);
 
-        yield return new WaitForSeconds(2f);
+        yield return new WaitForSeconds(1f);
 
         if (isDead) {
-            //target.Die();
-            print("Algo");
+            if (isSpiritharFromTeam)
+                Debug.Log("Spirithar dead is from TEAM");
+            else
+                Debug.Log("Spirithar dead is ENEMY, not from TEAM");
+            target.Die();
+            print("DEADDEAD");
         } else {
             print("Change State");
             OnEnemySpiritharNotDead?.Invoke();
@@ -175,7 +179,6 @@ public abstract class Spirithar : MonoBehaviour {
         currentHealth -= damage;
         OnTakeDamage?.Invoke();
         if (currentHealth <= 0) { 
-            this.Die();
             return true; } else { return false; }
     }
 

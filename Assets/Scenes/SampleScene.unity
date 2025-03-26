@@ -7682,6 +7682,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1262541760}
   - component: {fileID: 1262541761}
+  - component: {fileID: 1262541762}
   m_Layer: 0
   m_Name: CombatManager
   m_TagString: Untagged
@@ -7739,6 +7740,18 @@ MonoBehaviour:
   State: 0
   _currentSpiritharCombat: {fileID: 0}
   _playerSpiritharPos: {x: 0, y: 0, z: 0}
+--- !u!114 &1262541762
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1262541759}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 401a3cf826a7db54d9a00d29c8eeaeb6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &1271959436
 GameObject:
   m_ObjectHideFlags: 0
