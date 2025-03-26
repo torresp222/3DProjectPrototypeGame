@@ -134,6 +134,24 @@ public class PlayerTeamTracker : MonoBehaviour {
        
     }
 
+    public int CheckFirstSpiritharWithHealth() {
+        // Orden de prioridad para los slots
+        string[] prioritySlots = { "spiritharOne", "spiritharTwo", "spiritharThree" };
+        int index = 0;
+
+        foreach (var slotKey in prioritySlots) {
+            if (SpiritharStatsTracker.TryGetValue(slotKey, out SpiritharData currentData)) {
+                if (currentData.TrackCurrentHealth > 0) {
+                    return index;
+                }
+            }
+            index += 1;
+
+        }
+
+        return -1;
+    }
+
 }
 
 [System.Serializable]

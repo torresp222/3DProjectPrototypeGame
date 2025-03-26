@@ -53,9 +53,10 @@ public class CombatManager : MonoBehaviour {
     [Header("State of combate capture")]
     public BattleCaptureState State;
 
+    [Header("Intern references to assign at the beggining of each combat")]
     // Referencias internas que se asignarán al iniciar el combate.
-    private Spirithar _enemySpirithar; // Spirithar salvaje capturado
-    private Vector3 _enemyPosition;
+    [SerializeField] private Spirithar _enemySpirithar; // Spirithar salvaje capturado
+    [SerializeField] private Vector3 _enemyPosition;
     private Spirithar _playerSpirithar; // Spirithar activo del equipo (instanciado en combate)
     private int _currentSpiritharIndex;
     private string[] _keysTeamTracker = { "spiritharOne", "spiritharTwo", "spiritharThree" };
@@ -103,6 +104,11 @@ public class CombatManager : MonoBehaviour {
 
     // Este método se llamará cuando se capture un Spirithar.
     private void InitiateCombat(Spirithar capturedSpirithar) {
+        if (PlayerTeamTracker.CheckFirstSpiritharWithHealth() < 0) {
+            Debug.Log("O no tienes Spirithars o estan todos SIN vida");
+            return;
+        }
+            
         Debug.Log("Iniciando combate con: " + capturedSpirithar.spiritharName);
         State = BattleCaptureState.START;
         if (AbilitiesMenu != null)
@@ -117,6 +123,7 @@ public class CombatManager : MonoBehaviour {
     /// </summary>
     /// <param name="capturedEnemySpirithar">El Spirithar salvaje capturado.</param>
     public void StartCombat(Spirithar capturedEnemySpirithar) {
+        _currentSpiritharIndex = PlayerTeamTracker.CheckFirstSpiritharWithHealth();
         // Asignar el Spirithar salvaje y conservar su posición actual.
         _enemySpirithar = capturedEnemySpirithar;
         _enemySpirithar.SetFirstStats();
@@ -130,7 +137,7 @@ public class CombatManager : MonoBehaviour {
         }
 
         // Place the spirithar of team in combat
-        PlaceSpiritharTeamInCombat(_firstSpiritharTeam, 0);
+        PlaceSpiritharTeamInCombat(_firstSpiritharTeam, _currentSpiritharIndex);
         
         // Set the menu of spirithars in team
         SetSpiritharMenu();
@@ -216,6 +223,7 @@ public class CombatManager : MonoBehaviour {
         if (PlayerCamera != null)
             PlayerCamera.SetActive(true);
 
+        _playerSpiritharPos = Vector3.zero;
         Destroy(_currentSpiritharCombat);
     }
 
@@ -231,6 +239,10 @@ public class CombatManager : MonoBehaviour {
                 }
                 SpiritharCaptureHUD spiritharButtonToDisable = DisableChangeSpiritharButton(_currentSpiritharIndex);
                 spiritharButtonToDisable.DisableButton();
+                if (_enemySpirithar.currentHealth <= 0f) {
+                    Debug.Log("ENEMY DEAD");
+                    EnablePlayerControl();
+                }
             } else {
                 Debug.Log("Todos los del team dead dead");
                 EnablePlayerControl();
@@ -300,11 +312,6 @@ public class CombatManager : MonoBehaviour {
             Destroy(_currentSpiritharCombat);
             Debug.Log("Destruyo el spirithar current!!!!");
         }
-
-        if (!PlayerTeam.SpiritharTeamHasBeenInstantiate[index])
-            PlayerTeam.SetSpiritharInstantiate(index);
-    
-            
 
         Vector3 direction = -_enemySpirithar.transform.forward;
         Vector3 playerSpiritharPos = _enemyPosition + direction * CombatDistance;

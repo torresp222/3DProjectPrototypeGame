@@ -7,8 +7,6 @@ public class PlayerTeam : MonoBehaviour {
     [Header("Team Configuration")]
     public int maxTeamSize = 3;
     public List<Spirithar> team = new List<Spirithar>();
-    [SerializeField] private bool _turnActive;
-    public List<bool> SpiritharTeamHasBeenInstantiate;
     private int _activeSpiritharIndex = 0;
     private PlayerTeamTracker _playerTeamTracker;
 
@@ -21,18 +19,7 @@ public class PlayerTeam : MonoBehaviour {
         }
         // Crea 3 elementos null
         team.AddRange(Enumerable.Repeat<Spirithar>(null, num));
-        SpiritharTeamHasBeenInstantiate.AddRange(Enumerable.Repeat<bool>(false, num));
-        _turnActive = false;
-    }
-
-    public void TurnCombatStarts() {
-        _turnActive = true;
-    }
-
-    public void SetSpiritharInstantiate(int index) {
-
-        SpiritharTeamHasBeenInstantiate[index] = true;
-
+       
     }
 
 
@@ -59,13 +46,6 @@ public class PlayerTeam : MonoBehaviour {
         }
 
         return false;
-       
-/*
-        team.Add(newSpirithar);
-       
-            
-        Debug.Log($"Added {newSpirithar.spiritharName} to team");
-        return true;*/
     }
 
     public void SwitchActiveSpirithar(int newIndex) {
@@ -81,6 +61,7 @@ public class PlayerTeam : MonoBehaviour {
             Debug.LogError("No Spirithars in team");
             return null;
         }
+        _activeSpiritharIndex = _playerTeamTracker.CheckFirstSpiritharWithHealth();
         return team[_activeSpiritharIndex];
     }
 
@@ -92,5 +73,5 @@ public class PlayerTeam : MonoBehaviour {
     public int GetActiveSpiritharIndex() => _activeSpiritharIndex;
     public bool IsTeamFull() => team.Count >= maxTeamSize;
     public int TeamCount() => team.Count;
-    public bool IsTurnCombatStarted() => _turnActive;
+
 }
