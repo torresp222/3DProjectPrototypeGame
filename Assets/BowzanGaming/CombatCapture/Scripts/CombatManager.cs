@@ -115,6 +115,8 @@ public class CombatManager : MonoBehaviour {
             AbilitiesMenu.SetActive(false);
         if (SpiritharMenu != null)
             SpiritharMenu.SetActive(false);
+
+        CheckIfButtonInteractableAndSpiritharAlive();
         StartCombat(capturedSpirithar);
     }
 
@@ -237,7 +239,7 @@ public class CombatManager : MonoBehaviour {
                     AbilitiesMenu.SetActive(false);
                     SpiritharMenu.SetActive(true);
                 }
-                SpiritharCaptureHUD spiritharButtonToDisable = DisableChangeSpiritharButton(_currentSpiritharIndex);
+                SpiritharCaptureHUD spiritharButtonToDisable = GetChangeSpiritharButton(_currentSpiritharIndex);
                 spiritharButtonToDisable.DisableButton();
                 if (_enemySpirithar.currentHealth <= 0f) {
                     Debug.Log("ENEMY DEAD");
@@ -253,7 +255,7 @@ public class CombatManager : MonoBehaviour {
         }
     }
 
-    public SpiritharCaptureHUD DisableChangeSpiritharButton(int index) {
+    public SpiritharCaptureHUD GetChangeSpiritharButton(int index) {
 
         switch (index) {
             case 0:
@@ -267,6 +269,22 @@ public class CombatManager : MonoBehaviour {
                 return null;
         }
 
+    }
+
+    private void CheckIfButtonInteractableAndSpiritharAlive() {
+        SpiritharCaptureHUD buttonToCheck;
+        for (int i = 0; i < PlayerTeamTracker.TrackedSlots.Length; i++) {
+            buttonToCheck = GetChangeSpiritharButton(i);
+            if (PlayerTeamTracker.SpiritharStatsTracker.TryGetValue(PlayerTeamTracker.TrackedSlots[i], out SpiritharData currentData)) {
+                if (currentData.IsTracked && currentData.TrackCurrentHealth > 0) {
+                    EnableInteractableSpiritharButton(buttonToCheck);
+                }
+            }
+        }
+    }
+
+    public void EnableInteractableSpiritharButton(SpiritharCaptureHUD button) {
+        button.EnableButton();
     }
 
     public void UpdateSpiritharHPSlider() {
@@ -323,6 +341,7 @@ public class CombatManager : MonoBehaviour {
         
         SpiritharData data = PlayerTeamTracker.SpiritharStatsTracker[_keysTeamTracker[index]];
         Debug.Log($"el indez es {index} y la key de trackeo es {data}");
+        playerSpirithar.maxHealth = data.TrackBaseStat.baseHealth;
         playerSpirithar.currentHealth = data.TrackCurrentHealth;
         playerSpirithar.baseStats = data.TrackBaseStat;
         playerSpirithar.stats = new SpiritharStats(playerSpirithar.baseStats);
@@ -350,6 +369,9 @@ public class CombatManager : MonoBehaviour {
 
         Debug.Log("Combate iniciado: " + playerSpirithar.spiritharName + " vs " + _enemySpirithar.spiritharName);
 
+        //Check disable buttons and if it needs to be enable
+        CheckDisableButtonsSpiritharMenu();
+
         // Display Name of Spirithars
         DisplayNameSpirithars(playerSpirithar);
 
@@ -359,6 +381,12 @@ public class CombatManager : MonoBehaviour {
         // Display moves of Player Spirithar
         DisplayMovesSpirithars(playerSpirithar);
 
+    }
+
+    public void CheckDisableButtonsSpiritharMenu() {
+        if (_spiritharCaptureHUDs.Any(d => d.Button.interactable == false && d.PlayerSpirithar.currentHealth > 0)){
+
+        }
     }
 
     private void DisplayNameSpirithars(Spirithar playerSpirithar) {

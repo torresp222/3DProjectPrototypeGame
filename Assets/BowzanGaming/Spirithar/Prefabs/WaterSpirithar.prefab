@@ -174,10 +174,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ca33af1abb26e95439de691eaacd884d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _combatMode: 0
+  AttackLaunch: {fileID: 0}
   spiritharName: WaterSpirithar
-  maxHealth: 100
+  maxHealth: 120
   Lvl: 2
-  currentHealth: 0
+  currentHealth: 120
   elementType: 1
   PerformingMove: 0
   moves:
@@ -189,9 +191,10 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 3e40f243e0233ff4aa38f5c24cd8f44a, type: 2}
   baseStats: {fileID: 0}
   stats:
-    currentHealth: 0
-    currentAttack: 0
-    currentDefense: 0
+    currentHealth: 120
+    currentAttack: 10
+    currentDefense: 8
+  BaseStatsDone: 1
 --- !u!1 &4780375226841496079
 GameObject:
   m_ObjectHideFlags: 0

@@ -26,6 +26,8 @@ public class PlayerTeamTracker : MonoBehaviour {
         {"spiritharThree", new SpiritharData()}
     };
 
+    public string[] TrackedSlots = { "spiritharOne", "spiritharTwo", "spiritharThree" };
+
     private void Awake() {
         _playrTeam = GetComponent<PlayerTeam>();
 
@@ -86,10 +88,8 @@ public class PlayerTeamTracker : MonoBehaviour {
     }
 
     public bool AddNewSpiritharTeamTracked(SpiritharBaseStats newStats, float initialHealth) {
-        // Orden de prioridad para los slots
-        string[] prioritySlots = { "spiritharOne", "spiritharTwo", "spiritharThree" };
 
-        foreach (var slotKey in prioritySlots) {
+        foreach (var slotKey in TrackedSlots) {
             if (SpiritharStatsTracker.TryGetValue(slotKey, out SpiritharData currentData)) {
                 if (!currentData.IsTracked) {
                     SpiritharData newEntry = new SpiritharData {
@@ -111,18 +111,16 @@ public class PlayerTeamTracker : MonoBehaviour {
     }
 
     public bool UpdateSpiritharHealthTeamTracked(float newHealth, int index) {
-        // Orden de prioridad para los slots
-        string[] trackedSlots = { "spiritharOne", "spiritharTwo", "spiritharThree" };
 
-        if (trackedSlots[index]== null) {
+        if (TrackedSlots[index]== null) {
             Debug.LogError("No hay slots disponibles para tracking");
             return false;
         }
 
-        SpiritharData data = SpiritharStatsTracker[trackedSlots[index]];
+        SpiritharData data = SpiritharStatsTracker[TrackedSlots[index]];
         data.TrackCurrentHealth = newHealth;
-        SpiritharStatsTracker[trackedSlots[index]] = data;
-        Debug.Log($"Spirithar trackeado en slot: {trackedSlots[index]} , vida actual {SpiritharStatsTracker[trackedSlots[index]].TrackCurrentHealth}");
+        SpiritharStatsTracker[TrackedSlots[index]] = data;
+        Debug.Log($"Spirithar trackeado en slot: {TrackedSlots[index]} , vida actual {SpiritharStatsTracker[TrackedSlots[index]].TrackCurrentHealth}");
 
         // TRACK HERE THE NEW LIST FOR INSPECTOR VIEW
         // HERE -----
@@ -135,11 +133,10 @@ public class PlayerTeamTracker : MonoBehaviour {
     }
 
     public int CheckFirstSpiritharWithHealth() {
-        // Orden de prioridad para los slots
-        string[] prioritySlots = { "spiritharOne", "spiritharTwo", "spiritharThree" };
+
         int index = 0;
 
-        foreach (var slotKey in prioritySlots) {
+        foreach (var slotKey in TrackedSlots) {
             if (SpiritharStatsTracker.TryGetValue(slotKey, out SpiritharData currentData)) {
                 if (currentData.TrackCurrentHealth > 0) {
                     return index;

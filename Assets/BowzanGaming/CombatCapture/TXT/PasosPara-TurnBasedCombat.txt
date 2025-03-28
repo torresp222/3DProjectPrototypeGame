@@ -14,5 +14,6 @@ HECHO !!!
 
 SIGUIENTES PASOS
 NO dejar empezar un combate si todos los sprithar del equipo están con vida a 0. HECHO !!!
-Poner un sitio que al clikcar te cure todos los spirithar.
-HABILITAR los buttons del spirithar menu al iniciar el combate.
+Poner un sitio que al clikcar te cure todos los spirithar. HECHO !!!
+HABILITAR los buttons del spirithar menu al iniciar el combate una vez se recupere la vida. HECHO !!
+ARREGLAR la vida que se le añade al Spirithar porque NO coincide con la de sus stats. HECHO !!!

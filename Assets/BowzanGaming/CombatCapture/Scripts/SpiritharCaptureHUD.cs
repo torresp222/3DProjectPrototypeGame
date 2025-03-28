@@ -20,6 +20,8 @@ public class SpiritharCaptureHUD : MonoBehaviour {
     [SerializeField] private int _spiritharIndex;
     private TextMeshProUGUI _textSpiritharName;
 
+    public Spirithar PlayerSpirithar {  get { return _playerSpirithar; } }
+
     private void Awake() {
         _textSpiritharName = Button.GetComponentInChildren<TextMeshProUGUI>();
         _textSpiritharName.text = "Pruebaaa";
@@ -45,5 +47,10 @@ public class SpiritharCaptureHUD : MonoBehaviour {
     public void DisableButton() {
         Debug.Log($"Deshabilitando button de {_spiritharIndex} - {_textSpiritharName.text}");
         Button.interactable = false;
+    }
+
+    public void EnableButton() {
+        Debug.Log($"HABILITANDO button de {_spiritharIndex} - {_textSpiritharName.text}");
+        Button.interactable = true;
     }
 }
