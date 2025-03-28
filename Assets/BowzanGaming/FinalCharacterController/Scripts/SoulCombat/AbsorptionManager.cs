@@ -8,6 +8,8 @@ public class AbsorptionManager : MonoBehaviour {
 
     private Spirithar _currentAbsorbedSpirithar;
 
+    public int GetCurrenAbsorbSpiritharIndex { get; private set; }
+
     public ElementType CurrentElement => _currentAbsorbedSpirithar?.elementType ?? ElementType.None;
 
     private void Awake() {
@@ -25,6 +27,7 @@ public class AbsorptionManager : MonoBehaviour {
     public void AbsorbTeamSpirithar(int teamIndex) {
         if (teamIndex < 0 || teamIndex >= _playerTeam.TeamCount()) return;
 
+        GetCurrenAbsorbSpiritharIndex = teamIndex;
         _playerTeam.SwitchActiveSpirithar(teamIndex);
         AbsorbSpirithar(_playerTeam.GetActiveSpirithar());
     }

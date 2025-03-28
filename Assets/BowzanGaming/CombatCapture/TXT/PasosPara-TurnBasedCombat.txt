@@ -17,3 +17,16 @@ NO dejar empezar un combate si todos los sprithar del equipo están con vida a 0
 Poner un sitio que al clikcar te cure todos los spirithar. HECHO !!!
 HABILITAR los buttons del spirithar menu al iniciar el combate una vez se recupere la vida. HECHO !!
 ARREGLAR la vida que se le añade al Spirithar porque NO coincide con la de sus stats. HECHO !!!
+
+SIGUIENTES PASOS
+VOLVEMOS AL SOUL COMBAT
+Implementar el menú de Spirithars para absorber. HECHO!!
+Absorber clickando el numero del Spirithar desde el teclado, si no está absorbido. HECHO!!
+
+SIGUIENTES PASOS
+Huir del boos combat soul con escape
+Añadir a la camara de combate un puntero para saber donde disparas
+Quitar que el jugador no rote directamente con la cámara y añadir otro movimiento lateral (cuando estemos en combate soul)
+
+SIGUIENTES POSIBLES PASOS
+Añadir vfx a los projectiles (hacerlos más estéticos)

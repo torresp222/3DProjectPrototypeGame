@@ -226,6 +226,7 @@ public class CombatManager : MonoBehaviour {
             PlayerCamera.SetActive(true);
 
         _playerSpiritharPos = Vector3.zero;
+        PlayerTeam.SwitchActiveSpirithar(0);
         Destroy(_currentSpiritharCombat);
     }
 

@@ -9,15 +9,18 @@ namespace BowzanGaming.FinalCharacterController {
 
         // PlayerSoulCombatInput.cs modifications
         // Add reference to combat handler
-        private PlayerSoulCombatHandler _combatHandler;
+        private PlayerSoulCombatHandler _combatPlayerHandler;
+        [SerializeField] private SoulCombatManager _soulCombatManager;
 
         // Variables para saber qué acción se ha pulsado
         public bool SpellPressed { get; private set; }
         public bool BoostDefensePressed { get; private set; }
         public bool BoostAttackPressed { get; private set; }
+        public bool SpiritharMenuOpen { get; private set; }
+        public int SpiritharSelected { get; private set; }
 
         private void Awake() {
-            _combatHandler = GetComponent<PlayerSoulCombatHandler>();
+            _combatPlayerHandler = GetComponent<PlayerSoulCombatHandler>();
         }
 
         private void OnEnable() {
@@ -53,7 +56,7 @@ namespace BowzanGaming.FinalCharacterController {
             if (SpellPressed) return;
             if (BoostAttackPressed) return;
             BoostDefensePressed = true;
-            _combatHandler.PerformDefenseBoost();
+            _combatPlayerHandler.PerformDefenseBoost();
             Debug.Log("Boost Defense pressed");
         }
 
@@ -62,8 +65,33 @@ namespace BowzanGaming.FinalCharacterController {
             if (SpellPressed) return;
             if (BoostDefensePressed) return;
             BoostAttackPressed = true;
-            _combatHandler.PerformAttackBoost();
+            _combatPlayerHandler.PerformAttackBoost();
             Debug.Log("Boost Attack pressed");
+        }
+
+        public void OnOpenSpiritharMenu(InputAction.CallbackContext context) {
+            if (!context.performed) return;
+
+            SpiritharMenuOpen = !SpiritharMenuOpen;
+        }
+
+        public void OnSelectSpiritharOne(InputAction.CallbackContext context) {
+            if (!context.performed) return;
+            if(!SpiritharMenuOpen) return;
+
+            _soulCombatManager.ChangeSpirithatAbsorbed(0);
+        }
+
+        public void OnSelectSpirithar2(InputAction.CallbackContext context) {
+            if (!context.performed) return;
+            if (!SpiritharMenuOpen) return;
+            _soulCombatManager.ChangeSpirithatAbsorbed(1);
+        }
+
+        public void OnSelectSpirithar3(InputAction.CallbackContext context) {
+            if (!context.performed) return;
+            if (!SpiritharMenuOpen) return;
+            _soulCombatManager.ChangeSpirithatAbsorbed(2);
         }
     }
 

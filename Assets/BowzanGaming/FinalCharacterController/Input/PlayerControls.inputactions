@@ -354,6 +354,42 @@
                     "processors": "",
                     "interactions": "",
                     "initialStateCheck": false
+                },
+                {
+                    "name": "OpenSpiritharMenu",
+                    "type": "Button",
+                    "id": "97f34edd-8272-428b-8d75-f8e5927e85e6",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                },
+                {
+                    "name": "SelectSpiritharOne",
+                    "type": "Button",
+                    "id": "935a9f73-b2d3-4f5a-8677-694636d905b4",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                },
+                {
+                    "name": "SelectSpirithar2",
+                    "type": "Button",
+                    "id": "28b04f8f-37eb-4975-b285-17370804a587",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                },
+                {
+                    "name": "SelectSpirithar3",
+                    "type": "Button",
+                    "id": "b834fa94-4d45-47e0-ae0b-0c0be0e65057",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
                 }
             ],
             "bindings": [
@@ -387,6 +423,50 @@
                     "processors": "",
                     "groups": "",
                     "action": "BoostAttack",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "0e23a388-1b4b-4e6e-8d3d-5de5f64236f7",
+                    "path": "<Mouse>/rightButton",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "OpenSpiritharMenu",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "a0ab22b1-8159-4c03-af91-678d48956d83",
+                    "path": "<Keyboard>/1",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "SelectSpiritharOne",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "d0a1b318-d0d4-4396-9532-659bb7adfd17",
+                    "path": "<Keyboard>/2",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "SelectSpirithar2",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "649e0151-0f19-4d00-ae8d-18836fecfff3",
+                    "path": "<Keyboard>/3",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "SelectSpirithar3",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }

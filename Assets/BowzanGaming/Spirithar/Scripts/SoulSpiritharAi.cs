@@ -103,7 +103,6 @@ public class SoulSpiritharAi : MonoBehaviour
         if (!_alreadyAttacked) {
 
             // Attackcode here
-            Debug.Log("SHOOOT PROJECTILEE");
             _soulSpirithar.ShootProjectile(Player);
 
             _alreadyAttacked = true;

@@ -9,6 +9,7 @@ public class PlayerSoulCombatHandler : MonoBehaviour
 {
     public static event Action OnSpellInstance;
 
+    [Header("References for launch projectile")]
     [SerializeField] private Transform projectileSpawnPoint;
     [SerializeField] private Camera _playerCamera;
 
@@ -27,6 +28,7 @@ public class PlayerSoulCombatHandler : MonoBehaviour
     private void OnDisable() {
         OnSpellInstance -= PerformSpell;
     }
+
     public void SetProjectileInitializeTrue() { OnSpellInstance?.Invoke(); }
 
     public void PerformSpell() {

@@ -9,12 +9,24 @@ public class SoulCombatManager : MonoBehaviour
 {
     public static SoulCombatManager Instance;
 
-    [Header("References")]
-    public GameObject Player;           // Player GO
+    [Header("Player References")]
+    public GameObject Player; // Player GO
+
+    [Header("Combat Manager Capture references")]
     [SerializeField] private CombatManager _combatManager; // Reference to regular CombatManager
+
+    [Header("Soul Combat UI")]
+    [SerializeField] private GameObject _spiritharMenu;
+    public SpiritharCaptureHUD FirstSpiritharButton;
+    public SpiritharCaptureHUD SecondSpiritharButton;
+    public SpiritharCaptureHUD ThirdSpiritharButton;
+    
 
     private AbsorptionManager _absorptionManager;
     private PlayerTeam _playerTeam;
+    private PlayerSoulCombatInput _playerSoulInput;
+
+    private List<SpiritharCaptureHUD> _spiritharCaptureHUDs;
 
     private void Awake() {
         if (Instance == null)
@@ -24,6 +36,9 @@ public class SoulCombatManager : MonoBehaviour
 
         _absorptionManager = Player.GetComponent<AbsorptionManager>();
         _playerTeam = Player.GetComponent<PlayerTeam>();
+        _playerSoulInput = Player.GetComponent<PlayerSoulCombatInput>();
+        _spiritharCaptureHUDs = new List<SpiritharCaptureHUD> { FirstSpiritharButton, SecondSpiritharButton, ThirdSpiritharButton };
+
     }
 
     private void OnEnable() {
@@ -35,15 +50,35 @@ public class SoulCombatManager : MonoBehaviour
         CaptureBall.OnSpiritharSoulCaptured -= StartBossCombat;
     }
 
+    private void Update() {
+        if (_playerSoulInput.SpiritharMenuOpen) {
+            // Open Menu
+            _spiritharMenu.SetActive(true);
+        } else {
+            //close Menu
+            _spiritharMenu.SetActive(false);
+        }
+
+    }
+
     public void StartBossCombat() {
         
         // Disable Simple Action Control and Enable Soul Combat Inputs
         DisableNormalControls();
         InitializePlayerAbsorption();
         InitializeCombatSystem();
+        SetSpiritharMenu();
         // Disable regular combat system
         if (_combatManager != null) _combatManager.enabled = false;
 
+    }
+
+    public void SetSpiritharMenu() {
+        // Recorrer todos los elementos del HUD
+        for (int i = 0; i < _spiritharCaptureHUDs.Count; i++) {
+            Spirithar teamMember = _playerTeam.team[i];
+            _spiritharCaptureHUDs[i].SetUpTextSpiritharNameButton(teamMember, i);
+        }
     }
 
     private void DisableNormalControls() {
@@ -82,6 +117,19 @@ public class SoulCombatManager : MonoBehaviour
         if (combatInput != null) combatInput.enabled = false;
 
         Debug.Log("Soul combat system deactivated");
+    }
+
+    public void ChangeSpirithatAbsorbed(int index) {
+        if(_absorptionManager.GetCurrenAbsorbSpiritharIndex == index && _playerTeam.GetActiveSpiritharIndex() == index) {
+            print("Spirithar ya absorbido");
+            return;
+
+        }
+        if(_playerTeam.team[index] == null)
+            return;
+
+        Debug.Log($"Absorbemos al nuevo spirithar del equipo {_playerTeam.team[index].spiritharName} posición en el equipo {index + 1}");
+        _absorptionManager.AbsorbTeamSpirithar(index);
     }
 
 }

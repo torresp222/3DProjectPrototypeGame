@@ -149,6 +149,22 @@ public class PlayerTeamTracker : MonoBehaviour {
         return -1;
     }
 
+    public bool CheckIfSpiritharHasHealth(int indexSpirithar) {
+        int index = 0;
+        foreach (var slotKey in TrackedSlots) {
+            if (SpiritharStatsTracker.TryGetValue(slotKey, out SpiritharData currentData) ) {
+                if (currentData.TrackCurrentHealth > 0 && index == indexSpirithar) {
+                    return true;
+                }
+            }
+            index += 1;
+
+        }
+
+        return false;
+
+    }
+
 }
 
 [System.Serializable]

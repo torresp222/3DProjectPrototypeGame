@@ -52,17 +52,24 @@ public class PlayerTeam : MonoBehaviour {
     public void SwitchActiveSpirithar(int newIndex) {
         if (newIndex >= 0 && newIndex < team.Count) {
             _activeSpiritharIndex = newIndex;
-            Debug.Log($"Switched to {GetActiveSpirithar().spiritharName}");
+            Debug.Log($"Switched to _activeSpiritharIndex to {_activeSpiritharIndex}");
         }
     }
 
     // Getters
     public Spirithar GetActiveSpirithar() {
+        int indexHealth;
         if (team.Count == 0) {
             Debug.LogError("No Spirithars in team");
             return null;
         }
-        _activeSpiritharIndex = _playerTeamTracker.CheckFirstSpiritharWithHealth();
+        indexHealth = _playerTeamTracker.CheckFirstSpiritharWithHealth();
+        if ( indexHealth != _activeSpiritharIndex && _playerTeamTracker.CheckIfSpiritharHasHealth(_activeSpiritharIndex))
+        {
+            return team[_activeSpiritharIndex];
+        } else {
+            _activeSpiritharIndex = indexHealth;
+        }
         return team[_activeSpiritharIndex];
     }
 

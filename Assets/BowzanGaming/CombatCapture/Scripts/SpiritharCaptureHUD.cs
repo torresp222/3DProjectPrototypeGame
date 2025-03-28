@@ -33,6 +33,7 @@ public class SpiritharCaptureHUD : MonoBehaviour {
             _playerSpirithar = spirithar;
             _spiritharIndex = indexOfTeam;
             _textSpiritharName.text = _playerSpirithar.spiritharName;
+
         } else
             _textSpiritharName.text = "No Spirithar";
         

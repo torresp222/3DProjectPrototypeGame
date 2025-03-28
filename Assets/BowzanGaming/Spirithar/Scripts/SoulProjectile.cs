@@ -12,7 +12,7 @@ public class SoulProjectile : MonoBehaviour
         if (other.CompareTag("Player")) {
             PlayerSoulCombatAndStats playerStats = other.GetComponent<PlayerSoulCombatAndStats>();
             playerStats.TakeDamage(_move.power);
-            Debug.Log("Hit Player");
+/*            Debug.Log("Hit Player");*/
 
             Destroy(gameObject);
 

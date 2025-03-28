@@ -378,6 +378,42 @@ namespace BowzanGaming.FinalCharacterController
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""OpenSpiritharMenu"",
+                    ""type"": ""Button"",
+                    ""id"": ""97f34edd-8272-428b-8d75-f8e5927e85e6"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""SelectSpiritharOne"",
+                    ""type"": ""Button"",
+                    ""id"": ""935a9f73-b2d3-4f5a-8677-694636d905b4"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""SelectSpirithar2"",
+                    ""type"": ""Button"",
+                    ""id"": ""28b04f8f-37eb-4975-b285-17370804a587"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""SelectSpirithar3"",
+                    ""type"": ""Button"",
+                    ""id"": ""b834fa94-4d45-47e0-ae0b-0c0be0e65057"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
                 }
             ],
             ""bindings"": [
@@ -413,6 +449,50 @@ namespace BowzanGaming.FinalCharacterController
                     ""action"": ""BoostAttack"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""0e23a388-1b4b-4e6e-8d3d-5de5f64236f7"",
+                    ""path"": ""<Mouse>/rightButton"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""OpenSpiritharMenu"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""a0ab22b1-8159-4c03-af91-678d48956d83"",
+                    ""path"": ""<Keyboard>/1"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""SelectSpiritharOne"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""d0a1b318-d0d4-4396-9532-659bb7adfd17"",
+                    ""path"": ""<Keyboard>/2"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""SelectSpirithar2"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""649e0151-0f19-4d00-ae8d-18836fecfff3"",
+                    ""path"": ""<Keyboard>/3"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""SelectSpirithar3"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
                 }
             ]
         }
@@ -440,6 +520,10 @@ namespace BowzanGaming.FinalCharacterController
             m_PlayerSoulCombatMap_Spell = m_PlayerSoulCombatMap.FindAction("Spell", throwIfNotFound: true);
             m_PlayerSoulCombatMap_BoostDefense = m_PlayerSoulCombatMap.FindAction("BoostDefense", throwIfNotFound: true);
             m_PlayerSoulCombatMap_BoostAttack = m_PlayerSoulCombatMap.FindAction("BoostAttack", throwIfNotFound: true);
+            m_PlayerSoulCombatMap_OpenSpiritharMenu = m_PlayerSoulCombatMap.FindAction("OpenSpiritharMenu", throwIfNotFound: true);
+            m_PlayerSoulCombatMap_SelectSpiritharOne = m_PlayerSoulCombatMap.FindAction("SelectSpiritharOne", throwIfNotFound: true);
+            m_PlayerSoulCombatMap_SelectSpirithar2 = m_PlayerSoulCombatMap.FindAction("SelectSpirithar2", throwIfNotFound: true);
+            m_PlayerSoulCombatMap_SelectSpirithar3 = m_PlayerSoulCombatMap.FindAction("SelectSpirithar3", throwIfNotFound: true);
         }
 
         public void Dispose()
@@ -698,6 +782,10 @@ namespace BowzanGaming.FinalCharacterController
         private readonly InputAction m_PlayerSoulCombatMap_Spell;
         private readonly InputAction m_PlayerSoulCombatMap_BoostDefense;
         private readonly InputAction m_PlayerSoulCombatMap_BoostAttack;
+        private readonly InputAction m_PlayerSoulCombatMap_OpenSpiritharMenu;
+        private readonly InputAction m_PlayerSoulCombatMap_SelectSpiritharOne;
+        private readonly InputAction m_PlayerSoulCombatMap_SelectSpirithar2;
+        private readonly InputAction m_PlayerSoulCombatMap_SelectSpirithar3;
         public struct PlayerSoulCombatMapActions
         {
             private @PlayerControls m_Wrapper;
@@ -705,6 +793,10 @@ namespace BowzanGaming.FinalCharacterController
             public InputAction @Spell => m_Wrapper.m_PlayerSoulCombatMap_Spell;
             public InputAction @BoostDefense => m_Wrapper.m_PlayerSoulCombatMap_BoostDefense;
             public InputAction @BoostAttack => m_Wrapper.m_PlayerSoulCombatMap_BoostAttack;
+            public InputAction @OpenSpiritharMenu => m_Wrapper.m_PlayerSoulCombatMap_OpenSpiritharMenu;
+            public InputAction @SelectSpiritharOne => m_Wrapper.m_PlayerSoulCombatMap_SelectSpiritharOne;
+            public InputAction @SelectSpirithar2 => m_Wrapper.m_PlayerSoulCombatMap_SelectSpirithar2;
+            public InputAction @SelectSpirithar3 => m_Wrapper.m_PlayerSoulCombatMap_SelectSpirithar3;
             public InputActionMap Get() { return m_Wrapper.m_PlayerSoulCombatMap; }
             public void Enable() { Get().Enable(); }
             public void Disable() { Get().Disable(); }
@@ -723,6 +815,18 @@ namespace BowzanGaming.FinalCharacterController
                 @BoostAttack.started += instance.OnBoostAttack;
                 @BoostAttack.performed += instance.OnBoostAttack;
                 @BoostAttack.canceled += instance.OnBoostAttack;
+                @OpenSpiritharMenu.started += instance.OnOpenSpiritharMenu;
+                @OpenSpiritharMenu.performed += instance.OnOpenSpiritharMenu;
+                @OpenSpiritharMenu.canceled += instance.OnOpenSpiritharMenu;
+                @SelectSpiritharOne.started += instance.OnSelectSpiritharOne;
+                @SelectSpiritharOne.performed += instance.OnSelectSpiritharOne;
+                @SelectSpiritharOne.canceled += instance.OnSelectSpiritharOne;
+                @SelectSpirithar2.started += instance.OnSelectSpirithar2;
+                @SelectSpirithar2.performed += instance.OnSelectSpirithar2;
+                @SelectSpirithar2.canceled += instance.OnSelectSpirithar2;
+                @SelectSpirithar3.started += instance.OnSelectSpirithar3;
+                @SelectSpirithar3.performed += instance.OnSelectSpirithar3;
+                @SelectSpirithar3.canceled += instance.OnSelectSpirithar3;
             }
 
             private void UnregisterCallbacks(IPlayerSoulCombatMapActions instance)
@@ -736,6 +840,18 @@ namespace BowzanGaming.FinalCharacterController
                 @BoostAttack.started -= instance.OnBoostAttack;
                 @BoostAttack.performed -= instance.OnBoostAttack;
                 @BoostAttack.canceled -= instance.OnBoostAttack;
+                @OpenSpiritharMenu.started -= instance.OnOpenSpiritharMenu;
+                @OpenSpiritharMenu.performed -= instance.OnOpenSpiritharMenu;
+                @OpenSpiritharMenu.canceled -= instance.OnOpenSpiritharMenu;
+                @SelectSpiritharOne.started -= instance.OnSelectSpiritharOne;
+                @SelectSpiritharOne.performed -= instance.OnSelectSpiritharOne;
+                @SelectSpiritharOne.canceled -= instance.OnSelectSpiritharOne;
+                @SelectSpirithar2.started -= instance.OnSelectSpirithar2;
+                @SelectSpirithar2.performed -= instance.OnSelectSpirithar2;
+                @SelectSpirithar2.canceled -= instance.OnSelectSpirithar2;
+                @SelectSpirithar3.started -= instance.OnSelectSpirithar3;
+                @SelectSpirithar3.performed -= instance.OnSelectSpirithar3;
+                @SelectSpirithar3.canceled -= instance.OnSelectSpirithar3;
             }
 
             public void RemoveCallbacks(IPlayerSoulCombatMapActions instance)
@@ -777,6 +893,10 @@ namespace BowzanGaming.FinalCharacterController
             void OnSpell(InputAction.CallbackContext context);
             void OnBoostDefense(InputAction.CallbackContext context);
             void OnBoostAttack(InputAction.CallbackContext context);
+            void OnOpenSpiritharMenu(InputAction.CallbackContext context);
+            void OnSelectSpiritharOne(InputAction.CallbackContext context);
+            void OnSelectSpirithar2(InputAction.CallbackContext context);
+            void OnSelectSpirithar3(InputAction.CallbackContext context);
         }
     }
 }
