@@ -36,6 +36,7 @@ namespace BowzanGaming.FinalCharacterController {
             if (PlayerInputManager.Instance?.PlayerControls == null) return;
             PlayerInputManager.Instance.PlayerControls.PlayerSoulCombatMap.Disable();
             PlayerInputManager.Instance.PlayerControls.PlayerSoulCombatMap.RemoveCallbacks(this);
+            print("---- PLAYER SOUL COMBAT INPUT DISABLE ----");
         }
 
         public void SetSpellPressedFalse() { SpellPressed = false; }

@@ -5,7 +5,7 @@ public class CaptureBall : MonoBehaviour {
     // Evento que se disparará al capturar un Spirithar.
     // Se pasa el Spirithar capturado para que el CombatManager sepa con quién iniciar el combate.
     public static event Action<Spirithar> OnSpiritharCaptured;
-    public static event Action OnSpiritharSoulCaptured;
+    public static event Action<Spirithar> OnSpiritharSoulCaptured;
 
     private void OnCollisionEnter(Collision collision) {
         // Comprobamos si el objeto colisionado tiene un componente Spirithar.
@@ -16,9 +16,9 @@ public class CaptureBall : MonoBehaviour {
         // Debug para verificar la colisión
         Debug.Log("Colisión con: " + collidedObject.name + " | Tag: " + collidedObject.tag);
 
-        if (collidedObject.CompareTag("SoulSpirithar")) {
+        if (spirithar != null && collidedObject.CompareTag("SoulSpirithar")) {
             Debug.Log("¡Colisión con SoulSpirithar!");
-            OnSpiritharSoulCaptured?.Invoke();
+            OnSpiritharSoulCaptured?.Invoke(spirithar);
             // Opcionalmente, destruye la bola para no seguir detectando colisiones.
             Destroy(gameObject);
         }

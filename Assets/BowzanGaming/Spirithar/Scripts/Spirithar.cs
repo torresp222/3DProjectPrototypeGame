@@ -5,11 +5,18 @@ using UnityEngine;
 public enum ElementType { Fire, Water, Plant, Earth, None }
 public enum CombatMode { TurnBased, Soul }
 
+public enum EnemyState { Idle, Combat }
+
 public abstract class Spirithar : MonoBehaviour {
     [Header("Combat Settings")]
     [SerializeField] private CombatMode _combatMode = CombatMode.TurnBased;
     [SerializeField] protected Transform AttackLaunch;
+    [SerializeField] protected EnemyState _currentState = EnemyState.Idle;
 
+    public EnemyState CurrentStateMode {
+        get => _currentState;
+        set => _currentState = value;
+    }
     /// <summary>
     /// Current combat mode determining behavior logic
     /// </summary>
@@ -37,7 +44,7 @@ public abstract class Spirithar : MonoBehaviour {
     public bool BaseStatsDone = false;
 
     // Actions Events
-    public static event Action OnTakeDamage;
+    public static event Action<CombatMode> OnTakeDamage;
     public static event Action OnEnemySpiritharNotDead;
     public static event Action OnSpiritharDead;
 
@@ -155,7 +162,7 @@ public abstract class Spirithar : MonoBehaviour {
     /// <summary>
     /// Handles destruction based on combat mode
     /// </summary>
-    protected virtual void Die() {
+    public virtual void Die() {
         Debug.Log(spiritharName + " defeated.");
 
         if (CurrentCombatMode == CombatMode.TurnBased) {
@@ -177,7 +184,7 @@ public abstract class Spirithar : MonoBehaviour {
 
     public bool TakeDamage(float damage) {
         currentHealth -= damage;
-        OnTakeDamage?.Invoke();
+        OnTakeDamage?.Invoke(CurrentCombatMode);
         if (currentHealth <= 0) { 
             return true; } else { return false; }
     }

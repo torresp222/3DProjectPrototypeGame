@@ -24,9 +24,9 @@ Implementar el menú de Spirithars para absorber. HECHO!!
 Absorber clickando el numero del Spirithar desde el teclado, si no está absorbido. HECHO!!
 
 SIGUIENTES PASOS
-Huir del boos combat soul con escape
-Añadir a la camara de combate un puntero para saber donde disparas
-Quitar que el jugador no rote directamente con la cámara y añadir otro movimiento lateral (cuando estemos en combate soul)
+Huir del boos combat soul con escape + controlar que muera el boos spirithar HECHO !!
+Añadir a la camara de combate un puntero para saber donde disparas HECHO !!
+Quitar que el jugador no rote directamente con la cámara y añadir otro movimiento lateral (cuando estemos en combate soul) HECHO !!
 
 SIGUIENTES POSIBLES PASOS
 Añadir vfx a los projectiles (hacerlos más estéticos)

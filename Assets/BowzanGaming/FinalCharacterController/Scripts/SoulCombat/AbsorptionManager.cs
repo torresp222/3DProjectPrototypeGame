@@ -45,4 +45,6 @@ public class AbsorptionManager : MonoBehaviour {
 
         return _currentAbsorbedSpirithar.moves[moveIndex];
     }
+
+    public void SetAbsorbedSpiritharToNone() => _currentAbsorbedSpirithar = null;
 }

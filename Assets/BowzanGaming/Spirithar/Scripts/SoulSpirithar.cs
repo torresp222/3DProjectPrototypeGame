@@ -2,7 +2,7 @@ using TreeEditor;
 using UnityEngine;
 using UnityEngine.AI;
 
-public enum EnemyState { Idle, Combat }
+
 public class SoulSpirithar : Spirithar {
 
     [Header("Combat Shoot Settings")]
@@ -10,11 +10,6 @@ public class SoulSpirithar : Spirithar {
     [SerializeField] private int _shootForwardForce;
     [SerializeField] private int _shootUpForce;
 
-    [SerializeField] private EnemyState _currentState = EnemyState.Idle;
-    public EnemyState CurrentStateMode {
-        get => _currentState;
-        set => _currentState = value;
-    }
     private void Awake() {
         elementType = ElementType.Fire;
         currentHealth = maxHealth;
@@ -26,7 +21,7 @@ public class SoulSpirithar : Spirithar {
         _currentState = EnemyState.Idle;
     }
 
-    private void OnEnable() {
+   /* private void OnEnable() {
         CaptureBall.OnSpiritharSoulCaptured += StartCombatBehavior;
     }
 
@@ -34,9 +29,9 @@ public class SoulSpirithar : Spirithar {
         CaptureBall.OnSpiritharSoulCaptured -= StartCombatBehavior;
     }
 
-    private void StartCombatBehavior() {
+    private void StartCombatBehavior(Spirithar spirithar) {
         _currentState = EnemyState.Combat;
-    }
+    }*/
 
     public void ShootProjectile(Transform objective) {
         //Vector3 shootingPosition = transform.position /*+ Vector3.up*/;

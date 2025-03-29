@@ -288,7 +288,10 @@ public class CombatManager : MonoBehaviour {
         button.EnableButton();
     }
 
-    public void UpdateSpiritharHPSlider() {
+    public void UpdateSpiritharHPSlider(CombatMode combatMode) {
+        if (combatMode == CombatMode.Soul) {
+            return;
+        }
         PlayerTeamTracker.UpdateSpiritharHealthTeamTracked(_playerSpirithar.currentHealth, _currentSpiritharIndex);
         PlayerCombatCaptureHUD.SetHP(PlayerTeamTracker.SpiritharStatsTracker[_keysTeamTracker[_currentSpiritharIndex]].TrackCurrentHealth);
         Debug.Log(_enemySpirithar.currentHealth);
@@ -377,7 +380,7 @@ public class CombatManager : MonoBehaviour {
         DisplayNameSpirithars(playerSpirithar);
 
         // Update health bar
-        UpdateSpiritharHPSlider();
+        UpdateSpiritharHPSlider(CombatMode.TurnBased);
 
         // Display moves of Player Spirithar
         DisplayMovesSpirithars(playerSpirithar);

@@ -45,8 +45,9 @@ namespace BowzanGaming.FinalCharacterController {
 
         private PlayerLocomotionInput _playerLocomotionInput;
         private PlayerActionsInput _playerActionInput;
-        private PlayerSoulCombatInput _playerSoulCombatInput;
+        private PlayerSoulCombatInput _playerSoulCombatInput; 
         private PlayerState _playerState;
+        private PlayerSoulCombatInput _playerSoulInput;
 
         private Vector2 _cameraRotation = Vector2.zero;
         private Vector2 _playerTargetRoation = Vector2.zero;
@@ -69,7 +70,6 @@ namespace BowzanGaming.FinalCharacterController {
             _playerActionInput = GetComponent<PlayerActionsInput>();
             _playerSoulCombatInput = GetComponent<PlayerSoulCombatInput>();
             _playerState = GetComponent<PlayerState>();
-            
 
             _antiBump = sprintSpeed;
             _stepOffset = _characterController.stepOffset;
@@ -208,7 +208,7 @@ namespace BowzanGaming.FinalCharacterController {
             bool isIdling = _playerState.CurrentPlayerMovementState == PlayerMovementState.Idling;
             IsRotatingTotarget = _rotatingToTargetTimer > 0;
             // ROTATE if we're not idling
-            if (!isIdling || isPlayingActionRotatePlayer) {
+            if (!isIdling || isPlayingActionRotatePlayer || _playerSoulCombatInput.enabled == true) {
                 RotatePlayerToTarget();
             }
             // If roation mismatch not within tolerance, or rotate to target is active, ROTATE

@@ -5,6 +5,7 @@ using UnityEngine;
 using UnityEngine.InputSystem;
 using static UnityEditor.Experimental.GraphView.GraphView;
 
+public enum BattleSoulState { NONE, PLAY }
 public class SoulCombatManager : MonoBehaviour
 {
     public static SoulCombatManager Instance;
@@ -17,15 +18,22 @@ public class SoulCombatManager : MonoBehaviour
 
     [Header("Soul Combat UI")]
     [SerializeField] private GameObject _spiritharMenu;
+    [SerializeField] private GameObject _aimGO;
     public SpiritharCaptureHUD FirstSpiritharButton;
     public SpiritharCaptureHUD SecondSpiritharButton;
     public SpiritharCaptureHUD ThirdSpiritharButton;
     
 
+    [Header("State of combate capture")]
+    public BattleSoulState State;
+
+
     private AbsorptionManager _absorptionManager;
     private PlayerTeam _playerTeam;
     private PlayerSoulCombatInput _playerSoulInput;
 
+    private Spirithar _boosSoulSpirithar;
+    private SoulSpiritharAi _playerSoulAi;
     private List<SpiritharCaptureHUD> _spiritharCaptureHUDs;
 
     private void Awake() {
@@ -51,7 +59,7 @@ public class SoulCombatManager : MonoBehaviour
     }
 
     private void Update() {
-        if (_playerSoulInput.SpiritharMenuOpen) {
+        if (_playerSoulInput.SpiritharMenuOpen && State == BattleSoulState.PLAY) {
             // Open Menu
             _spiritharMenu.SetActive(true);
         } else {
@@ -61,8 +69,11 @@ public class SoulCombatManager : MonoBehaviour
 
     }
 
-    public void StartBossCombat() {
-        
+    public void StartBossCombat(Spirithar spirithar) {
+        _boosSoulSpirithar = spirithar;
+        _playerSoulAi = _boosSoulSpirithar.GetComponent<SoulSpiritharAi>();
+        _boosSoulSpirithar.CurrentStateMode = EnemyState.Combat;
+        State = BattleSoulState.PLAY;
         // Disable Simple Action Control and Enable Soul Combat Inputs
         DisableNormalControls();
         InitializePlayerAbsorption();
@@ -70,6 +81,7 @@ public class SoulCombatManager : MonoBehaviour
         SetSpiritharMenu();
         // Disable regular combat system
         if (_combatManager != null) _combatManager.enabled = false;
+        _aimGO.SetActive(true);
 
     }
 
@@ -99,22 +111,29 @@ public class SoulCombatManager : MonoBehaviour
         // transition betweem virtual cameras
         CinemachineManager.Instance.TransitionBetweenPlayerCameras();
 
-        // Enable combat-specific components
-        var combatInput = Player.GetComponent<PlayerSoulCombatInput>();
-        if (combatInput != null) combatInput.enabled = true;
+        // Enable combat-specific components;
+        if (_playerSoulInput != null) _playerSoulInput.enabled = true;
 
         Debug.Log("Soul combat system activated");
     }
 
     public void EndBossCombat() {
+        // transition betweem virtual cameras
+        CinemachineManager.Instance.TransitionBetweenPlayerCameras();
+
         // Restore regular systems
         if (_combatManager != null) _combatManager.enabled = true;
         // Restore normal gameplay state
         var normalControls = Player.GetComponent<PlayerActionsInput>();
         if (normalControls != null) normalControls.enabled = true;
 
-        var combatInput = Player.GetComponent<PlayerSoulCombatInput>();
-        if (combatInput != null) combatInput.enabled = false;
+        if (_playerSoulInput != null) _playerSoulInput.enabled = false;
+
+        _absorptionManager.SetAbsorbedSpiritharToNone();
+        _boosSoulSpirithar.CurrentStateMode = EnemyState.Idle;
+        State = BattleSoulState.NONE;
+        _aimGO.SetActive(false);
+        /*_spiritharMenu.SetActive(false);*/
 
         Debug.Log("Soul combat system deactivated");
     }
