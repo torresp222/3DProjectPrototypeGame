@@ -184,6 +184,9 @@ public abstract class Spirithar : MonoBehaviour {
 
     public bool TakeDamage(float damage) {
         currentHealth -= damage;
+        if (CurrentCombatMode == CombatMode.Soul) {
+            print($"{this.spiritharName} ha recibido dañooooo");
+        }
         OnTakeDamage?.Invoke(CurrentCombatMode);
         if (currentHealth <= 0) { 
             return true; } else { return false; }

@@ -23,4 +23,9 @@ public class CombatCaptureHUD : MonoBehaviour
     public void SetHP(float currentHealth) {
         SpHPSlider.value = currentHealth;
     }
+
+    public void SetInitializeHP(float currentHealth) {
+        SpHPSlider.maxValue = currentHealth;
+        SpHPSlider.value = currentHealth;
+    }
 }

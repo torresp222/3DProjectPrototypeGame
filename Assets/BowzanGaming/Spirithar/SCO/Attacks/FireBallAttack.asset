@@ -19,4 +19,6 @@ MonoBehaviour:
   cooldown: 0
   projectilePrefab: {fileID: 6560030394477371256, guid: 9a73b9c40979d7c41892c9203d71f9ff,
     type: 3}
+  SoulProjectilePrefab: {fileID: 6197219608012567104, guid: 9f1cc76f4b610d547bed463ae0ec4e12,
+    type: 3}
   projectileSpeed: 50

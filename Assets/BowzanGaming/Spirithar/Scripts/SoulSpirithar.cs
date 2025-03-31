@@ -34,12 +34,14 @@ public class SoulSpirithar : Spirithar {
     }*/
 
     public void ShootProjectile(Transform objective) {
+        print("SHOOOOT PROJECTILEEEE");
         //Vector3 shootingPosition = transform.position /*+ Vector3.up*/;
-        GameObject projectile = Instantiate(_projectilePrefab, AttackLaunch.position, Quaternion.identity);
-        projectile.GetComponent<SoulProjectile>().Initialize(this.moves[0]);
-        projectile.GetComponent<Rigidbody>().AddForce(transform.forward * _shootForwardForce, ForceMode.Impulse);
-        projectile.GetComponent<Rigidbody>().AddForce(transform.up * _shootUpForce, ForceMode.Impulse);
-        Destroy(projectile, 1f);
+        GameObject projectile = Instantiate(this.moves[0].SoulProjectilePrefab, AttackLaunch.position, Quaternion.identity);
+        SoulProjectile soulProjectile = projectile.GetComponent<SoulProjectile>();
+        soulProjectile.Initialize(this.moves[0], transform, _shootForwardForce, _shootUpForce);
+        /*projectile.GetComponent<Rigidbody>().AddForce(transform.forward * _shootForwardForce, ForceMode.Impulse);
+        projectile.GetComponent<Rigidbody>().AddForce(transform.up * _shootUpForce, ForceMode.Impulse);*/
+        
     }
 
     public override void PerformMove(SpiritharMove spiritharMove, Spirithar target, bool isSpiritharFromTeam = false) {

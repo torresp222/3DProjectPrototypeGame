@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -19,6 +20,8 @@ public class PlayerSoulCombatAndStats : MonoBehaviour
     private float _attackBoostDuration = 5f;
     private float _defenseBoostDuration = 5f;
 
+    public static event Action<CombatMode> OnTakeDamage;
+
     private void Awake() {
         currentHealth = maxHealth;
         currentAttack = baseAttack;
@@ -28,6 +31,7 @@ public class PlayerSoulCombatAndStats : MonoBehaviour
     public void TakeDamage(float damage) {
         float mitigatedDamage = damage - (currentDefense * 0.3f);
         currentHealth -= Mathf.Max(mitigatedDamage, 5f);
+        OnTakeDamage?.Invoke(CombatMode.Soul);
 
         if (currentHealth <= 0) Die();
     }
@@ -49,5 +53,6 @@ public class PlayerSoulCombatAndStats : MonoBehaviour
 
     private void Die() {
         // Handle death logic
+        Debug.Log("Player dead");
     }
 }

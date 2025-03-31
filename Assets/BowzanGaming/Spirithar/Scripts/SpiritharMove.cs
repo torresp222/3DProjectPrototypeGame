@@ -16,6 +16,7 @@ public class SpiritharMove : ScriptableObject {
 
     [Header("Visuals")]
     public GameObject projectilePrefab;  // Projectile prefab to spawn
+    public GameObject SoulProjectilePrefab;
     /*public GameObject vfx;              // Ability cast VFX
     public GameObject impactVFX;        // Projectile impact VFX*/
     public float projectileSpeed = 10f; // Movement speed of projectile

@@ -18,7 +18,10 @@ public class SoulCombatManager : MonoBehaviour
 
     [Header("Soul Combat UI")]
     [SerializeField] private GameObject _spiritharMenu;
+    [SerializeField] private GameObject _UISoulCombat;
     [SerializeField] private GameObject _aimGO;
+    public CombatCaptureHUD PlayerSoulCombatCaptureHUD;
+    public CombatCaptureHUD EnemySoulCombatCaptureHUD;
     public SpiritharCaptureHUD FirstSpiritharButton;
     public SpiritharCaptureHUD SecondSpiritharButton;
     public SpiritharCaptureHUD ThirdSpiritharButton;
@@ -31,6 +34,7 @@ public class SoulCombatManager : MonoBehaviour
     private AbsorptionManager _absorptionManager;
     private PlayerTeam _playerTeam;
     private PlayerSoulCombatInput _playerSoulInput;
+    private PlayerSoulCombatAndStats _playerSoulCombatAndStats;
 
     private Spirithar _boosSoulSpirithar;
     private SoulSpiritharAi _playerSoulAi;
@@ -45,17 +49,24 @@ public class SoulCombatManager : MonoBehaviour
         _absorptionManager = Player.GetComponent<AbsorptionManager>();
         _playerTeam = Player.GetComponent<PlayerTeam>();
         _playerSoulInput = Player.GetComponent<PlayerSoulCombatInput>();
+        _playerSoulCombatAndStats = Player.GetComponent<PlayerSoulCombatAndStats>();
         _spiritharCaptureHUDs = new List<SpiritharCaptureHUD> { FirstSpiritharButton, SecondSpiritharButton, ThirdSpiritharButton };
+
+        _UISoulCombat.SetActive(false);
 
     }
 
     private void OnEnable() {
         CaptureBall.OnSpiritharSoulCaptured += StartBossCombat;
-        
+        Spirithar.OnTakeDamage += UpdateSpiritharHPSlider;
+        PlayerSoulCombatAndStats.OnTakeDamage += UpdateSpiritharHPSlider;
+
     }
 
     private void OnDisable() {
         CaptureBall.OnSpiritharSoulCaptured -= StartBossCombat;
+        Spirithar.OnTakeDamage -= UpdateSpiritharHPSlider;
+        PlayerSoulCombatAndStats.OnTakeDamage -= UpdateSpiritharHPSlider;
     }
 
     private void Update() {
@@ -74,11 +85,13 @@ public class SoulCombatManager : MonoBehaviour
         _playerSoulAi = _boosSoulSpirithar.GetComponent<SoulSpiritharAi>();
         _boosSoulSpirithar.CurrentStateMode = EnemyState.Combat;
         State = BattleSoulState.PLAY;
+        _UISoulCombat.SetActive(true);
         // Disable Simple Action Control and Enable Soul Combat Inputs
         DisableNormalControls();
         InitializePlayerAbsorption();
         InitializeCombatSystem();
         SetSpiritharMenu();
+        DisplayUISoulCombat();
         // Disable regular combat system
         if (_combatManager != null) _combatManager.enabled = false;
         _aimGO.SetActive(true);
@@ -92,6 +105,22 @@ public class SoulCombatManager : MonoBehaviour
             _spiritharCaptureHUDs[i].SetUpTextSpiritharNameButton(teamMember, i);
         }
     }
+    private void DisplayUISoulCombat() {
+        PlayerSoulCombatCaptureHUD.SetInitializeHP(_playerSoulCombatAndStats.maxHealth);
+        // PlayerSoulCombatCaptureHUD.SetUpCaptureCombatHUD(playerSpirithar);
+        EnemySoulCombatCaptureHUD.SetUpCaptureCombatHUD(_boosSoulSpirithar);
+    }
+
+    public void UpdateSpiritharHPSlider(CombatMode combatMode) {
+        if (combatMode == CombatMode.TurnBased) {
+            return;
+        }
+        //PlayerTeamTracker.UpdateSpiritharHealthTeamTracked(_playerSpirithar.currentHealth, _currentSpiritharIndex);
+        PlayerSoulCombatCaptureHUD.SetHP(_playerSoulCombatAndStats.currentHealth);
+        EnemySoulCombatCaptureHUD.SetHP(_boosSoulSpirithar.currentHealth);
+
+    }
+
 
     private void DisableNormalControls() {
         // Disable normal movement controls
@@ -132,6 +161,7 @@ public class SoulCombatManager : MonoBehaviour
         _absorptionManager.SetAbsorbedSpiritharToNone();
         _boosSoulSpirithar.CurrentStateMode = EnemyState.Idle;
         State = BattleSoulState.NONE;
+        _UISoulCombat.SetActive(false);
         _aimGO.SetActive(false);
         /*_spiritharMenu.SetActive(false);*/
 
@@ -150,5 +180,7 @@ public class SoulCombatManager : MonoBehaviour
         Debug.Log($"Absorbemos al nuevo spirithar del equipo {_playerTeam.team[index].spiritharName} posición en el equipo {index + 1}");
         _absorptionManager.AbsorbTeamSpirithar(index);
     }
+
+    
 
 }
