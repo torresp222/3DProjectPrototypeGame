@@ -120,10 +120,15 @@ public abstract class Spirithar : MonoBehaviour {
         // Asegurarse de que el daño mínimo es, por ejemplo, 1
         damage = Mathf.Max(damage, 20f);
 
-        Debug.Log("El DAMAGE RECIBIDO ES " + damage);
-        bool isDead = target.TakeDamage(damage);
+        GameObject projectile = Instantiate(spiritharMove.projectilePrefab, this.AttackLaunch.position, Quaternion.identity);
+        Projectile projComponent = projectile.GetComponent<Projectile>();
+        projComponent.TurnBasedInitialize(target.transform.position);
+        
 
         yield return new WaitForSeconds(1f);
+        
+        bool isDead = target.TakeDamage(damage);
+        Debug.Log("El DAMAGE RECIBIDO ES " + damage);
 
         if (isDead) {
             if (isSpiritharFromTeam)

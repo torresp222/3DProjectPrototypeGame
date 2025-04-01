@@ -17,8 +17,8 @@ MonoBehaviour:
   moveElementType: 1
   power: 30
   cooldown: 0
-  projectilePrefab: {fileID: 3470177974971178462, guid: 8b2046c1d3900a4469f9ccd122540e4c,
+  projectilePrefab: {fileID: 6228786237502448127, guid: bd635ca30a4679246abd69a450af66ae,
     type: 3}
-  SoulProjectilePrefab: {fileID: 6197219608012567104, guid: 6e7eebf32c77e814b8c26fc9fa1d6010,
+  SoulProjectilePrefab: {fileID: 6228786237502448127, guid: 329d54a640a804c40acde4d8e208bb99,
     type: 3}
   projectileSpeed: 50

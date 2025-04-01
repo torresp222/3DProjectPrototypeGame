@@ -31,4 +31,4 @@ Quitar que el jugador no rote directamente con la cámara y añadir otro movimie
 SIGUIENTES POSIBLES PASOS
 UI Soul combat (bar health boss spirithar and player, name of spirithar) HECHO !!
 Arreglar el hit del proyectil tanto del boss spirithar como del player en el soul combat que no trigger dos veces. HECHO !!
-Añadir vfx a los projectiles (hacerlos más estéticos)
+Añadir vfx a los projectiles (hacerlos más estéticos) HECHO !!
