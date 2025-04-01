@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using TMPro;
@@ -17,6 +18,7 @@ public class AbilitiesCaptureHUD : MonoBehaviour
     private SpiritharMove _spiritharMove;
     private TextMeshProUGUI _textAbility;
 
+    public static Action<SpiritharMove> OnAbilityPress;
     private void Awake() {
         _textAbility = Button.GetComponentInChildren<TextMeshProUGUI>();
         _textAbility.text = "Pruebaaa";
@@ -32,11 +34,15 @@ public class AbilitiesCaptureHUD : MonoBehaviour
 
     public void AbilityMove() {
 
-        if (CombatManager.State != BattleCaptureState.PLAYERTURN || _playerSpirithar.PerformingMove)
+        /*if (CombatManager.State != BattleCaptureState.PLAYERTURN || _playerSpirithar.PerformingMove)
             return;
         // No sé si hacerlo aquí o en CombatManager y si hacerlo o intentar con un Action
         // Pero pasarle a los button una función en el OnClick que sea dinámica. Según el Move que se le pase (lo tenemos en _spiritharMove) hacer el ataque la subida de defensa o subida de poder
-        _playerSpirithar.PerformMove(_spiritharMove, _enemySpirithar); // On click del button hace el performove del spirithar (algo así hay que darle alguna vuelta)
+        _playerSpirithar.PerformMove(_spiritharMove, _enemySpirithar); // On click del button hace el performove del spirithar (algo así hay que darle alguna vuelta)*/
+        if (CombatManager.State != BattleCaptureState.START || _playerSpirithar.PerformingMove)
+            return;
+
+        OnAbilityPress?.Invoke(_spiritharMove);
 
         // Luego manejar los estados de los turnos ESO SI QUE SI EN EL COMBAT MANAGER. Invocar algo para que combat manager maneje los turnos y alomejor compruebe las muertes y demas
     }

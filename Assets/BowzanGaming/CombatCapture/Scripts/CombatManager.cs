@@ -10,7 +10,7 @@ using static PlayerTeamTracker;
 using Random = UnityEngine.Random;
 
 
-public enum BattleCaptureState { START, PLAYERTURN, ENEMYTURN, WON, LOST }
+public enum BattleCaptureState { START, PLAYERTURN, ENEMYTURN }
 
 public class CombatManager : MonoBehaviour {
 
@@ -59,10 +59,14 @@ public class CombatManager : MonoBehaviour {
     [SerializeField] private Vector3 _enemyPosition;
     private Spirithar _playerSpirithar; // Spirithar activo del equipo (instanciado en combate)
     private int _currentSpiritharIndex;
+    private SpiritharMove _currentMove;
     private string[] _keysTeamTracker = { "spiritharOne", "spiritharTwo", "spiritharThree" };
     private GameObject _firstSpiritharTeam;// GameObject "" ""
     [SerializeField]private GameObject _currentSpiritharCombat;
     [SerializeField] private Vector3 _playerSpiritharPos;
+    private int _numOfTurns = 2;
+    private int _numTurn = 0;
+    private bool _combatHasEnded;
 
     
 
@@ -87,7 +91,8 @@ public class CombatManager : MonoBehaviour {
     private void OnEnable() {
         CaptureBall.OnSpiritharCaptured += InitiateCombat;
         Spirithar.OnTakeDamage += UpdateSpiritharHPSlider;
-        Spirithar.OnEnemySpiritharNotDead += ChangeState;
+        AbilitiesCaptureHUD.OnAbilityPress += SetStateTurnCombat;
+        // Spirithar.OnEnemySpiritharNotDead += ChangeState;
         Spirithar.OnSpiritharDead += TeamHealthChecker;
         /*Spirithar.OnSpiritharDead += () => { EnablePlayerControl(); TeamHealthChecker(); };*/
         SpiritharCaptureHUD.OnSpiritharClickToChange += PlaceSpiritharTeamInCombat;
@@ -96,7 +101,8 @@ public class CombatManager : MonoBehaviour {
     private void OnDisable() {
         CaptureBall.OnSpiritharCaptured -= InitiateCombat;
         Spirithar.OnTakeDamage -= UpdateSpiritharHPSlider;
-        Spirithar.OnEnemySpiritharNotDead -= ChangeState;
+        AbilitiesCaptureHUD.OnAbilityPress -= SetStateTurnCombat;
+        //Spirithar.OnEnemySpiritharNotDead -= ChangeState;
         Spirithar.OnSpiritharDead -= TeamHealthChecker;
         /*Spirithar.OnSpiritharDead -= () => { EnablePlayerControl(); TeamHealthChecker(); };*/
         SpiritharCaptureHUD.OnSpiritharClickToChange -= PlaceSpiritharTeamInCombat;
@@ -104,6 +110,7 @@ public class CombatManager : MonoBehaviour {
 
     // Este método se llamará cuando se capture un Spirithar.
     private void InitiateCombat(Spirithar capturedSpirithar) {
+        _combatHasEnded = false;
         if (PlayerTeamTracker.CheckFirstSpiritharWithHealth() < 0) {
             Debug.Log("O no tienes Spirithars o estan todos SIN vida");
             return;
@@ -159,7 +166,7 @@ public class CombatManager : MonoBehaviour {
             CombatMenuGO.SetActive(true);
         }
 
-        State = BattleCaptureState.PLAYERTURN;
+        //State = BattleCaptureState.PLAYERTURN;
 
        
     }
@@ -227,6 +234,8 @@ public class CombatManager : MonoBehaviour {
 
         _playerSpiritharPos = Vector3.zero;
         PlayerTeam.SwitchActiveSpirithar(0);
+        _combatHasEnded = true;
+        State = BattleCaptureState.START;
         Destroy(_currentSpiritharCombat);
     }
 
@@ -299,7 +308,59 @@ public class CombatManager : MonoBehaviour {
 
     }
 
-    public void ChangeState() {
+    private void SetStateTurnCombat(SpiritharMove move) {
+        _currentMove = move;
+
+        if (State == BattleCaptureState.START) {
+            State = GetFastestSpiritharAndChangeState();
+            Debug.Log($"El State seleccionado es {State}");
+        } else
+            return;
+
+        ExecuteNextTurn(State);
+        
+    }
+
+    private void ExecuteNextTurn(BattleCaptureState state) {
+
+        if (_combatHasEnded)
+            return;
+
+        if (_numTurn >= _numOfTurns) {
+            State = BattleCaptureState.START;
+            _numTurn = 0;
+            Debug.Log("Volvemos a elegir");
+            return;
+        }
+
+        switch (state) {
+            case BattleCaptureState.PLAYERTURN:
+                _numTurn++;
+                _playerSpirithar.PerformingMove = false;
+                StartCoroutine(PlayerTurn(_currentMove));
+                break;
+            case BattleCaptureState.ENEMYTURN:
+                _numTurn++;
+                //_enemySpirithar.PerformingMove = false;
+                StartCoroutine(EnemyTurn());
+                break;
+
+
+        }
+
+    }
+    private BattleCaptureState GetFastestSpiritharAndChangeState() {
+        BattleCaptureState[] allowedStates = {
+            BattleCaptureState.PLAYERTURN,
+            BattleCaptureState.ENEMYTURN
+        };
+        BattleCaptureState randomState = allowedStates[Random.Range(0, allowedStates.Length)];
+
+        return _playerSpirithar.baseStats.baseSpeed > _enemySpirithar.baseStats.baseSpeed ? BattleCaptureState.PLAYERTURN:
+               _enemySpirithar.baseStats.baseSpeed > _playerSpirithar.baseStats.baseSpeed ? BattleCaptureState.ENEMYTURN :
+               randomState;
+    }
+    /*public void ChangeState() {
 
         if (State == BattleCaptureState.PLAYERTURN) {
             State = BattleCaptureState.ENEMYTURN;
@@ -307,12 +368,26 @@ public class CombatManager : MonoBehaviour {
             StartCoroutine(EnemyTurn());
         } else 
             return;
+    }*/
+
+    public IEnumerator PlayerTurn(SpiritharMove spiritharMove) {
+        Debug.Log("Turno del player");
+        if (spiritharMove == null) {
+            Debug.LogError($"The Enemy Spirithar {_enemySpirithar} has no abilities");
+            yield break;
+        }
+        _playerSpirithar.PerformMove(spiritharMove, _enemySpirithar);
+        yield return new WaitForSeconds(2f);
+        State = BattleCaptureState.ENEMYTURN;
+        _playerSpirithar.PerformingMove = false;
+        ExecuteNextTurn(State);
+        
+
     }
 
     public IEnumerator EnemyTurn() {
         Debug.Log("Turno del enemigo");
         SpiritharMove move = RandomizeManager.Instance.GetRandomMoveFrom(_enemySpirithar);
-        //_enemySpirithar.moves[Random.Range(0, _enemySpirithar.moves.Length)];
         if (move == null) {
             Debug.LogError($"The Enemy Spirithar {_enemySpirithar} has no abilities");
             yield break;
@@ -320,7 +395,9 @@ public class CombatManager : MonoBehaviour {
         _enemySpirithar.PerformMove(move, _playerSpirithar, PlayerTeamTracker.SpiritharStatsTracker[_keysTeamTracker[_currentSpiritharIndex]].IsTracked);
         yield return new WaitForSeconds(2f);
         State = BattleCaptureState.PLAYERTURN;
-        _playerSpirithar.PerformingMove = false;
+        _enemySpirithar.PerformingMove = false;
+        ExecuteNextTurn(State);
+        
 
     }
 

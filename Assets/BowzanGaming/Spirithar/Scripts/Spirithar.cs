@@ -45,7 +45,7 @@ public abstract class Spirithar : MonoBehaviour {
 
     // Actions Events
     public static event Action<CombatMode> OnTakeDamage;
-    public static event Action OnEnemySpiritharNotDead;
+   // public static event Action OnEnemySpiritharNotDead;
     public static event Action OnSpiritharDead;
 
     public virtual void Initialize() {
@@ -139,7 +139,7 @@ public abstract class Spirithar : MonoBehaviour {
             print("DEADDEAD");
         } else {
             print("Change State");
-            OnEnemySpiritharNotDead?.Invoke();
+            //OnEnemySpiritharNotDead?.Invoke();
         }
 
     }
@@ -151,7 +151,7 @@ public abstract class Spirithar : MonoBehaviour {
         Debug.Log(spiritharName + " se defiende.");
         yield return new WaitForSeconds(1f);
         print("Change State");
-        OnEnemySpiritharNotDead?.Invoke();
+        //OnEnemySpiritharNotDead?.Invoke();
     }
 
     public virtual IEnumerator BoostAttack(SpiritharMove spiritharMove) {
@@ -161,7 +161,7 @@ public abstract class Spirithar : MonoBehaviour {
         Debug.Log(spiritharName + " potencia su ataque.");
         yield return new WaitForSeconds(1f);
         print("Change State");
-        OnEnemySpiritharNotDead?.Invoke();
+        //OnEnemySpiritharNotDead?.Invoke();
     }
 
     /// <summary>
