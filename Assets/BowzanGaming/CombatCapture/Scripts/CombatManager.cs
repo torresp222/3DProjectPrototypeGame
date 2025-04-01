@@ -3,6 +3,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using TMPro;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.UI;
@@ -39,6 +40,7 @@ public class CombatManager : MonoBehaviour {
     [Header("Start Combat Menu")]
     public CombatCaptureHUD PlayerCombatCaptureHUD; // Reference to script that controls ui of combate capture.
     public CombatCaptureHUD EnemyCombatCaptureHUD; // Reference to script that controls ui of combate capture.
+    [SerializeField] private TextMeshProUGUI _textDialog;
     [Header("Abilities Menu Buttons")]
     public AbilitiesCaptureHUD FirstButtonAbility;
     public AbilitiesCaptureHUD SecondButtonAbility;
@@ -154,6 +156,8 @@ public class CombatManager : MonoBehaviour {
         // Deshabilitar controles y la cámara del jugador.
         DisablePlayerControl();
 
+        _textDialog.text = "Choose Action...";
+
         // Activar la cámara de combate.
         if (CombatCamera != null)
             CombatCamera.SetActive(true);
@@ -236,6 +240,7 @@ public class CombatManager : MonoBehaviour {
         PlayerTeam.SwitchActiveSpirithar(0);
         _combatHasEnded = true;
         State = BattleCaptureState.START;
+        _numTurn = 0;
         Destroy(_currentSpiritharCombat);
     }
 
@@ -330,16 +335,19 @@ public class CombatManager : MonoBehaviour {
             State = BattleCaptureState.START;
             _numTurn = 0;
             Debug.Log("Volvemos a elegir");
+            _textDialog.text = "Choose Action...";
             return;
         }
 
         switch (state) {
             case BattleCaptureState.PLAYERTURN:
-                _numTurn++;
-                _playerSpirithar.PerformingMove = false;
+                _textDialog.text = "Player turn";
+               _numTurn++;
+                //_playerSpirithar.PerformingMove = false;
                 StartCoroutine(PlayerTurn(_currentMove));
                 break;
             case BattleCaptureState.ENEMYTURN:
+                _textDialog.text = "Enemy turn";
                 _numTurn++;
                 //_enemySpirithar.PerformingMove = false;
                 StartCoroutine(EnemyTurn());
@@ -360,15 +368,6 @@ public class CombatManager : MonoBehaviour {
                _enemySpirithar.baseStats.baseSpeed > _playerSpirithar.baseStats.baseSpeed ? BattleCaptureState.ENEMYTURN :
                randomState;
     }
-    /*public void ChangeState() {
-
-        if (State == BattleCaptureState.PLAYERTURN) {
-            State = BattleCaptureState.ENEMYTURN;
-            _enemySpirithar.PerformingMove = false;
-            StartCoroutine(EnemyTurn());
-        } else 
-            return;
-    }*/
 
     public IEnumerator PlayerTurn(SpiritharMove spiritharMove) {
         Debug.Log("Turno del player");

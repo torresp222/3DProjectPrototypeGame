@@ -34,5 +34,9 @@ Arreglar el hit del proyectil tanto del boss spirithar como del player en el sou
 Añadir vfx a los projectiles (hacerlos más estéticos) HECHO !!
 
 SIGUIENTES PASOS
-Mejorar los turnos en el combate por turnos con estadística de rapidez para ver quien ataca primero. HECHO !! (falta por arreglar bug que segundo spirithar con el que combato no tiene turno de primeras)
-Añadir algún tipo de UI que indique cuando puedes escoger habilidad,etc.
+Mejorar los turnos en el combate por turnos con estadística de rapidez para ver quien ataca primero. HECHO !! (falta por arreglar bug que segundo spirithar con el que combato no tiene turno de primeras) HECHO !!
+Añadir algún tipo de UI que indique cuando puedes escoger habilidad,etc. HECHO !!
+
+SIGUIENTES PASOS
+Crear un Main Menu que inicie el juego.
+Empezar a plantear el diseño del mini juego con lo que tengo ya creado.
