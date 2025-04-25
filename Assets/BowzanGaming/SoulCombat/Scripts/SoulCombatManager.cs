@@ -10,8 +10,9 @@ public class SoulCombatManager : MonoBehaviour
 {
     public static SoulCombatManager Instance;
 
-    [Header("Player References")]
+    [Header("Object References")]
     public GameObject Player; // Player GO
+    public GameObject GoldenHologram;
 
     [Header("Combat Manager Capture references")]
     [SerializeField] private CombatManager _combatManager; // Reference to regular CombatManager
@@ -86,6 +87,7 @@ public class SoulCombatManager : MonoBehaviour
         _boosSoulSpirithar.CurrentStateMode = EnemyState.Combat;
         State = BattleSoulState.PLAY;
         _UISoulCombat.SetActive(true);
+        GoldenHologram.SetActive(false);
         // Disable Simple Action Control and Enable Soul Combat Inputs
         DisableNormalControls();
         InitializePlayerAbsorption();
@@ -156,7 +158,7 @@ public class SoulCombatManager : MonoBehaviour
         var normalControls = Player.GetComponent<PlayerActionsInput>();
         if (normalControls != null) normalControls.enabled = true;
 
-        if (_playerSoulInput != null) _playerSoulInput.enabled = false;
+        //if (_playerSoulInput != null) _playerSoulInput.enabled = false;
 
         _absorptionManager.SetAbsorbedSpiritharToNone();
         _boosSoulSpirithar.CurrentStateMode = EnemyState.Idle;
@@ -166,6 +168,14 @@ public class SoulCombatManager : MonoBehaviour
         /*_spiritharMenu.SetActive(false);*/
 
         Debug.Log("Soul combat system deactivated");
+
+        if (GameManager.Instance != null) {
+            StartCoroutine(GameManager.Instance.GoldenSpiritharDefeated());
+        } else {
+            Debug.LogError("No se pudo encontrar el GameManager para reportar la victoria.");
+            // Como fallback, podrías cargar la escena directamente aquí, pero es menos limpio
+            // SceneManager.LoadScene("MainMenu"); // Usa el nombre real de tu escena
+        }
     }
 
     public void ChangeSpirithatAbsorbed(int index) {

@@ -375,6 +375,11 @@ public class CombatManager : MonoBehaviour {
             Debug.LogError($"The Enemy Spirithar {_enemySpirithar} has no abilities");
             yield break;
         }
+        if (_playerSpirithar.currentHealth <= 0f) {
+            Debug.Log("Dead before execute a move");
+            ExecuteNextTurn(State);
+            yield break;
+        }
         _playerSpirithar.PerformMove(spiritharMove, _enemySpirithar);
         yield return new WaitForSeconds(2f);
         State = BattleCaptureState.ENEMYTURN;

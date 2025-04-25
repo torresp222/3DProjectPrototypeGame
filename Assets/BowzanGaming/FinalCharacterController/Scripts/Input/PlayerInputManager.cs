@@ -14,6 +14,7 @@ namespace BowzanGaming.FinalCharacterController {
         [Header("PlayerSoulCombat input")]
         public PlayerSoulCombatInput PlayerSoulCombatInput;
         public PlayerActionsInput PlayerActionsInput;
+        public PlayerController PlayerController;
 
         private void Awake() {
             if (Instance != null && Instance != this) {
@@ -22,8 +23,9 @@ namespace BowzanGaming.FinalCharacterController {
             }
 
             Instance = this;
+            PlayerController.enabled = true;
             PlayerSoulCombatInput.enabled = false;
-            DontDestroyOnLoad(gameObject);
+            //DontDestroyOnLoad(gameObject);
         }
 
         private void OnEnable() {

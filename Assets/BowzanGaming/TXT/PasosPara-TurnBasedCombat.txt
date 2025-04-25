@@ -38,5 +38,9 @@ Mejorar los turnos en el combate por turnos con estadística de rapidez para ver
 Añadir algún tipo de UI que indique cuando puedes escoger habilidad,etc. HECHO !!
 
 SIGUIENTES PASOS
-Crear un Main Menu que inicie el juego.
-Empezar a plantear el diseño del mini juego con lo que tengo ya creado.
+Crear un Main Menu que inicie el juego. HECHO !!
+Empezar a plantear el diseño del mini juego con lo que tengo ya creado. HECHO !!
+
+SIGUIENTES PASOS
+Que tarde menos en iniciar la partida al darle a play en MainMenu. HECHO !!
+Que haya unos segundos antes de que vuelva a aparecer el main menu al terminar partida.

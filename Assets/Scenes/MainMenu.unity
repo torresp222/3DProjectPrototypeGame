@@ -524,7 +524,7 @@ MonoBehaviour:
   _fadeImage: {fileID: 0}
   _fadeColor: {r: 0, g: 0, b: 0.54509807, a: 0}
   gameSceneName: MainGame
-  fadeDuration: 1
+  fadeDuration: 0.09
 --- !u!1 &999549913
 GameObject:
   m_ObjectHideFlags: 0

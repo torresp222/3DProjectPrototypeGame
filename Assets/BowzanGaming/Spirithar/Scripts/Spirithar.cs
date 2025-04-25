@@ -10,7 +10,7 @@ public enum EnemyState { Idle, Combat }
 public abstract class Spirithar : MonoBehaviour {
     [Header("Combat Settings")]
     [SerializeField] private CombatMode _combatMode = CombatMode.TurnBased;
-    [SerializeField] protected Transform AttackLaunch;
+    [SerializeField] public Transform AttackLaunch;
     [SerializeField] protected EnemyState _currentState = EnemyState.Idle;
 
     public EnemyState CurrentStateMode {
