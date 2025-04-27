@@ -44,3 +44,12 @@ Empezar a plantear el diseño del mini juego con lo que tengo ya creado. HECHO !
 SIGUIENTES PASOS
 Que tarde menos en iniciar la partida al darle a play en MainMenu. HECHO !!
 Que haya unos segundos antes de que vuelva a aparecer el main menu al terminar partida.
+
+SIGUIENTES PASOS
+Mejorar rotación de soul spirithar (golden). HECHO !!
+Lanzamiento del proyectil del soul Spirithar en buena dirección pese a la rotación de este. HECHO!!
+
+SIGUIENTES PASOS
+Generar zonas de spawn de spirithar por turnos. HECHO !! (un par, se pueden añadir más)
+Controlar que no incie combate si no tenemos sprithars a pelear. HECHO !!
+Mostrar los spirithars del equipo y sus vidas. 

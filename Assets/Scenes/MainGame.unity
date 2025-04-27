@@ -1622,6 +1622,37 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 250240479}
   m_Mesh: {fileID: 10206, guid: 0000000000000000e000000000000000, type: 0}
+--- !u!1 &259014250
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 259014251}
+  m_Layer: 0
+  m_Name: Zona2
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &259014251
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 259014250}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 389.9, y: 76.76, z: 86.7}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 1364465331}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &299603878
 GameObject:
   m_ObjectHideFlags: 0
@@ -2090,6 +2121,7 @@ GameObject:
   m_Component:
   - component: {fileID: 365683507}
   - component: {fileID: 365683506}
+  - component: {fileID: 365683508}
   m_Layer: 0
   m_Name: GameManager
   m_TagString: Untagged
@@ -2129,6 +2161,36 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &365683508
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 365683505}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ba82805183db64d4492ec4b3f6608cf2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  zones:
+  - zoneCenter: {fileID: 1214339908}
+    spawnRadius: 8
+    maxSpirithars: 5
+    spiritharPrefabs:
+    - {fileID: 3981275660510981942, guid: c5c216d7cb5dd6643aa9c6471722f4ac, type: 3}
+    raycastHeight: 100
+    yOffset: 0.4
+  - zoneCenter: {fileID: 259014251}
+    spawnRadius: 8
+    maxSpirithars: 5
+    spiritharPrefabs:
+    - {fileID: 2114751570078877259, guid: bc2f3426580425247b490be030869d08, type: 3}
+    raycastHeight: 100
+    yOffset: 0.4
+  terrainLayer:
+    serializedVersion: 2
+    m_Bits: 8
 --- !u!1 &410087039
 GameObject:
   m_ObjectHideFlags: 0
@@ -2568,6 +2630,37 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 465911817}
   m_CullTransparentMesh: 1
+--- !u!1 &467850183
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 467850184}
+  m_Layer: 0
+  m_Name: GameObject
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &467850184
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 467850183}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 339.6607, y: 78.59931, z: 93.20949}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &498006327
 GameObject:
   m_ObjectHideFlags: 0
@@ -2904,6 +2997,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: WaterSpirithar
+      objectReference: {fileID: 0}
+    - target: {fileID: 2114751570078877259, guid: bc2f3426580425247b490be030869d08,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -4195,6 +4293,7 @@ Transform:
   - {fileID: 1945014365}
   - {fileID: 1359982010}
   - {fileID: 673690161}
+  - {fileID: 1364465331}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &711105971
@@ -8628,6 +8727,7 @@ MonoBehaviour:
   Player: {fileID: 1090548296}
   GoldenHologram: {fileID: 2127735627}
   _combatManager: {fileID: 1262541761}
+  PlayerTeamTracker: {fileID: 1090548347}
   _spiritharMenu: {fileID: 519405338}
   _UISoulCombat: {fileID: 1879832868}
   _aimGO: {fileID: 17244538}
@@ -9019,6 +9119,37 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 2127735628}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &1214339907
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1214339908}
+  m_Layer: 0
+  m_Name: Zona1
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1214339908
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1214339907}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 341.65, y: 78.92, z: 107.49}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 1364465331}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1250377644
 GameObject:
@@ -10107,6 +10238,39 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1360748448}
   m_CullTransparentMesh: 1
+--- !u!1 &1364465330
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1364465331}
+  m_Layer: 0
+  m_Name: ZONAS DE SPAWN
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1364465331
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1364465330}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children:
+  - {fileID: 1214339908}
+  - {fileID: 259014251}
+  m_Father: {fileID: 703264258}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1367071403
 GameObject:
   m_ObjectHideFlags: 0
@@ -11289,7 +11453,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: -37.838867, y: -371}
+  m_AnchoredPosition: {x: -37.838867, y: -370.99997}
   m_SizeDelta: {x: -1349.8959, y: -759.2593}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1566768471
@@ -11920,6 +12084,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: FireSpirithar
+      objectReference: {fileID: 0}
+    - target: {fileID: 3981275660510981942, guid: c5c216d7cb5dd6643aa9c6471722f4ac,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 6133543085651824141, guid: c5c216d7cb5dd6643aa9c6471722f4ac,
         type: 3}
@@ -14250,9 +14419,9 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2127735627}
   serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 17.58, z: 0}
-  m_LocalScale: {x: 5.84, y: 5.84, z: 5.84}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: 5.8600006, z: 0}
+  m_LocalScale: {x: 1.9466667, y: 1.9466667, z: 1.9466667}
   m_ConstrainProportionsScale: 1
   m_Children:
   - {fileID: 1367071404}
@@ -14707,16 +14876,16 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 5649851571247053195}
   serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 1, z: 0, w: 0}
-  m_LocalPosition: {x: 445.1, y: 74.05, z: 202.71}
-  m_LocalScale: {x: 2.8175983, y: 2.8175983, z: 2.8175983}
-  m_ConstrainProportionsScale: 0
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 398.9, y: 77.31, z: 147.7}
+  m_LocalScale: {x: 3, y: 3, z: 3}
+  m_ConstrainProportionsScale: 1
   m_Children:
   - {fileID: 1497856810154608557}
   - {fileID: 16079584}
   - {fileID: 2127735628}
   m_Father: {fileID: 0}
-  m_LocalEulerAnglesHint: {x: 0, y: 180, z: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!4 &3979790111386203142
 Transform:
   m_ObjectHideFlags: 0
@@ -14985,6 +15154,7 @@ MonoBehaviour:
     type: 3}
   _shootForwardForce: 30
   _shootUpForce: 1
+  _spiritharAi: {fileID: 0}
 --- !u!54 &5666030685738389323
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -15207,6 +15377,11 @@ PrefabInstance:
       propertyPath: _captureBallLauncher
       value: 
       objectReference: {fileID: 93903568}
+    - target: {fileID: 7113764850641399232, guid: cef6326ee91964b4b865b741618479c7,
+        type: 3}
+      propertyPath: CameraCollisionFilter.m_Bits
+      value: 9
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects:
@@ -15335,10 +15510,11 @@ SceneRoots:
   - {fileID: 1262541760}
   - {fileID: 517524676}
   - {fileID: 1974687035}
-  - {fileID: 3185914106228119728}
   - {fileID: 1150021699}
   - {fileID: 1793031779}
   - {fileID: 1285399224}
   - {fileID: 1579278789}
   - {fileID: 789277745}
   - {fileID: 365683507}
+  - {fileID: 3185914106228119728}
+  - {fileID: 467850184}

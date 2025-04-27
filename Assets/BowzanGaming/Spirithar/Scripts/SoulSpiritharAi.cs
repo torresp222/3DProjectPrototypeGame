@@ -42,7 +42,7 @@ public class SoulSpiritharAi : MonoBehaviour {
 
         // Es buena idea asegurarse de que el agente puede rotar al inicio
         if (_agent != null) {
-            _agent.updateRotation = true;
+            _agent.updateRotation = false;
         }
 
         if (Player != null && PlayerAimTarget == null) {
@@ -73,28 +73,67 @@ public class SoulSpiritharAi : MonoBehaviour {
         } else { // Si no está en modo Combate
             Patroling();
         }
+
+        HandleRotation();
+        if (_agent.updateRotation) Debug.Log("Update rotaatiooon");
+    }
+
+    void HandleRotation() {
+        Quaternion targetRotation;
+
+        // Si el jugador está a la vista, mirar hacia él (con ajuste vertical)
+        if (PlayerInSightRange && Player != null && _soulSpirithar.CurrentStateMode == EnemyState.Combat) {
+            Vector3 targetPosition;
+            if (PlayerAimTarget != null) {
+                targetPosition = PlayerAimTarget.position;
+
+            } else {
+                targetPosition = Player.position + (Vector3.up * _aimHeightOffset);
+
+            }
+
+            Vector3 directionToPlayer = targetPosition - transform.position;
+            //Debug.Log($"{directionToPlayer} direction of Spirithar to Player and magnitud of dir {directionToPlayer.sqrMagnitude}");
+            // Solo calcular rotación si la dirección no es cero
+            if (directionToPlayer.sqrMagnitude > 0.001f) {
+                // --- PRUEBA CON LOOKAT ---
+                // Comenta el bloque Slerp de abajo y descomenta esta línea:
+                //Debug.Log($"[{Time.frameCount}] Forzando LookAt hacia: {targetPosition}");
+                transform.LookAt(targetPosition);
+                // --- FIN PRUEBA LOOKAT ---
+
+                /*targetRotation = Quaternion.LookRotation(directionToPlayer);
+
+                // Aplicar Slerp solo si el ángulo es suficiente (evita jitter)
+                float angleDifference = Quaternion.Angle(transform.rotation, targetRotation);
+                if (angleDifference > _minRotationAngleThreshold) {
+                    transform.rotation = Quaternion.Slerp(transform.rotation, targetRotation, _rotationSpeed * Time.deltaTime);
+                    
+                    if (_agent.updateRotation) Debug.Log("Update Rotation Agent");
+                }*/
+                // Si el ángulo es pequeño, no rotamos, manteniendo la estabilidad.
+
+            } // Si la dirección es cero, no hacemos nada, mantenemos rotación actual.
+
+        }
+        // Si el jugador NO está a la vista, mirar en la dirección del movimiento del agente
+        else if (_agent != null && _agent.velocity.sqrMagnitude > 0.1f) // Comprobar si se está moviendo
+        {
+            Vector3 directionOfMovement = _agent.velocity.normalized;
+            targetRotation = Quaternion.LookRotation(directionOfMovement);
+            // Aquí podríamos usar un Slerp más rápido o directo si queremos que se alinee rápido con el movimiento
+            transform.rotation = Quaternion.Slerp(transform.rotation, targetRotation, _rotationSpeed * Time.deltaTime);
+        }
+        // Si no está a la vista y no se mueve, simplemente mantiene su rotación actual.
     }
 
 
     private void Patroling() {
         // --- Reactivar Agente ---
-        if (_agent != null && !_agent.enabled) {
-            _agent.enabled = true;
-            // Asegurarse de que puede moverse y rotar de nuevo
+        if (_agent != null && _agent.isStopped) {
+            // Asegurarse de que puede moverse
             _agent.isStopped = false;
-            _agent.updateRotation = true;
         }
-        //------------------------
-        /*// Asegurarse de que el NavMeshAgent controle la rotación al patrullar
-        if (_agent != null && !_agent.updateRotation) {
-            _agent.updateRotation = true;
-        }
-        if (_agent != null && !_agent.isStopped) { // Si se estaba moviendo, que siga
-                                                   // No es necesario detenerlo aquí si ya se está moviendo a WalkPoint
-        } else if (_agent != null) {
-            _agent.isStopped = false; // Asegurarse de que puede moverse
-        }*/
-
 
         if (!_walkPointSet) SearchWalkPoint();
 
@@ -116,37 +155,24 @@ public class SoulSpiritharAi : MonoBehaviour {
         // Comprobar si el punto es válido en el NavMesh
         NavMeshHit hit;
         if (NavMesh.SamplePosition(WalkPoint, out hit, 5.0f, NavMesh.AllAreas)) {
-            Debug.Log("Entro EN EL SAMPLE POSITION");
             // Usar el punto encontrado en el NavMesh más cercano
             WalkPoint = hit.position;
-            // Comprobar si hay suelo debajo (opcional si SamplePosition es suficiente)
+            _walkPointSet = true;
+           /* // Comprobar si hay suelo debajo (opcional si SamplePosition es suficiente)
             if (Physics.Raycast(WalkPoint + Vector3.up * 0.5f, Vector3.down, 1f, WhatIsGround)) {
-                Debug.Log("Entro a poner el Walk Point Set");
-                _walkPointSet = true;
-            }
+                
+            }*/
         } else {
-            Debug.Log("Entro a QUITAR el Walk Point Set");
             // No se encontró un punto válido cerca, intentar de nuevo en el próximo frame
             _walkPointSet = false;
         }
     }
 
     private void ChasePlayer() {
-        // --- Reactivar Agente ---
-        if (_agent != null && !_agent.enabled) {
-            _agent.enabled = true;
-            // Asegurarse de que puede moverse y rotar de nuevo
-            _agent.isStopped = false;
-            _agent.updateRotation = true;
-        }
-        //------------------------
-        // Asegurarse de que el NavMeshAgent controle la rotación al perseguir
-        /*if (_agent != null && !_agent.updateRotation) {
-            _agent.updateRotation = true;
-        }
+        // Asegurarse de que el agente PUEDE moverse
         if (_agent != null && _agent.isStopped) {
-            _agent.isStopped = false; // Asegurarse de que puede moverse
-        }*/
+            _agent.isStopped = false;
+        }
 
         if (Player != null && _agent != null) {
             _agent.SetDestination(Player.position);
@@ -154,22 +180,23 @@ public class SoulSpiritharAi : MonoBehaviour {
     }
 
     private void AttackPlayer() {
-        /*// --- ¡Importante! Detener al agente y SU rotación ---
-        if (_agent != null) {
-            if (!_agent.isStopped) _agent.isStopped = true; // Detener movimiento
-            if (_agent.updateRotation) _agent.updateRotation = false; // Detener rotación del agente
+        // Detener el MOVIMIENTO del agente
+        if (_agent != null && !_agent.isStopped) {
+            _agent.isStopped = true;
+            // Opcional: Limpiar la ruta actual para evitar que intente moverse al detenerse
+            //_agent.ResetPath();
         }
-        //----------------------------------------------------*/
-        if (_agent != null && _agent.enabled) {
+
+        /*if (_agent != null && _agent.enabled) {
             // Es importante detenerlo ANTES de desactivarlo si estaba en movimiento
             if (!_agent.isStopped) _agent.isStopped = true;
             _agent.enabled = false;
-        }
-        //-------------------------
+        }*/
+
 
         if (Player == null) return; // Salir si no hay jugador
                                     //    Súmale el vector 'arriba' (Vector3.up) escalado por tu offset
-        Vector3 targetAimPosition;
+      /*  Vector3 targetAimPosition;
         // --- DEBUG PlayerAimTarget ---
         if (PlayerAimTarget == null) {
             Debug.LogError($"[{Time.frameCount}] PlayerAimTarget is NULL. Attempting fallback.");
@@ -212,7 +239,7 @@ public class SoulSpiritharAi : MonoBehaviour {
             }
             // Si el ángulo es muy pequeño, no hacemos nada, manteniendo la rotación actual estable.
             //-----------------------------------------
-        }
+        }*/
 
 
         // Lógica de ataque
@@ -245,8 +272,8 @@ public class SoulSpiritharAi : MonoBehaviour {
     // Es buena práctica asegurarse de que el agente se detiene si el objeto se desactiva
     private void OnDisable() {
         if (_agent != null && _agent.isOnNavMesh) {
-            _agent.isStopped = true;
-            _agent.updateRotation = true; // Restaurar por si acaso
+            /*_agent.isStopped = true;
+            _agent.updateRotation = true; // Restaurar por si acaso*/
         }
     }
 

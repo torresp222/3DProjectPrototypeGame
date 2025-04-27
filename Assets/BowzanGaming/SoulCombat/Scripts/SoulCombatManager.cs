@@ -16,6 +16,7 @@ public class SoulCombatManager : MonoBehaviour
 
     [Header("Combat Manager Capture references")]
     [SerializeField] private CombatManager _combatManager; // Reference to regular CombatManager
+    public PlayerTeamTracker PlayerTeamTracker;
 
     [Header("Soul Combat UI")]
     [SerializeField] private GameObject _spiritharMenu;
@@ -82,6 +83,10 @@ public class SoulCombatManager : MonoBehaviour
     }
 
     public void StartBossCombat(Spirithar spirithar) {
+        if (PlayerTeamTracker.CheckFirstSpiritharWithHealth() < 0) {
+            Debug.Log("O no tienes Spirithars o estan todos SIN vida");
+            return;
+        }
         _boosSoulSpirithar = spirithar;
         _playerSoulAi = _boosSoulSpirithar.GetComponent<SoulSpiritharAi>();
         _boosSoulSpirithar.CurrentStateMode = EnemyState.Combat;
