@@ -52,4 +52,8 @@ Lanzamiento del proyectil del soul Spirithar en buena dirección pese a la rotac
 SIGUIENTES PASOS
 Generar zonas de spawn de spirithar por turnos. HECHO !! (un par, se pueden añadir más)
 Controlar que no incie combate si no tenemos sprithars a pelear. HECHO !!
-Mostrar los spirithars del equipo y sus vidas. 
+Mostrar los spirithars del equipo y sus vidas. HECHO !!
+
+SIGUIENTES PASOS
+Añadir algo de audio.
+Ver algún bug (Si atacas y luego intentas lanzar la bola de captura se queda glicheado).

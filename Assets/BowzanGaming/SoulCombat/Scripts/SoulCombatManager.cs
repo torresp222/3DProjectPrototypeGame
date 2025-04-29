@@ -27,7 +27,10 @@ public class SoulCombatManager : MonoBehaviour
     public SpiritharCaptureHUD FirstSpiritharButton;
     public SpiritharCaptureHUD SecondSpiritharButton;
     public SpiritharCaptureHUD ThirdSpiritharButton;
-    
+
+    [Header("UI Team Panel")]
+    [Tooltip("Panel de la UI del equipo de Spirithars")]
+    public GameObject TeamPanel;
 
     [Header("State of combate capture")]
     public BattleSoulState State;
@@ -99,6 +102,7 @@ public class SoulCombatManager : MonoBehaviour
         InitializeCombatSystem();
         SetSpiritharMenu();
         DisplayUISoulCombat();
+        if (TeamPanel != null) TeamPanel.SetActive(false);
         // Disable regular combat system
         if (_combatManager != null) _combatManager.enabled = false;
         _aimGO.SetActive(true);
@@ -170,6 +174,7 @@ public class SoulCombatManager : MonoBehaviour
         State = BattleSoulState.NONE;
         _UISoulCombat.SetActive(false);
         _aimGO.SetActive(false);
+        if (TeamPanel != null) TeamPanel.SetActive(true);
         /*_spiritharMenu.SetActive(false);*/
 
         Debug.Log("Soul combat system deactivated");

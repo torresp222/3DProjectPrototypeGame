@@ -40,6 +40,9 @@ public class ZoneSpawner : MonoBehaviour {
                     spawnPosition.z
                 );
 
+                // Dentro del bucle de spawn, antes del Instantiate:
+                Quaternion randomRotation = Quaternion.Euler(0, Random.Range(0, 360f), 0);
+
                 if (Physics.Raycast(rayStart, Vector3.down, out RaycastHit hit, Mathf.Infinity, terrainLayer)) {
                     spawnPosition.y = hit.point.y + zone.yOffset;
                 } else {
@@ -48,7 +51,7 @@ public class ZoneSpawner : MonoBehaviour {
                 }
 
                 GameObject selectedPrefab = zone.spiritharPrefabs[Random.Range(0, zone.spiritharPrefabs.Count)];
-                Instantiate(selectedPrefab, spawnPosition, Quaternion.identity);
+                Instantiate(selectedPrefab, spawnPosition, randomRotation);
             }
         }
     }

@@ -6,6 +6,7 @@ using System.Linq;
 using TMPro;
 using UnityEngine;
 using UnityEngine.InputSystem;
+using UnityEngine.Rendering;
 using UnityEngine.UI;
 using static PlayerTeamTracker;
 using Random = UnityEngine.Random;
@@ -20,8 +21,15 @@ public class CombatManager : MonoBehaviour {
     [Header("Configuración de Combate")]
     [Tooltip("Distancia entre el Spirithar salvaje y el del jugador")]
     public float CombatDistance = 5f;
+    [Tooltip("Layer del terreno para filtrar el raycast")]
+    public LayerMask TerrainLayer;
+    public float yOffset = 0.4f;
     [Tooltip("Offset para posicionar al jugador detrás de su Spirithar (en espacio local)")]
     public Vector3 PlayerOffset = new Vector3(0, 0, -2f);
+
+    [Header("UI Team Panel")]
+    [Tooltip("Panel de la UI del equipo de Spirithars")]
+    public GameObject TeamPanel; 
 
     [Header("Cámaras")]
     public GameObject CombatCamera;   // Cámara exclusiva para el combate
@@ -124,6 +132,7 @@ public class CombatManager : MonoBehaviour {
             AbilitiesMenu.SetActive(false);
         if (SpiritharMenu != null)
             SpiritharMenu.SetActive(false);
+        if(TeamPanel!=null) TeamPanel.SetActive(false);
 
         CheckIfButtonInteractableAndSpiritharAlive();
         StartCombat(capturedSpirithar);
@@ -232,6 +241,7 @@ public class CombatManager : MonoBehaviour {
             CombatCamera.SetActive(false);
         if (CombatCaptureUI != null)
             CombatCaptureUI.SetActive(false);
+        if (TeamPanel != null) TeamPanel.SetActive(true);
 
         if (PlayerCamera != null)
             PlayerCamera.SetActive(true);
@@ -407,7 +417,7 @@ public class CombatManager : MonoBehaviour {
 
     // Logic for changing and placing spirithar in turn based combat
     private void PlaceSpiritharTeamInCombat(GameObject spiritharGO, int index) {
-
+        
         if (_currentSpiritharCombat == spiritharGO)
             return;
 
@@ -418,6 +428,8 @@ public class CombatManager : MonoBehaviour {
 
         Vector3 direction = -_enemySpirithar.transform.forward;
         Vector3 playerSpiritharPos = _enemyPosition + direction * CombatDistance;
+        float ySpawn = CalculateYAxisForPlayerSpirithar(playerSpiritharPos);
+        playerSpiritharPos.y = ySpawn;
         if (_playerSpiritharPos == Vector3.zero)
             _playerSpiritharPos = playerSpiritharPos;
         //GameObject playerSpiritharGO
@@ -442,15 +454,22 @@ public class CombatManager : MonoBehaviour {
         // Posicionar al _enemySpirithar: se mantiene en su posición actual.
         // Posicionar al playerSpirithar: se coloca a una distancia CombatDistance del enemigo, en dirección opuesta al frente del enemigo.
         
-        playerSpirithar.transform.position = _playerSpiritharPos;
+        //playerSpirithar.transform.position = _playerSpiritharPos;
         // Hacer que el Spirithar del jugador mire al enemigo y viceversa
         _enemySpirithar.transform.LookAt(_playerSpiritharPos);
         playerSpirithar.transform.LookAt(_enemyPosition);
 
         // Posicionar al jugador detrás de su Spirithar utilizando el offset (convertido de local a global).
         Vector3 globalPlayerOffset = playerSpirithar.transform.TransformDirection(PlayerOffset);
+        Debug.Log($"GLOBAL PLAYER OFFSET {globalPlayerOffset} y Spirithar trnsform pos {playerSpirithar.transform.position}");
         Player.transform.position = playerSpirithar.transform.position + globalPlayerOffset;
         Player.transform.LookAt(_enemyPosition);
+        // reset  rotation of player in x and z to not break the rotation when the combat is finish
+        Player.transform.eulerAngles = new Vector3(
+            0,
+            Player.transform.eulerAngles.y,
+            0
+        );
 
         Debug.Log("Combate iniciado: " + playerSpirithar.spiritharName + " vs " + _enemySpirithar.spiritharName);
 
@@ -466,6 +485,27 @@ public class CombatManager : MonoBehaviour {
         // Display moves of Player Spirithar
         DisplayMovesSpirithars(playerSpirithar);
 
+    }
+
+    public float CalculateYAxisForPlayerSpirithar(Vector3 spawnPosition) {
+        float raycastHeight = 100f;
+
+        Vector3 rayStart = new Vector3(
+                   spawnPosition.x,
+                   raycastHeight,
+                   spawnPosition.z
+               );
+
+        // Dentro del bucle de spawn, antes del Instantiate:
+        Quaternion randomRotation = Quaternion.Euler(0, Random.Range(0, 360f), 0);
+
+        if (Physics.Raycast(rayStart, Vector3.down, out RaycastHit hit, Mathf.Infinity, TerrainLayer)) {
+            spawnPosition.y = hit.point.y + yOffset;
+        } else {
+            Debug.LogWarning("No se detectó terreno, usando altura por defecto");
+            spawnPosition.y = Terrain.activeTerrain.SampleHeight(spawnPosition) + yOffset;
+        }
+        return spawnPosition.y;
     }
 
     public void CheckDisableButtonsSpiritharMenu() {

@@ -31,7 +31,7 @@ public class PlayerTeam : MonoBehaviour {
                 team[i] = newSpirithar;
                 baseStats = newSpirithar.SetGetFirstStats();
                 Debug.Log($"Replaced slot {i} with {newSpirithar.spiritharName}");
-                if (_playerTeamTracker.AddNewSpiritharTeamTracked(baseStats, baseStats.baseHealth))
+                if (_playerTeamTracker.AddNewSpiritharTeamTracked(baseStats, baseStats.baseHealth, newSpirithar.spiritharName))
                     Debug.Log("Tracked");
                 else {
                     Debug.LogWarning("No se ha podido trackear el spirithar añadido");

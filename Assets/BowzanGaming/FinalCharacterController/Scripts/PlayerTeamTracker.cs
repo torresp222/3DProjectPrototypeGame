@@ -1,9 +1,14 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Globalization;
 using UnityEngine;
 
 public class PlayerTeamTracker : MonoBehaviour {
+
+    public static event Action<int> OnSpiritharAdded; // Índice del slot
+    public static event Action<int, float> OnSpiritharHealthUpdated; // Índice y nueva salud
+
     [SerializeField]
     private List<SerializableSpiritharData> _serializedData = new List<SerializableSpiritharData> {
         new SerializableSpiritharData { key = "spiritharOne" },
@@ -14,6 +19,8 @@ public class PlayerTeamTracker : MonoBehaviour {
     private PlayerTeam _playrTeam;
     [System.Serializable]
     public struct SpiritharData {
+        public string TrackSpiritharName;
+        public float TrackMaxHealth;
         public float TrackCurrentHealth;
         public SpiritharBaseStats TrackBaseStat;
         public bool IsTracked;
@@ -33,6 +40,8 @@ public class PlayerTeamTracker : MonoBehaviour {
 
         var defaultStats = ScriptableObject.CreateInstance<SpiritharBaseStats>();
         SpiritharData data = new() {
+            TrackSpiritharName = "",
+            TrackMaxHealth = 0f,
             TrackCurrentHealth = 0f,
             TrackBaseStat = defaultStats,
             IsTracked = false
@@ -48,6 +57,8 @@ public class PlayerTeamTracker : MonoBehaviour {
         foreach (var kvp in SpiritharStatsTracker) {
             _serializedData.Add(new SerializableSpiritharData {
                 key = kvp.Key,
+                trackSpiritharName = kvp.Value.TrackSpiritharName,
+                trackMaxHealth = kvp.Value.TrackMaxHealth,
                 trackCurrentHealth = kvp.Value.TrackCurrentHealth,
                 trackBaseStat = kvp.Value.TrackBaseStat,
                 isTracked = kvp.Value.IsTracked
@@ -63,6 +74,8 @@ public class PlayerTeamTracker : MonoBehaviour {
             if (_serializedData[i].key == slotKey) {
                 _serializedData[i] = new SerializableSpiritharData {
                     key = slotKey,
+                    trackSpiritharName = spiritharDataTracker.TrackSpiritharName,
+                    trackMaxHealth = spiritharDataTracker.TrackMaxHealth,
                     trackCurrentHealth = spiritharDataTracker.TrackCurrentHealth,
                     trackBaseStat = spiritharDataTracker.TrackBaseStat,
                     isTracked = spiritharDataTracker.IsTracked
@@ -76,6 +89,8 @@ public class PlayerTeamTracker : MonoBehaviour {
         if (!found) {
             _serializedData.Add(new SerializableSpiritharData {
                 key = slotKey,
+                trackSpiritharName = spiritharDataTracker.TrackSpiritharName,
+                trackMaxHealth = spiritharDataTracker.TrackMaxHealth,
                 trackCurrentHealth = spiritharDataTracker.TrackCurrentHealth,
                 trackBaseStat = spiritharDataTracker.TrackBaseStat,
                 isTracked = spiritharDataTracker.IsTracked
@@ -87,12 +102,14 @@ public class PlayerTeamTracker : MonoBehaviour {
 
     }
 
-    public bool AddNewSpiritharTeamTracked(SpiritharBaseStats newStats, float initialHealth) {
+    public bool AddNewSpiritharTeamTracked(SpiritharBaseStats newStats, float initialHealth, string spiritharName) {
 
         foreach (var slotKey in TrackedSlots) {
             if (SpiritharStatsTracker.TryGetValue(slotKey, out SpiritharData currentData)) {
                 if (!currentData.IsTracked) {
                     SpiritharData newEntry = new SpiritharData {
+                        TrackSpiritharName = spiritharName,
+                        TrackMaxHealth = initialHealth,
                         TrackCurrentHealth = initialHealth,
                         TrackBaseStat = newStats,
                         IsTracked = true
@@ -101,6 +118,8 @@ public class PlayerTeamTracker : MonoBehaviour {
                     SpiritharStatsTracker[slotKey] = newEntry;
                     Debug.Log($"Nuevo Spirithar trackeado en slot: {slotKey} y {SpiritharStatsTracker[slotKey].TrackCurrentHealth}");
                     RefreshWhenAddSerializedData(SpiritharStatsTracker[slotKey], slotKey);
+                    int slotIndex = Array.IndexOf(TrackedSlots, slotKey);
+                    OnSpiritharAdded?.Invoke(slotIndex);
                     return true;
                 }
             }
@@ -125,7 +144,7 @@ public class PlayerTeamTracker : MonoBehaviour {
         // TRACK HERE THE NEW LIST FOR INSPECTOR VIEW
         // HERE -----
         RefreshSerializedData();
-
+        OnSpiritharHealthUpdated?.Invoke(index, newHealth);
         return true;
 
 
@@ -170,6 +189,8 @@ public class PlayerTeamTracker : MonoBehaviour {
 [System.Serializable]
 public class SerializableSpiritharData {
     public string key;
+    public string trackSpiritharName;
+    public float trackMaxHealth;
     public float trackCurrentHealth;
     public SpiritharBaseStats trackBaseStat;
     public bool isTracked;

@@ -103,6 +103,7 @@ namespace BowzanGaming.FinalCharacterController {
             if (AttackPressed) return;
 
             if (context.performed){
+                Throw = false;
                 OnHoldThrowPressed = true;
             }
 
