@@ -2493,6 +2493,10 @@ MonoBehaviour:
   mainMenuSceneName: MainMenu
   PlayerController: {fileID: 7521939790465141381}
   helpKey: 104
+  _fallThreshold: -20
+  _freeFallVelocityThreshold: -10
+  _playerTransform: {fileID: 7521939790465141382}
+  _playerController: {fileID: 7521939790465141383}
 --- !u!4 &365683507
 Transform:
   m_ObjectHideFlags: 0
@@ -17677,6 +17681,11 @@ PrefabInstance:
       propertyPath: m_LocalPosition.z
       value: -2
       objectReference: {fileID: 0}
+    - target: {fileID: 4765149918686964049, guid: cef6326ee91964b4b865b741618479c7,
+        type: 3}
+      propertyPath: m_Enabled
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 6229287989921127944, guid: cef6326ee91964b4b865b741618479c7,
         type: 3}
       propertyPath: m_Enabled
@@ -17721,6 +17730,12 @@ MonoBehaviour:
 --- !u!4 &7521939790465141382 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 1996203584809730125, guid: cef6326ee91964b4b865b741618479c7,
+    type: 3}
+  m_PrefabInstance: {fileID: 7521939790465141380}
+  m_PrefabAsset: {fileID: 0}
+--- !u!143 &7521939790465141383 stripped
+CharacterController:
+  m_CorrespondingSourceObject: {fileID: 3920514998891968886, guid: cef6326ee91964b4b865b741618479c7,
     type: 3}
   m_PrefabInstance: {fileID: 7521939790465141380}
   m_PrefabAsset: {fileID: 0}

@@ -21,6 +21,7 @@ public class MainMenuManager : MonoBehaviour
     [SerializeField] private float fadeDuration = .5f;
 
     private void Start() {
+        AudioManager.Instance.PlayMusic(MusicType.MainMenu);
         // Configuración inicial
         howToPlayPanel.SetActive(false); // Oculta el panel al inicio
 
@@ -30,6 +31,7 @@ public class MainMenuManager : MonoBehaviour
         exitButton.onClick.AddListener(ExitGame);
     }
 
+    
     private void StartGame() {
         // Efecto de fade opcional antes de cargar
         StartCoroutine(LoadSceneWithFade(gameSceneName));

@@ -86,6 +86,8 @@ public class SoulCombatManager : MonoBehaviour
     }
 
     public void StartBossCombat(Spirithar spirithar) {
+        AudioManager.Instance.PlayMusic(MusicType.SoulCombat);
+
         if (PlayerTeamTracker.CheckFirstSpiritharWithHealth() < 0) {
             Debug.Log("O no tienes Spirithars o estan todos SIN vida");
             return;
@@ -168,7 +170,7 @@ public class SoulCombatManager : MonoBehaviour
         if (normalControls != null) normalControls.enabled = true;
 
         //if (_playerSoulInput != null) _playerSoulInput.enabled = false;
-
+        AudioManager.Instance.PlayMusic(MusicType.Exploration);
         _absorptionManager.SetAbsorbedSpiritharToNone();
         _boosSoulSpirithar.CurrentStateMode = EnemyState.Idle;
         State = BattleSoulState.NONE;

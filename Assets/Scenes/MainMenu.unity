@@ -525,6 +525,65 @@ MonoBehaviour:
   _fadeColor: {r: 0, g: 0, b: 0.54509807, a: 0}
   gameSceneName: MainGame
   fadeDuration: 0.09
+--- !u!1 &751663798
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 751663800}
+  - component: {fileID: 751663799}
+  m_Layer: 0
+  m_Name: AudioManager
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &751663799
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 751663798}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9d60b37d917b7754cabac1b26e080968, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _musicMixer: {fileID: 24100000, guid: 45081b41af4a7ea44be6505b15f3d44e, type: 2}
+  _musicVolume: 0.5
+  _musicTracks:
+  - type: 0
+    clip: {fileID: 8300000, guid: 722a9306709dc974caa476037b65bece, type: 3}
+    volume: 0.2
+  - type: 1
+    clip: {fileID: 8300000, guid: 912a9cf1f6dc8724d86818d1acb2d0d4, type: 3}
+    volume: 0.15
+  - type: 2
+    clip: {fileID: 8300000, guid: 8df1ee59929043346989bb77b4b1f4b2, type: 3}
+    volume: 0.15
+  - type: 3
+    clip: {fileID: 8300000, guid: 22075dcb88e55ac42bade54ddd25974a, type: 3}
+    volume: 0.15
+--- !u!4 &751663800
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 751663798}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 417.8, y: 83.968, z: 105.6}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &999549913
 GameObject:
   m_ObjectHideFlags: 0
@@ -1964,3 +2023,4 @@ SceneRoots:
   - {fileID: 1759654014}
   - {fileID: 486516725}
   - {fileID: 282769087}
+  - {fileID: 751663800}

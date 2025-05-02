@@ -143,6 +143,7 @@ public class CombatManager : MonoBehaviour {
     /// </summary>
     /// <param name="capturedEnemySpirithar">El Spirithar salvaje capturado.</param>
     public void StartCombat(Spirithar capturedEnemySpirithar) {
+        AudioManager.Instance.PlayMusic(MusicType.TurnCombat);
         _currentSpiritharIndex = PlayerTeamTracker.CheckFirstSpiritharWithHealth();
         // Asignar el Spirithar salvaje y conservar su posición actual.
         _enemySpirithar = capturedEnemySpirithar;
@@ -246,6 +247,7 @@ public class CombatManager : MonoBehaviour {
         if (PlayerCamera != null)
             PlayerCamera.SetActive(true);
 
+        AudioManager.Instance.PlayMusic(MusicType.Exploration);
         _playerSpiritharPos = Vector3.zero;
         PlayerTeam.SwitchActiveSpirithar(0);
         _combatHasEnded = true;

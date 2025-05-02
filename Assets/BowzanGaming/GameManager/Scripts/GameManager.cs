@@ -41,9 +41,22 @@ public class GameManager : MonoBehaviour {
     [Tooltip("Nombre exacto de la escena del Menú Principal")]
     public string mainMenuSceneName = "MainMenu"; // ¡¡IMPORTANTE: Cambia esto al nombre real de tu escena de menú!!
     public PlayerController PlayerController;
+    //[SerializeField] private PlayerActionsInput _playerActionsInput;
 
     [Tooltip("Tecla para mostrar/ocultar el menú de ayuda")]
     public KeyCode helpKey = KeyCode.H; // Puedes cambiarla si quieres (ej: KeyCode.F1)
+
+    [Header("Fall Settings")]
+    [SerializeField] private float _fallThreshold = -50f; // Altura mínima antes de reiniciar
+    [SerializeField] private float _freeFallVelocityThreshold = -10f; // Velocidad Y para considerar caída en picado
+
+    [Header("References")]
+    [SerializeField] private Transform _playerTransform;
+    [SerializeField] private CharacterController _playerController;
+
+    private Vector3 _previousPosition;
+    private float _verticalVelocity;
+    private bool _isFalling = false;
 
     // --- Unity Methods ---
 
@@ -56,7 +69,7 @@ public class GameManager : MonoBehaviour {
         }
         _instance = this;
 
-        Debug.Log("Current Quality Level: " + QualitySettings.names[QualitySettings.GetQualityLevel()]);
+        
         // Opcional: No destruir el GameManager al cargar otras escenas (si fuera necesario)
         // DontDestroyOnLoad(this.gameObject);
         // En este caso, como volvemos al menú principal, probablemente no sea necesario.
@@ -69,9 +82,14 @@ public class GameManager : MonoBehaviour {
 
         // Mostrar la introducción al empezar la partida
         ShowIntro();
+
+        _previousPosition = _playerTransform.position;
     }
 
     void Update() {
+
+        CalculateVerticalVelocity();
+        CheckFreeFall();
         // Comprobar si se pulsa la tecla de ayuda
         // Usamos GetKeyDown para que solo se active una vez al pulsar
         if (Input.GetKeyDown(helpKey)) // O usa la lógica del nuevo Input System si lo tienes configurado
@@ -92,6 +110,30 @@ public class GameManager : MonoBehaviour {
     }
 
     // --- UI Control Methods ---
+    private void CalculateVerticalVelocity() {
+        // Calcular velocidad vertical manualmente
+        float deltaY = _playerTransform.position.y - _previousPosition.y;
+        _verticalVelocity = deltaY / Time.deltaTime;
+        _previousPosition = _playerTransform.position;
+    }
+
+    private void CheckFreeFall() {
+        if (_playerTransform.position.y < _fallThreshold &&
+            _verticalVelocity < _freeFallVelocityThreshold &&
+            !_isFalling) {
+            Debug.Log($"player transofrm y {_playerTransform.position.y} y Vertical Velocity {_verticalVelocity}");
+            _isFalling = true;
+            LoadMainMenu();
+        }
+    }
+
+    private void LoadMainMenu() {
+        // Cargar escena por nombre o índice (configurar en Build Settings)
+        SceneManager.LoadScene("MainMenu");
+        _isFalling = false;
+        // Opcional: Usar carga asíncrona para pantalla de carga
+        // StartCoroutine(LoadMainMenuAsync());
+    }
 
     public void ShowIntro() {
         if (introPanel != null) {
@@ -105,6 +147,7 @@ public class GameManager : MonoBehaviour {
     // Esta función será llamada por el botón "Entendido" del IntroPanel
     public void HideIntro() {
         if (introPanel != null) {
+            //_playerActionsInput.AttackPressed = false;
             introPanel.SetActive(false);
             ResumeGame(); // Reanudar el juego
         }

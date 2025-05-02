@@ -55,5 +55,6 @@ Controlar que no incie combate si no tenemos sprithars a pelear. HECHO !!
 Mostrar los spirithars del equipo y sus vidas. HECHO !!
 
 SIGUIENTES PASOS
-Añadir algo de audio.
-Ver algún bug (Si atacas y luego intentas lanzar la bola de captura se queda glicheado).
+Añadir algo de audio. HECHO !!
+Ver algún bug (Si atacas y luego intentas lanzar la bola de captura se queda glicheado). HECHO !!
+Volver al main menu si estás en caída libre. HECHO !!
