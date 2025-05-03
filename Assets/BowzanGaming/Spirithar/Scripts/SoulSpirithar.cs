@@ -1,6 +1,4 @@
-using TreeEditor;
 using UnityEngine;
-using UnityEngine.AI;
 
 
 public class SoulSpirithar : Spirithar {

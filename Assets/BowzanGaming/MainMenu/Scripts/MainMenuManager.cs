@@ -41,7 +41,7 @@ public class MainMenuManager : MonoBehaviour
         howToPlayPanel.SetActive(!howToPlayPanel.activeSelf);
     }
 
-    private void ExitGame() {
+    public void ExitGame() {
         // Precaución: No funciona en el Editor, solo en build
         Application.Quit();
     }

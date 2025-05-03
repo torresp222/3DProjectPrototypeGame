@@ -58,3 +58,7 @@ SIGUIENTES PASOS
 Añadir algo de audio. HECHO !!
 Ver algún bug (Si atacas y luego intentas lanzar la bola de captura se queda glicheado). HECHO !!
 Volver al main menu si estás en caída libre. HECHO !!
+
+SIGUIENTES PASOS
+Añadir formas de salir del juego desde el build. Tanto en el MainMenu como en el juego. HECHO !!
+Crear panel de los controles del juego para el main menu. HECHO !!

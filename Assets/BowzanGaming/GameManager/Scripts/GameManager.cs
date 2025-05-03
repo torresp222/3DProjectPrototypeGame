@@ -231,5 +231,9 @@ public class GameManager : MonoBehaviour {
         SceneManager.LoadScene(mainMenuSceneName);
     }
 
-    
+    public void ExitGame() {
+        
+        Application.Quit();
+    }
+
 }
