@@ -7,7 +7,9 @@ A mini-turn-based and soul‑style hybrid game prototype made in Unity.
 1. Clone this repository.
 2. Open in Unity (2022.3 LTS or newer).
 3. Download the free assets from the Unity Asset Store (see Credits).
-4. Open the scene `MainMenu` and hit Play.
+4. To get the rid of pink materials for the main character - Window-> Rendering -> Rendering Pipeline Converter -> Tick Material Upgrade -> Initialize And Convert. (In MainGame Scene)
+5. To get the rid of pink materials for the environment meshes, Open `PT_Nature_Free_URP_12` inside the package of Polytope Studio (Assests/Polytope Studio/URP/PT_Nature_Free_URP_12) to get the material to URP. (In MainGame Scene)
+6. Open the scene `MainMenu` and hit Play.
 
 ---
 

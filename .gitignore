@@ -72,7 +72,12 @@ crashlytics-build.properties
 /[Aa]ssets/[Ss]treamingAssets/aa.meta
 /[Aa]ssets/[Ss]treamingAssets/aa/*
 
-# Ignore downloaded Unity Asset Store folders
-/Assets/Adventure Gaming Music Suite/
-/Assets/Blink/
-/Assets/Polytope Studio/
+# Ignore downloaded Unity Asset Store folders + their .meta files
+Assets/Adventure Gaming Music Suite/
+Assets/Adventure Gaming Music Suite.meta
+
+Assets/Blink/
+Assets/Blink.meta
+
+Assets/Polytope Studio/
+Assets/Polytope Studio.meta
