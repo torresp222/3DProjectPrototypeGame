@@ -15,9 +15,9 @@ A mini-turn-based and soul‑style hybrid game prototype made in Unity.
 
 This prototype uses the following free Unity Asset Store packages under the **Standard Unity Asset Store EULA**:
 
-- **Adventure Gaming Music Suite** by Alison Turk – free orchestral music suite :contentReference[oaicite:10]{index=10}  
-- **FREE Low Poly Human – RPG Character** by Blink – free low‑poly humanoid :contentReference[oaicite:11]{index=11}  
-- **Lowpoly Environment – Nature Free, Medieval Fantasy Series** by Polytope Studio – free environment pack :contentReference[oaicite:12]{index=12}  
+- **Adventure Gaming Music Suite** by Alison Turk – free orchestral music suite.
+- **FREE Low Poly Human – RPG Character** by Blink – free low‑poly humanoid.  
+- **Lowpoly Environment – Nature Free, Medieval Fantasy Series** by Polytope Studio – free environment pack.  
 
 These assets are included **only in the built game**, not distributed as raw files in this repository.
 
