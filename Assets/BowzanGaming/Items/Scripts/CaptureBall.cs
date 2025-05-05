@@ -32,5 +32,7 @@ public class CaptureBall : MonoBehaviour {
             // Opcionalmente, destruye la bola para no seguir detectando colisiones.
             Destroy(gameObject);
         }
+
+        Destroy(gameObject, 1f);
     }
 }

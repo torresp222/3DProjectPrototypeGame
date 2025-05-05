@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class PlayerSoulCombatAndStats : MonoBehaviour
 {
@@ -54,5 +55,6 @@ public class PlayerSoulCombatAndStats : MonoBehaviour
     private void Die() {
         // Handle death logic
         Debug.Log("Player dead");
+        SceneManager.LoadScene("MainMenu");
     }
 }
